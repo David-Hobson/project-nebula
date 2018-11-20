@@ -8,8 +8,11 @@ public class Enemy : MonoBehaviour {
     public int health = 100;
     private float damaged;
 
-	// Use this for initialization
-	void Start () {
+    public int droppedItem = 0;
+    public bool collisionWithObjets = false;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -41,5 +44,20 @@ public class Enemy : MonoBehaviour {
         if(health <= 0){
             Destroy(gameObject);
         }
+    }
+
+    public int DropItem() {
+
+        droppedItem = 1;
+        return droppedItem;
+    }
+
+    public int EnemyRespawns(int number) {
+        return number;
+    }
+
+    public int EnemyHealed(int number) {
+        health = health + number;
+        return health;
     }
 }
