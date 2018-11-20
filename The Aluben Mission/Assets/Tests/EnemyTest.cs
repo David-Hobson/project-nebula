@@ -106,14 +106,14 @@ public class EnemyTest {
 
         player.GetComponent<Transform>().position = new Vector3(enemyObject.GetComponent<Transform>().position.x + 1, enemyObject.GetComponent<Transform>().position.y, 0);
 
-        Vector3 move = new Vector3(0.1f, 0, 0);
+        Vector3 move = new Vector3(1, 0, 0);
         for (int i = 0; i < 100; i++)
         {
             enemyObject.GetComponent<Transform>().position += move;
             yield return new WaitForSeconds(0.1f);
         }
 
-        Assert.False(enemyObject.GetComponent<Transform>().position.x <= player.GetComponent<Transform>().position.x);
+        Assert.False(enemyObject.GetComponent<Transform>().position.x < player.GetComponent<Transform>().position.x);
         yield return null;
     }
 

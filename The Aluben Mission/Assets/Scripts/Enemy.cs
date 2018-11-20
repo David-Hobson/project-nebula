@@ -19,18 +19,21 @@ public class Enemy : MonoBehaviour {
         
 	// Update is called once per frame
     void Update () {
-        Vector3 vect = player.position - transform.position;
-
-        if (vect.magnitude <= 2)
+        if (player != null)
         {
-            this.GetComponent<Rigidbody2D>().velocity = vect * 0.5f;
+            Vector3 vect = player.position - transform.position;
+
+            if (vect.magnitude <= 2)
+            {
+                this.GetComponent<Rigidbody2D>().velocity = vect * 0.5f;
+            }
+
+            this.GetComponent<Animator>().SetFloat("EnemySpeedX", vect.x);
+            this.GetComponent<Animator>().SetFloat("EnemySpeedY", vect.y);
+
+            this.GetComponent<SpriteRenderer>().color = new Color(255, damaged, damaged);
+            damaged += 0.1f;
         }
-
-        this.GetComponent<Animator>().SetFloat("EnemySpeedX", vect.x);
-        this.GetComponent<Animator>().SetFloat("EnemySpeedY", vect.y);
-
-        this.GetComponent<SpriteRenderer>().color = new Color(255, damaged, damaged);
-        damaged += 0.1f;
     }
 
     public void OnTriggerEnter2D(Collider2D other) {
