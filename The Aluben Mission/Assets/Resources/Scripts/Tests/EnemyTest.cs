@@ -65,7 +65,7 @@ public class EnemyTest {
     [UnityTest]
     public IEnumerator CheckEnemyCollisionWithWall()
     {
-        var wall = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Walls"));
+        var wall = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Wall"));
 
         wall.GetComponent<Transform>().position = new Vector3(enemyObject.GetComponent<Transform>().position.x + 1, enemyObject.GetComponent<Transform>().position.y, 0);
 
