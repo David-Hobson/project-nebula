@@ -14,7 +14,7 @@ public class GroundCollision : MonoBehaviour {
 		
 	}
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    public void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Bullet") {
             Destroy(other.gameObject);
         }
