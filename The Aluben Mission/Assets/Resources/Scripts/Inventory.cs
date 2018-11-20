@@ -19,6 +19,10 @@ public class Inventory : MonoBehaviour {
         items.RemoveAt(0);
     }
 
+    public int Display() { return 1; }
+
+    public int ShowInUI() { return 1; }
+	
     public void EquipItem(int index)
     {
         items[index].UseItem();
