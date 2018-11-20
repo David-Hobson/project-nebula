@@ -24,6 +24,10 @@ public class Inventory : MonoBehaviour {
         items[index].UseItem();
     }
 
+    public int Display() { return 1; }
+
+    public int ShowInUI() { return 1; }
+
 	// Use this for initialization
 	void Start () {
 		

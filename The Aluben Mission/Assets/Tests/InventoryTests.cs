@@ -24,4 +24,22 @@ public class InventoryTests
         Assert.AreEqual(inventory.items.Count, 0);
     }
 
+    [Test]
+    public void CheckInventoryDisplayed()
+    {
+        var inventory = new GameObject().AddComponent<Inventory>();
+        inventory.AddItem(new Item());
+        inventory.UseItem(0);
+        Assert.AreEqual(inventory.Display, 1);
+    }
+
+    [Test]
+    public void CheckItemDisplayedInInventoryUI()
+    {
+        var inventory = new GameObject().AddComponent<Inventory>();
+        inventory.AddItem(new Item());
+        inventory.UseItem(0);
+        Assert.AreEqual(inventory.ShowInUI(), 1);
+    }
+
 }
