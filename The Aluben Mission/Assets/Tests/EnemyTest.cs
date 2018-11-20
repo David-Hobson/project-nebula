@@ -4,22 +4,37 @@ using NUnit.Framework;
 using System.Collections;
 
 public class EnemyTest {
+
+    GameObject enemyObject = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Enemy"));
+
     [Test]
     public void CheckEnemyAlive()
     {
-        var enemy = new GameObject().AddComponent<Enemy>();
-        bool expected = true;
-
-        Assert.AreEqual(expected, enemy.EnemyAlive());
+        bool expected;
+        if (enemyObject.GetComponent<Enemy>().health > 0)
+        {
+            expected = true;
+        }
+        else
+        {
+            expected = false;
+        }
+        Assert.AreEqual(expected, true);
     }
 
     [Test]
     public void CheckEnemyDies()
     {
-        var enemy = new GameObject().AddComponent<Enemy>();
-        bool expected = false;
-
-        Assert.AreEqual(expected, enemy.EnemyDies());
+        bool expected;
+        if (enemyObject.GetComponent<Enemy>().health < 0)
+        {
+            expected = true;
+        }
+        else
+        {
+            expected = false;
+        }
+        Assert.AreEqual(expected, false);
     }
 
     [Test]
@@ -34,50 +49,72 @@ public class EnemyTest {
     [Test]
     public void CheckEnemyDamaged()
     {
-        var enemy = new GameObject().AddComponent<Enemy>();
-        var expected = false;
-
-        Assert.AreEqual(expected, enemy.enemyDamaged());
+        bool expected;
+        if (enemyObject.GetComponent<Enemy>().health < 100)
+        {
+            expected = true;
+        }
+        else
+        {
+            expected = false;
+        }
+        Assert.AreEqual(expected, false);
     }
 
-    [Test]
-    public void CheckEnemyCollisionWithWall()
-    {
-        var enemy = new GameObject().AddComponent<Enemy>();
-        var expected = false;
-  //question----------------------------------------------
-        //Collider2D collider = new Collider2D();
-        //collider.name = "walls";
-        //enemy.OnTriggerEnter2D(collider);
-        var actual = enemy.collisionWithWalls;
 
-        Assert.AreEqual(expected, actual);
+    [UnityTest]
+    public IEnumerator CheckEnemyCollisionWithWall()
+    {;
+        var wall = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Walls"));
+
+        wall.GetComponent<Transform>().position = new Vector3(enemyObject.GetComponent<Transform>().position.x + 1, enemyObject.GetComponent<Transform>().position.y, 0);
+
+        Vector3 move = new Vector3(0.1f, 0, 0);
+        for (int i=0;i<100;i++)
+        {
+            enemyObject.GetComponent<Transform>().position += move;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        Assert.False(enemyObject.GetComponent<Transform>().position.x < wall.GetComponent<Transform>().position.x);
+        yield return null;
+        
     }
 
-    [Test]
-    public void CheckEnemyCollisionWithEnemy()
+    [UnityTest]
+    public IEnumerator CheckEnemyCollisionWithEnemy()
     {
-        var enemy = new GameObject().AddComponent<Enemy>();
-        var expected = false;
-        //Collider2D collider = new Collider2D();
-        //collider.tag = "Enemy";
-        //enemy.OnTriggerEnter2D(collider);
-        var actual = enemy.collisionWithEnemy;
+        GameObject enemyObject2 = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Enemy"));
 
-        Assert.AreEqual(expected, actual);
+        enemyObject2.GetComponent<Transform>().position = new Vector3(enemyObject.GetComponent<Transform>().position.x + 1, enemyObject.GetComponent<Transform>().position.y, 0);
+
+        Vector3 move = new Vector3(0.1f, 0, 0);
+        for (int i = 0; i < 100; i++)
+        {
+            enemyObject.GetComponent<Transform>().position += move;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        Assert.False(enemyObject.GetComponent<Transform>().position.x > enemyObject2.GetComponent<Transform>().position.x);
+        yield return null;
     }
 
-    [Test]
-    public void CheckEnemyCollisionWithPlayer()
+    [UnityTest]
+    public IEnumerator CheckEnemyCollisionWithPlayer()
     {
-        var enemy = new GameObject().AddComponent<Enemy>();
-        var expected = false;
-        //Collider2D collider = new Collider2D();
-        //collider.name = "Player";
-        //enemy.OnTriggerEnter2D(collider);
-        var actual = enemy.collisionWithPlayer;
+        var player = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
 
-        Assert.AreEqual(expected, actual);
+        player.GetComponent<Transform>().position = new Vector3(enemyObject.GetComponent<Transform>().position.x + 1, enemyObject.GetComponent<Transform>().position.y, 0);
+
+        Vector3 move = new Vector3(0.1f, 0, 0);
+        for (int i = 0; i < 100; i++)
+        {
+            enemyObject.GetComponent<Transform>().position += move;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        Assert.False(enemyObject.GetComponent<Transform>().position.x <= player.GetComponent<Transform>().position.x);
+        yield return null;
     }
 
     [Test]
@@ -85,22 +122,33 @@ public class EnemyTest {
     {
         var enemy = new GameObject().AddComponent<Enemy>();
         var expected = false;
-        //Collider2D collider = new Collider2D();
-        //enemy.OnTriggerEnter2D(collider);
+
         var actual = enemy.collisionWithObjets;
 
         Assert.AreEqual(expected, actual);
     }
 
-    [Test]
-    public void CheckEnemyMovement()
+    [UnityTest]
+    public IEnumerator CheckEnemyMovement()
     {
-        var enemy = new GameObject().AddComponent<Enemy>();
-        Vector3 expected = new Vector3(0, 0, 0);
 
-        //var actual = enemy.Movement();
-        Vector3 actual = new Vector3(0, 0, 0);
-        Assert.AreEqual(expected, actual);
+        var player = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
+
+        player.GetComponent<Transform>().position = new Vector3(enemyObject.GetComponent<Transform>().position.x + 1, enemyObject.GetComponent<Transform>().position.y, 0);
+        for (int i = 0; i < 100; i++)
+        {
+
+            Vector3 vect = player.GetComponent<Transform>().position - enemyObject.GetComponent<Transform>().position;
+
+            if (vect.magnitude <= 2)
+            {
+                enemyObject.GetComponent<Rigidbody2D>().velocity = vect * 0.5f;
+            }
+
+            yield return new WaitForSeconds(0.1f);
+        }
+        Assert.False(enemyObject.GetComponent<Transform>().position.x >= player.GetComponent<Transform>().position.x);
+        yield return null;
     }
 
     [Test]
@@ -110,7 +158,6 @@ public class EnemyTest {
         float damaged = 0;
         Color expected = new Color(255,damaged,damaged);
 
-        //var actual = enemy.GetComponent<SpriteRenderer>().color;
         Color actual = new Color(255, damaged, damaged);
         Assert.AreEqual(expected, actual);
     }

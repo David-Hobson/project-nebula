@@ -9,9 +9,6 @@ public class Enemy : MonoBehaviour {
 
     private float damaged;
     public int droppedItem = 0;
-    public bool collisionWithWalls = false;
-    public bool collisionWithEnemy = false;
-    public bool collisionWithPlayer = false;
     public bool collisionWithObjets = false;
 
 	// Use this for initialization
@@ -19,28 +16,21 @@ public class Enemy : MonoBehaviour {
 		
 	}
 
-    public Vector3 Movement(){
+        
+	// Update is called once per frame
+    void Update () {
         Vector3 vect = player.position - transform.position;
 
-        return vect;
-    }
-	
-    public void enemyAnimation(){
-        Vector3 vect = player.position - transform.position;
+        if (vect.magnitude <= 2)
+        {
+            this.GetComponent<Rigidbody2D>().velocity = vect * 0.5f;
+        }
+
         this.GetComponent<Animator>().SetFloat("EnemySpeedX", vect.x);
         this.GetComponent<Animator>().SetFloat("EnemySpeedY", vect.y);
 
         this.GetComponent<SpriteRenderer>().color = new Color(255, damaged, damaged);
         damaged += 0.1f;
-    }
-        
-	// Update is called once per frame
-    void Update () {
-        if (Movement().magnitude <= 2)
-        {
-            this.GetComponent<Rigidbody2D>().velocity = Movement() * 0.5f;
-        }
-        enemyAnimation();
     }
 
     public void OnTriggerEnter2D(Collider2D other) {
@@ -48,18 +38,6 @@ public class Enemy : MonoBehaviour {
             health -= 25;
             Destroy(other.gameObject);
             damaged = 0;
-        }
-        if(other.gameObject.name == "Walls")
-        {
-            collisionWithWalls = true;
-        }
-        if (other.gameObject.tag == "Enemy")
-        {
-            collisionWithEnemy = true;
-        }
-        if (other.gameObject.name == "Player" || other.gameObject.name == "Player2")
-        {
-            collisionWithPlayer = true;
         }
         else
         {
@@ -71,46 +49,15 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    public bool EnemyAlive(){
-        if (health > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
 
-    public bool EnemyDies()
-    {
-        if (health <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     public int dropItem(){
-        if(EnemyDies() == true)
-        {
-            droppedItem = 1;
-        }
+
+        droppedItem = 1;
         return droppedItem;  
     }
 
-    public bool enemyDamaged()
-    {
-        if(health < 100)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+
 
     public int enemyRespawns(int number)
     {
