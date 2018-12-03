@@ -5,6 +5,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     public Transform player;
+    public GameObject crystalPrefab;
+    public int speed;
+
     public int health = 100;
     private float damaged;
 
@@ -20,11 +23,15 @@ public class Enemy : MonoBehaviour {
     void Update () {
         if(player != null){
             Vector3 vect = player.position - transform.position;
-
+            if(vect.magnitude <= 2)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, player.position, speed*0.01f);
+            }
+            /*
             if(vect.magnitude <= 2){
                 this.GetComponent<Rigidbody2D>().velocity = vect*0.5f;
             }
-
+            */
             this.GetComponent<Animator>().SetFloat("EnemySpeedX", vect.x);
             this.GetComponent<Animator>().SetFloat("EnemySpeedY", vect.y);
 
@@ -43,6 +50,8 @@ public class Enemy : MonoBehaviour {
 
         if(health <= 0){
             Destroy(gameObject);
+            var go = Instantiate(crystalPrefab, transform.position, Quaternion.identity);
+            go.GetComponent<DroppedItem>().Target = player;
         }
     }
 
