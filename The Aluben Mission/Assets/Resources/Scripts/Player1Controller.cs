@@ -169,6 +169,24 @@ public class Player1Controller : MonoBehaviour {
         return "Dodging";
     }
 
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "EnemyBullet")
+        {
+            health -= 20;
+            Debug.Log("current health is " + health);
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            health -= 10;
+            Debug.Log("current health is " + health);
+        }
+    }
+
     private void Pause() {
         if (!paused) {
             Time.timeScale = 0;

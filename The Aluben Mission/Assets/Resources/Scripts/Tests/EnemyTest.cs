@@ -36,7 +36,7 @@ public class EnemyTest {
         }
         Assert.AreEqual(expected, false);
     }
-
+    /*
     [Test]
     public void CheckEnemyDropItem()
     {
@@ -45,7 +45,7 @@ public class EnemyTest {
 
         Assert.AreEqual(expected, enemy.DropItem());
     }
-
+    */
     [Test]
     public void CheckEnemyDamaged()
     {
@@ -113,7 +113,7 @@ public class EnemyTest {
         Assert.False(enemyObject.GetComponent<Transform>().position.x < player.GetComponent<Transform>().position.x);
         yield return null;
     }
-
+    /*
     [Test]
     public void CheckEnemyCollisionWithObjects()
     {
@@ -124,7 +124,7 @@ public class EnemyTest {
 
         Assert.AreEqual(expected, actual);
     }
-
+    */
     [UnityTest]
     public IEnumerator CheckEnemyMovement()
     {
@@ -158,7 +158,7 @@ public class EnemyTest {
         Color actual = new Color(255, damaged, damaged);
         Assert.AreEqual(expected, actual);
     }
-
+    /*
     [Test]
     public void CheckEnemyRespawns()
     {
@@ -178,4 +178,5 @@ public class EnemyTest {
 
         Assert.AreEqual(expected, actual);
     }
+    */
 }
