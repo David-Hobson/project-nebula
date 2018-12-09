@@ -73,7 +73,7 @@ public class PlayerTests {
         var currentSprite = player.GetComponent<SpriteRenderer>().sprite;
 
         for (var i = 0; i < 100; i++) {
-            player.GetComponent<Player1Controller>().MovementAnimation(-1, 1);
+            //player.GetComponent<Player1Controller>().MovementAnimation(-1, 1);
             yield return new WaitForSeconds(0.1f);
         }
 
