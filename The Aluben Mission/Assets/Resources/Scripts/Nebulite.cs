@@ -32,15 +32,26 @@ public class Nebulite : MonoBehaviour
     }
 
 
-    public int GetLevel() { return level; } //return the amount of nebulite aquired 
+   
+    public int GetLevel() { return level; } //return the amount of nebulite acquired 
+
+
+
     public int GetTotal() { return total; } //return the total nebulite available to spend
 
-    public void AddNebulite(int num) { level += num; } //add nebulite to count collected in level
+    //FR 24, 25
+    //add nebulite to count collected in level
+    public void AddNebulite(int num) { level += num; }
 
-    public void RemoveNebulite(int num) { total -= num; } //spend nebulite
+    //FR 25
+    //spend nebulite
+    public void RemoveNebulite(int num) { total -= num; }
 
-    public void ResetNebulite() { level = 0; } //when exiting mission or dying nebulute gathered in level is reset
+    //FR 25
+    //when exiting mission or dying nebulute gathered in level is reset
+    public void ResetNebulite() { level = 0; } 
 
+    //FR 23, 25
     //When level is completed the gathered nebulute is added to the total
     public void UpdateNebulite()
     {

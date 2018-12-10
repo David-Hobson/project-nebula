@@ -30,25 +30,31 @@ public class Inventory : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
     }
 
-    public void AddItem(Item item) { items.Add(item); } //add item to inventory when collected
+    //FR 16
+    //add item to inventory when collected
+    public void AddItem(Item item) { items.Add(item); } 
 
-    public void UseItem(int index) { //use item from inventory slot
+    //use item from inventory slot
+    public void UseItem(int index) {
         items[index].UseItem();
         items.RemoveAt(0);
     }
 
+    //FR 12
     /*To be Implemented:
      * Display all the stats and information to the player
      */
     public int Display() { return 1; }
 
+    //FR 12
     /*To be Implemented:
     * Display all the images in the UI
     */
     public int ShowInUI() { return 1; }
 	
+    //FR 52
     // Equip weapon from the inventory
-    public void EquipItem(int index) 
+    public void EquipWeapon(int index) 
     {
         weapon[index].EquipWeapon();
     }

@@ -33,11 +33,14 @@ public class Shop : MonoBehaviour {
      * update the shop after purchasing it to display the changes
      */
     public void UpdateShop() { }
+
+    //FR 47
     /* to be implemented:
      * check if player has enough nebulite, Add the item from the shop to the player's inventory, subtract the cost
      */
     public bool PurchaseItem(int index) { return true; }
 
+    //FR 17, 18, 47
     /* to be implemented:
      * check if player has enough nebulite, Add or upgrade the weapon to the player's inventory, subtract the cost
      */

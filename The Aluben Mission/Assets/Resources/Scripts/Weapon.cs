@@ -24,7 +24,9 @@ public class Weapon : MonoBehaviour
 
     public void AquireWeapon() { aquired = true; } //on successful pickup or purchase weapon is 
 
-    public void UpgradeWeapon() { //upgrade weapon
+    //FR 17, 18
+    //Upgrade the weapon
+    public void UpgradeWeapon() { 
         cost += 100; //increase the cost to upgrade weapon in the future
         tier++; //increase the 
         //change stats based of teir
@@ -34,6 +36,7 @@ public class Weapon : MonoBehaviour
     public void GetCost() { return cost; } //get the cost to upgrade
     public void GetTier() { return tier; } //get the current weapon tier (higher is better)
 
+    //FR 52
     /* To be implemented:
      * change the equiped weapon to this one, ensure weapon is aquired
      */

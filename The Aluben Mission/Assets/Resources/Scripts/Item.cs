@@ -13,9 +13,6 @@ public class Item : MonoBehaviour {
     public int[] displayLocation; //display location in the shop and inventory 
     public bool inShop; //is the item in the shop
 
-
-    public void Purchase() { }
-
     /*To be Implemented
      * display item in inventory and shop
      */
@@ -30,9 +27,11 @@ public class Item : MonoBehaviour {
     /* To be implemented:
      * activate the effects for when an item is used
      */
-    public void UseItem() { isActive = true; } 
+    public void UseItem() { isActive = true; }
 
-    public void PickupItem(int player) { owner = player; } //item is picked up 
+    //FR 16
+    //item is picked up 
+    public void PickupItem(int player) { owner = player; } 
 
     /* To be implemented:
      * Delete an item after its
