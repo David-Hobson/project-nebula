@@ -4,22 +4,18 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    bool isTalking;
+    bool isTalking; //is the NPC currently talking
 
+    /* to be implemented:
+     * Actions that happen when the player interacts with the NPC
+     */
     public void startDialogue() { }
+    /* to be implemented:
+     * Actions that happen when the player stops interacting with the NPC
+     */
     public void endDialogue() { }
-    public bool checkStatus() { return isTalking; }
 
+    public bool checkStatus() { return isTalking; } //check if the NPC is still active
 
-
-// Use this for initialization
-void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
 

@@ -4,37 +4,53 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour {
 
-    public List<Item> items;
-    public List<Weapon> weapons;
+    public static Inventory instance; //persists between levels
 
-    public Inventory()
+    public List<Item> items; //list of items in inventory
+    public List<Weapon> weapons; //list of weapons in inventory
+
+    void Awake()
     {
-        items = new List<Item>();
+        // If the instance reference has not been set, yet, 
+        if (instance == null)
+        {
+            // Set this instance as the instance reference.
+            instance = this;
+            items = new List<Item>(); ; //to be later changed to allow save/load
+            weapons = new List<Weapon>(); //to be later changed to allow save/load
+        }
+        else if (instance != this)
+        {
+            // If the instance reference has already been set, and this is not the
+            // the instance reference, destroy this game object.
+            Destroy(gameObject);
+        }
+
+        // Do not destroy this object, when we load a new scene.
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void AddItem(Item item) { items.Add(item); }
+    public void AddItem(Item item) { items.Add(item); } //add item to inventory when collected
 
-    public void UseItem(int index) {
+    public void UseItem(int index) { //use item from inventory slot
         items[index].UseItem();
         items.RemoveAt(0);
     }
 
+    /*To be Implemented:
+     * Display all the stats and information to the player
+     */
     public int Display() { return 1; }
 
+    /*To be Implemented:
+    * Display all the images in the UI
+    */
     public int ShowInUI() { return 1; }
 	
-    public void EquipItem(int index)
+    // Equip weapon from the inventory
+    public void EquipItem(int index) 
     {
-        items[index].UseItem();
+        weapon[index].EquipWeapon();
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
