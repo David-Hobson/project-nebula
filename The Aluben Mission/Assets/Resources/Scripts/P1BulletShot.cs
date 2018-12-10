@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Script may be removed when fully implemeneted Weapon mechanics
 public class P1BulletShot : MonoBehaviour {
 
-	// Use this for initialization
+	//Initialize bullet based on right stick position of player 1
 	void Start() {
-        //var xr = Input.GetAxis("P1ShootX");
-        //var yr = Input.GetAxis("P1ShootY");
+        var xr = Input.GetAxis("P1RSX");
+        var yr = Input.GetAxis("P1RSY");
 
-        //CalculateBulletMovement(new Vector3(xr, yr, 0));
+        CalculateBulletMovement(new Vector3(xr, yr, 0));
 
     }
 
+    //REQUIREMENT: F-9
+    //Calculate the bullet speed, destroy the bullet after 1 second
     public void CalculateBulletMovement(Vector3 vec){
         vec.Normalize();
         this.GetComponent<Rigidbody2D>().velocity = vec * 3;
@@ -20,6 +23,9 @@ public class P1BulletShot : MonoBehaviour {
     }
 
     public string GetBulletType(){
+        //TODO
+
+        //Return the type of bullet
         return "Default";
     }
 	
