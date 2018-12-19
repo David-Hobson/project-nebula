@@ -17,7 +17,7 @@ public class Player1Controller : MonoBehaviour {
 
     public Canvas pauseCanvas;
 
-    private int health;
+    public int health;
     private int maxHealth;
 
     private int armour;
