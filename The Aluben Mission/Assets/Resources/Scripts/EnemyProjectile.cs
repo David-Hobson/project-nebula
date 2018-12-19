@@ -47,7 +47,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            player.GetComponent<Player1Controller>().health -= 15;
+            player.GetComponent<Player1Controller>().Damage(15);
             Destroy(gameObject);
 
         }

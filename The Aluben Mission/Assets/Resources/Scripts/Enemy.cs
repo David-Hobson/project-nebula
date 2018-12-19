@@ -153,7 +153,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            player.GetComponent<Player1Controller>().health -= 10;
+            player.GetComponent<Player1Controller>().Damage(10);
         }
     }
     //Requirement: F-10, F-11, F-15

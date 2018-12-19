@@ -58,7 +58,7 @@ public class TrackProjectile : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            player.GetComponent<Player1Controller>().health -= 5;
+            player.GetComponent<Player1Controller>().Damage(5);
             Destroy(gameObject);
 
         }
