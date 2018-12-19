@@ -6,9 +6,10 @@ public class TrackProjectile : MonoBehaviour {
 
     public float speed; //the speed of the projectile
     private Transform player; // reference of player
-    private Vector2 target; //target's position
+    private Transform player2;
 
-    private float trackTime = 5.0f;
+
+    private float trackTime = 2.5f;
 
     /*Use this for initialization
      * Set the default reference
@@ -16,8 +17,7 @@ public class TrackProjectile : MonoBehaviour {
     void Start()
     {
         player = GameObject.Find("Player 1").transform;
-        target = new Vector2(player.position.x, player.position.y);
-
+        player2 = GameObject.Find("Player 2").transform;
     }
 
     public void FaceDirection()

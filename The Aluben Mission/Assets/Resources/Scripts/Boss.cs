@@ -6,6 +6,7 @@ public class Boss : MonoBehaviour {
 
     private Animator anim;
     public Transform player;
+    public Transform player2;
     public GameObject crystalPrefab;
 
     public float speed; //Enemy moving speed
@@ -29,7 +30,7 @@ public class Boss : MonoBehaviour {
     public float timeBtwTrackShots;
     private float startTimeBtwTrackshots = 8.0f;
 
-    private float ironTime = 10.0f;
+    private float ironTime = 6.0f;
 
     private AudioSource audSource;
     public AudioClip shot;
@@ -189,6 +190,7 @@ public class Boss : MonoBehaviour {
                 health -= 1;
                 //burst += 25;
                 audSource.PlayOneShot(ironSound, 1f);
+                Instantiate(trackProjectile, transform.position, Quaternion.Euler(SetDirection()));
             }
         }
 
