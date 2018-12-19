@@ -24,5 +24,5 @@ public class Puzzle : MonoBehaviour
 			return false;
 	}
 }
-}
+
 
