@@ -17,11 +17,11 @@ public class Player1Controller : MonoBehaviour {
 
     public Canvas pauseCanvas;
 
-    private int health;
-    private int maxHealth;
+    private float health;
+    private float maxHealth;
 
-    private int armour;
-    private int maxArmour;
+    private float armour;
+    private float maxArmour;
     private float speed;
 
 
@@ -78,7 +78,6 @@ public class Player1Controller : MonoBehaviour {
 
     //Rotate the equipped weapon based off of X and Y values
     public void WeaponDirection(float x, float y){
-        var vect = new Vector2(x, y);
         float angle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
 
         //Change the sprite order in order to create depth for when the gun is behind the player
@@ -177,7 +176,7 @@ public class Player1Controller : MonoBehaviour {
 
     //REQUIREMENT: F-50
     //Return the current armour amount
-    public int GetArmour(){
+    public float GetArmour(){
         return armour;
     }
 
@@ -189,13 +188,13 @@ public class Player1Controller : MonoBehaviour {
 
     //REQUIREMENT: F-50
     //Return the maximum armour count
-    public int GetMaxArmour(){
+    public float GetMaxArmour(){
         return maxArmour;
     }
 
     //REQUIREMENT: F-33
     //Return the maximum health amount
-    public int GetMaxHealth(){
+    public float GetMaxHealth(){
         return maxHealth;
     }
 
@@ -259,7 +258,7 @@ public class Player1Controller : MonoBehaviour {
 
     //REQUIRMENT: F-33
     //Return the current health of the player
-    public int GetHealth(){
+    public float GetHealth(){
         return this.health;
     }
 

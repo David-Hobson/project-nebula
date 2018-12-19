@@ -78,7 +78,6 @@ public class Player2Controller : MonoBehaviour {
 
     //Rotate the equipped weapon based off of X and Y values
     public void WeaponDirection(float x, float y) {
-        var vect = new Vector2(x, y);
         float angle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
 
         //Change the sprite order in order to create depth for when the gun is behind the player
