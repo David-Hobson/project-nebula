@@ -38,6 +38,8 @@ public class DroppedItem : MonoBehaviour {
     {
         if(other.tag == "Player")
         {
+			Nebulite nebulite = GameObject.FindObjectsOfType<Nebulite>()[0];
+			nebulite.AddNebulite(50);
             Destroy(gameObject);
         }
     }

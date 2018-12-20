@@ -6,13 +6,13 @@ public class Shop : MonoBehaviour {
 
     public List<Item> items; //items in shop
     public List<Weapon> weapons; //weapons in shop
-    public Nebulite nebulite = new Nebulite(100); //change to GameObject.FindObjectsOfType<Nebulite>()
+    public Nebulite nebulite = GameObject.FindObjectsOfType<Nebulite>()[0]; //change to GameObject.FindObjectsOfType<Nebulite>()
     public Inventory inventory = new Inventory(); //change to GameObject.FindObjectsOfType<Inventory>()
 
     //add new item to shop 
     public void AddItem(int cost, int tier, int[] display, bool inShop)
     {
-        items.Add(new Item(cost, tier, display, inShop));
+        //items.Add(new Item(cost, tier, display, inShop));
     }
     //add already created item to shop
     public void AddItem(Item item)

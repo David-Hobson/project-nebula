@@ -13,6 +13,20 @@ public class Item : MonoBehaviour {
     public int[] displayLocation; //display location in the shop and inventory 
     public bool inShop; //is the item in the shop
 
+    public Item(int c, int t, int[] d, bool show)
+    {
+        cost = c;
+        tier = t;
+        displayLocation = d;
+        inShop = show;
+    }
+
+    public Item()
+    {
+
+
+
+    }
     /*To be Implemented
      * display item in inventory and shop
      */

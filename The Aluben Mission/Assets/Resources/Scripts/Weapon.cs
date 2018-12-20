@@ -32,9 +32,9 @@ public class Weapon : MonoBehaviour
         //change stats based of teir
     }
 
-    public void GetName() { return name; } //get the name
-    public void GetCost() { return cost; } //get the cost to upgrade
-    public void GetTier() { return tier; } //get the current weapon tier (higher is better)
+    public string GetName() { return name; } //get the name
+    public int GetCost() { return cost; } //get the cost to upgrade
+    public int GetTier() { return tier; } //get the current weapon tier (higher is better)
 
     //FR 52
     /* To be implemented:

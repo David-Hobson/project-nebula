@@ -17,7 +17,7 @@ public class Nebulite : MonoBehaviour
         {
             // Set this instance as the instance reference.
             instance = this;
-            total = 100; //to be later changed to allow save/load
+            total = 0; //to be later changed to allow save/load
             level = 0; //nebulite aquired starts at zero
         }
         else if (instance != this)

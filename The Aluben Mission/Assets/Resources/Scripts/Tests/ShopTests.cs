@@ -63,7 +63,7 @@ public class ShopTests
     {
         var shop = new GameObject().AddComponent<Shop>();
         int[] index = { 0, 0 };
-        Weapon weapon = new Weapon(100, 1, index, true);
+        Weapon weapon = new Weapon("w1", 100, 1, index, true);
         shop.AddWeapon(weapon);
         shop.PurchaseWeapon(0);
         Assert.AreEqual(shop.inventory.weapons[0].aquired, true);
@@ -74,7 +74,7 @@ public class ShopTests
     {
         var shop = new GameObject().AddComponent<Shop>();
         int[] index = { 0, 0 };
-        Weapon weapon = new Weapon(0, 1, index, true);
+        Weapon weapon = new Weapon("w1", 0, 1, index, true);
         shop.AddWeapon(weapon);
         shop.PurchaseWeapon(0);
         shop.PurchaseWeapon(0);

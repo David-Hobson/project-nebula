@@ -56,7 +56,7 @@ public class Inventory : MonoBehaviour {
     // Equip weapon from the inventory
     public void EquipWeapon(int index) 
     {
-        weapon[index].EquipWeapon();
+        weapons[index].EquipWeapon();
     }
 
 }
