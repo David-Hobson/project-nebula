@@ -64,7 +64,7 @@ public class Player1Controller : MonoBehaviour {
         }
 
         if (Input.GetButtonDown("P1Opt")) {
-            Pause();
+            //Pause();
         }
 
 

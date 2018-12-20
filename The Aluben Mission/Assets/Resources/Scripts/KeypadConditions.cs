@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class KeypadConditions : MonoBehaviour {
 
@@ -54,7 +55,8 @@ public class KeypadConditions : MonoBehaviour {
 			if (keypadConditionsMet == true) {
 				keypadReady.enabled = true;
 				doorBot.GetComponent<SpriteRenderer> ().enabled = false; 
-				doorTop.GetComponent<SpriteRenderer> ().enabled = false; 
+				doorTop.GetComponent<SpriteRenderer> ().enabled = false;
+                SceneManager.LoadScene(2);
 			} else {
 				keypadNotReady.enabled = true;
 			}

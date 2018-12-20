@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Boss : MonoBehaviour {
 
@@ -15,7 +16,7 @@ public class Boss : MonoBehaviour {
     public float awareDistance = 1.5f; //the enemy will starts to chase players
     private float retreatRatio = 1.5f;
 
-    private int health = 800;
+    private int health = 2000;
     private float damaged;
     private float shootingDamage;
 
@@ -198,6 +199,7 @@ public class Boss : MonoBehaviour {
         if (health <= 0) {
             Destroy(gameObject);
             DropItem();
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -214,6 +216,10 @@ public class Boss : MonoBehaviour {
             EnemyShooting(vect);
 
         }
+    }
+
+    public float GetHealth(){
+        return health;
     }
 
 }

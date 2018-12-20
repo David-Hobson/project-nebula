@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
     
 public class CameraControl : MonoBehaviour {
 
@@ -14,11 +15,14 @@ public class CameraControl : MonoBehaviour {
 	}
 	
 	void Update () {
-
+        if (player1 == null && player2 == null) {
+            SceneManager.LoadScene(3);
+        }
 
         var vect = CalculateCameraPosition();
 
         transform.position = new Vector3(vect.x, vect.y, -1);
+
 	}
 
     //REQUIREMENT: F-53

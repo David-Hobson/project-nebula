@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         timeBtwShots = startTimeBtwshots;
+        Physics2D.IgnoreCollision(GameObject.Find("Main Camera").GetComponent<EdgeCollider2D>(), this.GetComponent<Collider2D>());
     }
 
     /*Set direction of projectile
@@ -151,9 +152,13 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.name == "Player 1")
         {
             player.GetComponent<Player1Controller>().Damage(10);
+        }
+
+        if(collision.gameObject.name == "Player 2"){
+            player.GetComponent<Player2Controller>().Damage(10);
         }
     }
     //Requirement: F-10, F-11, F-15

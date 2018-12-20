@@ -63,9 +63,9 @@ public class Player2Controller : MonoBehaviour {
 
         }
 
-        if (Input.GetButtonDown("P2Opt")) {
-            Pause();
-        }
+        //if (Input.GetButtonDown("P2Opt")) {
+        //    Pause();
+        //}
 
 
     }
