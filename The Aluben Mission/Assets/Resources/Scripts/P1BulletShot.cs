@@ -10,7 +10,13 @@ public class P1BulletShot : MonoBehaviour {
         var xr = Input.GetAxis("P1RSX");
         var yr = Input.GetAxis("P1RSY");
 
-        CalculateBulletMovement(new Vector3(xr, yr, 0));
+
+        if(Mathf.Abs(xr) < 0.1 && Mathf.Abs(yr) < 0.1){
+            CalculateBulletMovement(new Vector3(1, 0, 0));
+        } else{
+            CalculateBulletMovement(new Vector3(xr, yr, 0));
+        }
+
 
     }
 

@@ -137,6 +137,8 @@ public class Enemy : MonoBehaviour
             MovementAnimation(vect);
             TakeDamagedAnimation();
             EnemyShooting(vect);
+        }else{
+            player = GameObject.Find("Player 2").transform;
         }
     }
 
