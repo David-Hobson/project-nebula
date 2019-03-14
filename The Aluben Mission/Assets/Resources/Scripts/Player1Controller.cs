@@ -17,11 +17,11 @@ public class Player1Controller : MonoBehaviour {
 
     public Canvas pauseCanvas;
 
-    private int health;
-    private int maxHealth;
+    private float health;
+    private float maxHealth;
 
-    private int armour;
-    private int maxArmour;
+    private float armour;
+    private float maxArmour;
     private float speed;
 
 
@@ -64,7 +64,7 @@ public class Player1Controller : MonoBehaviour {
         }
 
         if (Input.GetButtonDown("P1Opt")) {
-            Pause();
+            //Pause();
         }
 
 
@@ -177,7 +177,7 @@ public class Player1Controller : MonoBehaviour {
 
     //REQUIREMENT: F-50
     //Return the current armour amount
-    public int GetArmour(){
+    public float GetArmour(){
         return armour;
     }
 
@@ -189,13 +189,13 @@ public class Player1Controller : MonoBehaviour {
 
     //REQUIREMENT: F-50
     //Return the maximum armour count
-    public int GetMaxArmour(){
+    public float GetMaxArmour(){
         return maxArmour;
     }
 
     //REQUIREMENT: F-33
     //Return the maximum health amount
-    public int GetMaxHealth(){
+    public float GetMaxHealth(){
         return maxHealth;
     }
 
@@ -259,7 +259,7 @@ public class Player1Controller : MonoBehaviour {
 
     //REQUIRMENT: F-33
     //Return the current health of the player
-    public int GetHealth(){
+    public float GetHealth(){
         return this.health;
     }
 

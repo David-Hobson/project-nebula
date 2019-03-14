@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
 
     public Transform player; //Player reference
     public GameObject crystalPrefab; // projectile prefab
@@ -10,7 +11,7 @@ public class Enemy : MonoBehaviour {
     public float stoppingDistance; //the ranged enemy will stop at stopping distance
     public float retreatDistance; //the ranged enemy will retreat if the distance is smaller than retreat distance
     public float awareDistance = 1.5f; //the enemy will starts to chase players
-     
+
     public int health = 100;    //Enemy health
     private float damaged;  //damage animation
     private float retreatRatio = 0.6f; //retreat ratio of normal speed
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour {
     void Start()
     {
         timeBtwShots = startTimeBtwshots;
+        Physics2D.IgnoreCollision(GameObject.Find("Main Camera").GetComponent<EdgeCollider2D>(), this.GetComponent<Collider2D>());
     }
 
     /*Set direction of projectile
@@ -65,18 +67,21 @@ public class Enemy : MonoBehaviour {
 
     /*
      * Instantiate projectile
-     */ 
-    public void EnemyShooting()
+     */
+    public void EnemyShooting(Vector3 vect)
     {
-        if (timeBtwShots <= 0)
+        if (vect.magnitude <= awareDistance)
         {
-            
-            Instantiate(projectile, transform.position, Quaternion.Euler(SetDirection()));
-            timeBtwShots = startTimeBtwshots;
-        }
-        else
-        {
-            timeBtwShots -= Time.deltaTime;
+            if (timeBtwShots <= 0)
+            {
+
+                Instantiate(projectile, transform.position, Quaternion.Euler(SetDirection()));
+                timeBtwShots = startTimeBtwshots;
+            }
+            else
+            {
+                timeBtwShots -= Time.deltaTime;
+            }
         }
     }
 
@@ -96,17 +101,17 @@ public class Enemy : MonoBehaviour {
                     this.GetComponent<Rigidbody2D>().velocity = vect*0.5f;
                 }
                 */
-             }
-            else if(vect.magnitude < retreatDistance)
+            }
+            else if (vect.magnitude < retreatDistance)
             {
-                transform.position = Vector2.MoveTowards(transform.position, player.position, -speed * Time.deltaTime * 0.1f*retreatRatio);
+                transform.position = Vector2.MoveTowards(transform.position, player.position, -speed * Time.deltaTime * 0.1f * retreatRatio);
             }
             //EnemyShooting();
         }
     }
-    
+
     //Update the enemy moving animation
- 
+
     public void MovementAnimation(Vector3 vect)
     {
         this.GetComponent<Animator>().SetFloat("EnemySpeedX", vect.x);
@@ -121,15 +126,19 @@ public class Enemy : MonoBehaviour {
         damaged += 0.1f;
     }
 
-	// Update is called once per frame
-    void FixedUpdate () {
-        if(player != null){
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (player != null)
+        {
             Vector3 vect = player.position - transform.position;
             Movement(vect);
 
             MovementAnimation(vect);
             TakeDamagedAnimation();
-            EnemyShooting();
+            EnemyShooting(vect);
+        }else{
+            player = GameObject.Find("Player 2").transform;
         }
     }
 
@@ -143,17 +152,31 @@ public class Enemy : MonoBehaviour {
         go.GetComponent<DroppedItem>().Target = player;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Player 1")
+        {
+            player.GetComponent<Player1Controller>().Damage(10);
+        }
+
+        if(collision.gameObject.name == "Player 2"){
+            player.GetComponent<Player2Controller>().Damage(10);
+        }
+    }
     //Requirement: F-10, F-11, F-15
     //Collision function between the enemy and the player's projectile
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.tag == "Bullet"){
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Bullet")
+        {
             health -= 25;
             Destroy(other.gameObject);
             damaged = 0;
         }
 
 
-        if(health <= 0){
+        if (health <= 0)
+        {
             Destroy(gameObject);
             DropItem();
         }
