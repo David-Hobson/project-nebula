@@ -37,6 +37,7 @@ public class Shop : MonoBehaviour {
     public void ButtonText(string button, int tier)
     {
         GameObject.Find(button).GetComponentInChildren<Text>().text = "$" + Cost(tier+1);
+        GameObject.Find(button).transform.GetChild(2).GetComponent<Text>().text = "Tier: " + tier;
     }
 
     /* TODO change Sprite
@@ -68,9 +69,9 @@ public class Shop : MonoBehaviour {
         if (cost <= cash)
         {
             nebulite.RemoveNebulite(cost);
-            P1Upgrades[index] += 1;
-            PlayerPrefs.SetInt(upgradeNames[index], tier);
-            ButtonText(upgradeNames[index], tier);
+            P2Upgrades[index] += 1;
+            PlayerPrefs.SetInt(upgradeNames[index+3], tier);
+            ButtonText(upgradeNames[index+3], tier);
             purchase.Play();
         }
         else
