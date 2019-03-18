@@ -33,4 +33,12 @@ public class SelectOnInput : MonoBehaviour
     {
         buttonSelected = false;
     }
+
+    //private void DeselectClickedButton(GameObject button)
+    //{
+    //    if (EventSystem.current.currentSelectedGameObject == button)
+    //    {
+    //        EventSystem.current.SetSelectedGameObject(null);
+    //    }
+    //}
 }
