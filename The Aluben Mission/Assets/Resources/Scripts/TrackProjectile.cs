@@ -5,8 +5,8 @@ using UnityEngine;
 public class TrackProjectile : MonoBehaviour {
 
     public float speed; //the speed of the projectile
-    private Transform player; // reference of player
-    private Transform player2;
+    private GameObject player1; // reference of player
+    private GameObject player2;
 
 
     private float trackTime = 2.5f;
@@ -16,13 +16,44 @@ public class TrackProjectile : MonoBehaviour {
     */
     void Start()
     {
-        player = GameObject.Find("Player 1").transform;
-        player2 = GameObject.Find("Player 2").transform;
+        player1 = GameObject.Find("Player 1");
+        player2 = GameObject.Find("Player 2");
+    }
+
+    public GameObject Target()
+    {
+
+
+        if (player1 == null && player2 == null)
+        {
+            return null;
+        }
+        else if (player1 == null)
+        {
+            return player2;
+        }
+        else if (player2 == null)
+        {
+            return player1;
+        }
+        else
+        {
+            float rangePlayer1 = Vector3.Distance(transform.position, player1.transform.position);
+            float rangePlayer2 = Vector3.Distance(transform.position, player2.transform.position);
+            if (rangePlayer1 < rangePlayer2)
+            {
+                return player1;
+            }
+            else
+            {
+                return player2;
+            }
+        }
     }
 
     public void FaceDirection()
     {
-        if (transform.position.x <= player.position.x)
+        if (transform.position.x <= Target().transform.position.x)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
@@ -40,7 +71,7 @@ public class TrackProjectile : MonoBehaviour {
         FaceDirection();
         if (trackTime >0)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, Target().transform.position, speed * Time.deltaTime);
             trackTime -= Time.deltaTime;
         }
         else
@@ -56,11 +87,19 @@ public class TrackProjectile : MonoBehaviour {
      */
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.name == "Player 1")
         {
-            player.GetComponent<Player1Controller>().Damage(5);
+            player1.GetComponent<Player1Controller>().Damage(10);
             Destroy(gameObject);
 
         }
+
+        if (other.gameObject.name == "Player 2")
+        {
+            player2.GetComponent<Player2Controller>().Damage(10);
+            Destroy(gameObject);
+
+        }
+
     }
 }

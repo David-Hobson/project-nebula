@@ -24,8 +24,6 @@ public class Player2Controller : MonoBehaviour {
     private float maxArmour;
     private float speed;
 
-
-
     public void Start() {
         this.Construct();
     }
@@ -56,6 +54,7 @@ public class Player2Controller : MonoBehaviour {
             this.DirectionAnimation(Input.GetAxis("P2RSX"), Input.GetAxis("P2RSY"));
             this.MovementAnimation(Input.GetAxis("P2LSX"), Input.GetAxis("P2LSY"), Input.GetAxis("P2RSX"), Input.GetAxis("P2RSY"));
             this.WeaponDirection(Input.GetAxis("P2RSX"), Input.GetAxis("P2RSY"));
+
 
             if (Input.GetButtonDown("P2R1")) {
                 Fire();

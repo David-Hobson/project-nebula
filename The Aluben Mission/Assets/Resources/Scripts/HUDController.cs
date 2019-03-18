@@ -57,7 +57,7 @@ public class HUDController : MonoBehaviour {
     void DisplayBossHealth() {
         var bossStatus = this.transform.GetChild(2);
         if (boss != null) {
-            var currentHealth = boss.GetComponent<Boss>().GetHealth();
+            var currentHealth = boss.GetComponent<RobotBoss>().GetHealth();
             var maxHealth = 2000.0f;
             bossStatus.transform.GetChild(0).GetComponent<Slider>().value = currentHealth / maxHealth;
             bossStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;

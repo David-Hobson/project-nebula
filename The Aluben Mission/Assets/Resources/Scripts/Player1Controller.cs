@@ -24,8 +24,6 @@ public class Player1Controller : MonoBehaviour {
     private float maxArmour;
     private float speed;
 
-
-
     public void Start() {
         this.Construct();
     }
