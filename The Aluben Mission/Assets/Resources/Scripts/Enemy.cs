@@ -152,17 +152,6 @@ public class Enemy : MonoBehaviour
         go.GetComponent<DroppedItem>().Target = player;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.name == "Player 1")
-        {
-            player.GetComponent<Player1Controller>().Damage(10);
-        }
-
-        if(collision.gameObject.name == "Player 2"){
-            player.GetComponent<Player2Controller>().Damage(10);
-        }
-    }
     //Requirement: F-10, F-11, F-15
     //Collision function between the enemy and the player's projectile
     private void OnTriggerEnter2D(Collider2D other)

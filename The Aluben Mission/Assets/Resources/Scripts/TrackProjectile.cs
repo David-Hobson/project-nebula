@@ -51,16 +51,4 @@ public class TrackProjectile : MonoBehaviour {
 
     }
 
-    /*Requirement: F-10, F-11
-     * Collision function between player and the projectile
-     */
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            player.GetComponent<Player1Controller>().Damage(5);
-            Destroy(gameObject);
-
-        }
-    }
 }

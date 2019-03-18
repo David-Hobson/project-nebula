@@ -43,20 +43,4 @@ public class EnemyProjectile : MonoBehaviour
      */
 
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.name == "Player 1")
-        {
-            player.GetComponent<Player1Controller>().Damage(10);
-            Destroy(gameObject);
-
-        }
-
-        if (other.gameObject.name == "Player 2") {
-            player.GetComponent<Player2Controller>().Damage(10);
-            Destroy(gameObject);
-
-        }
-
-    }
 }
