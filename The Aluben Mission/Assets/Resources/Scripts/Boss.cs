@@ -97,7 +97,7 @@ public class Boss : MonoBehaviour {
     }
 
     public void DamagePlayer(int dmg) {
-        player.GetComponent<Player1Controller>().Damage(dmg);
+        //player.GetComponent<Player1Controller>().Damage(dmg);
     }
 
 
@@ -172,12 +172,6 @@ public class Boss : MonoBehaviour {
         for (int i = 0; i < 5; i++) {
             var go = Instantiate(crystalPrefab, transform.position + new Vector3(Random.Range(0, 0.5f), Random.Range(0, 0.5f)), Quaternion.identity);
             go.GetComponent<DroppedItem>().Target = player;
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.tag == "Enemy") {
-            player.GetComponent<Player1Controller>().Damage(10);
         }
     }
 
