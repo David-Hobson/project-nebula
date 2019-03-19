@@ -37,6 +37,8 @@ public class Player1Controller : MonoBehaviour {
 
     private bool interaction;
 
+    private bool inDialogue;
+
     public void Start() {
         this.Construct();
     }
@@ -63,12 +65,14 @@ public class Player1Controller : MonoBehaviour {
         isInvincible = false;
         invicibleTime = 0;
 
+        inDialogue = false;
+
     }
 
     private void Update() {
 
         //Check if the game is pasused
-        if (!paused) {
+        if (!inDialogue) {
 
             //Send controller information to various methods for movement and animation
             this.CalculateMovement(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"));
@@ -97,12 +101,12 @@ public class Player1Controller : MonoBehaviour {
                 Fire();
             }
 
-            if(Input.GetButtonDown("P1X")){
-                Debug.Log("PRESSED X");
-                interaction = true;
-            }else{
-                interaction = false;
-            }
+        }
+
+        if (Input.GetButtonDown("P1X")) {
+            interaction = true;
+        } else {
+            interaction = false;
         }
 
         if (Input.GetButtonDown("P1Opt")) {
@@ -267,6 +271,10 @@ public class Player1Controller : MonoBehaviour {
         return maxHealth;
     }
 
+    public void SetSpeed(float speed){
+        this.speed = speed;
+    }
+
 
     //REQUIREMENT: F-17, F-50, F-51
     //Upgrade the health, armour, or speed based on the type of upgrade
@@ -407,6 +415,14 @@ public class Player1Controller : MonoBehaviour {
 
     public bool GetInteraction(){
         return this.interaction;
+    }
+
+    public bool GetInDialogue(){
+        return inDialogue;
+    }
+
+    public void SetInDialogue(bool d){
+        inDialogue = d;
     }
 
 }

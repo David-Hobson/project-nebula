@@ -8,6 +8,8 @@ public class DialogueManager : MonoBehaviour {
     public Text nameText;
     public Text dialogueText;
 
+    public bool finishedDialogue;
+
     public Animator animator;
 
     private Queue<string> sentences;
@@ -25,6 +27,8 @@ public class DialogueManager : MonoBehaviour {
         nameText.text = dialogue.name;
 
         sentences.Clear();
+
+        this.finishedDialogue = false;
 
         foreach (string sentence in dialogue.sentences )
         {
@@ -60,5 +64,10 @@ public class DialogueManager : MonoBehaviour {
     void EndDialogue()
     {
         animator.SetBool("IsOpen", false);
+        this.finishedDialogue = true;
+    }
+
+    public bool IsFinished(){
+        return this.finishedDialogue;
     }
 }
