@@ -55,7 +55,7 @@ public class Mage : MonoBehaviour
         health = 2000;
         collisionDMG = 10;
         magicDMG = 20;
-        awareDistance = 2.5f;
+        awareDistance = 5f;
 
         startTimeBtwMagics = 10.0f;
         timeBtwMagics = startTimeBtwMagics;
