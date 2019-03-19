@@ -27,6 +27,7 @@ public class Player1Controller : MonoBehaviour {
     private Vector3 knockbackDirection;
     private float knockBackTime;
     private bool isKnockedBack;
+	private bool canFire;
 
     private float damagedColor;
 
@@ -67,6 +68,7 @@ public class Player1Controller : MonoBehaviour {
 
         inDialogue = false;
 
+		canFire = true;
     }
 
     private void Update() {
@@ -98,7 +100,9 @@ public class Player1Controller : MonoBehaviour {
             this.CalculateInvincibility();
 
             if (Input.GetButtonDown("P1R1") && isAiming) {
-                Fire();
+                if (Input.GetButtonDown("P1R1") && canFire) {
+                    Fire();
+                }
             }
 
         }
@@ -425,4 +429,11 @@ public class Player1Controller : MonoBehaviour {
         inDialogue = d;
     }
 
+	public void setSpeed(float increment){
+		speed = increment;
+	}
+
+	public void willFire(bool able){
+		canFire = able;
+	}
 }

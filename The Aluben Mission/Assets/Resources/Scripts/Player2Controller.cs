@@ -24,6 +24,9 @@ public class Player2Controller : MonoBehaviour {
     private float maxArmour;
     private float speed;
 
+	private bool canFire;
+
+
     public void Start() {
         this.Construct();
     }
@@ -42,6 +45,7 @@ public class Player2Controller : MonoBehaviour {
         armour = 100;
         maxArmour = 100;
         speed = 1;
+		canFire = true;
     }
 
     private void Update() {
@@ -57,7 +61,9 @@ public class Player2Controller : MonoBehaviour {
 
 
             if (Input.GetButtonDown("P2R1")) {
-                Fire();
+                if (Input.GetButtonDown("P2R1") && canFire) {
+                    Fire();
+                }
             }
 
         }
@@ -311,4 +317,11 @@ public class Player2Controller : MonoBehaviour {
         //currentWeapon = w;
     }
 
+	public void setSpeed(float increment){
+		speed = increment;
+	}
+
+	public void willFire(bool able){
+		canFire = able;
+	}
 }
