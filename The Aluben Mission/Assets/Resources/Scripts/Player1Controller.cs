@@ -24,6 +24,7 @@ public class Player1Controller : MonoBehaviour {
     private float maxArmour;
     private float speed;
 
+	private bool canFire;
 
 
     public void Start() {
@@ -44,6 +45,7 @@ public class Player1Controller : MonoBehaviour {
         armour = 100;
         maxArmour = 100;
         speed = 1;
+		canFire = true;
     }
 
     private void Update() {
@@ -57,7 +59,7 @@ public class Player1Controller : MonoBehaviour {
             this.MovementAnimation(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"), Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
             this.WeaponDirection(Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
 
-            if (Input.GetButtonDown("P1R1")) {
+			if (Input.GetButtonDown("P1R1") && canFire) {
                 Fire();
             }
 
@@ -312,4 +314,11 @@ public class Player1Controller : MonoBehaviour {
         //currentWeapon = w;
     }
 
+	public void setSpeed(float increment){
+		speed = increment;
+	}
+
+	public void willFire(bool able){
+		canFire = able;
+	}
 }
