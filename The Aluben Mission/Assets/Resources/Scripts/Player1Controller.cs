@@ -24,6 +24,21 @@ public class Player1Controller : MonoBehaviour {
     private float maxArmour;
     private float speed;
 
+    private Vector3 knockbackDirection;
+    private float knockBackTime;
+    private bool isKnockedBack;
+
+    private float damagedColor;
+
+    private bool isInvincible;
+    private float invicibleTime;
+
+    private bool isAiming;
+
+    private bool interaction;
+
+    private bool inDialogue;
+
     public void Start() {
         this.Construct();
     }
@@ -42,23 +57,56 @@ public class Player1Controller : MonoBehaviour {
         armour = 100;
         maxArmour = 100;
         speed = 1;
+
+        knockbackDirection = new Vector3(0,0,0);
+        knockBackTime = 0;
+        isKnockedBack = false;
+
+        isInvincible = false;
+        invicibleTime = 0;
+
+        inDialogue = false;
+
     }
 
     private void Update() {
 
         //Check if the game is pasused
-        if (!paused) {
+        if (!inDialogue) {
 
             //Send controller information to various methods for movement and animation
             this.CalculateMovement(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"));
             this.DirectionAnimation(Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
             this.MovementAnimation(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"), Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
-            this.WeaponDirection(Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
 
-            if (Input.GetButtonDown("P1R1")) {
+
+            if(Mathf.Abs(Input.GetAxis("P1RSX")) > 0.5 || Mathf.Abs(Input.GetAxis("P1RSY")) > 0.5){
+                this.WeaponDirection(Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
+                currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 1f);
+                isAiming = true;
+            }else if(Mathf.Abs(Input.GetAxis("P1LSX")) > 0.5 || Mathf.Abs(Input.GetAxis("P1LSY")) > 0.5){
+                this.WeaponDirection(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"));
+                currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 1f);
+                isAiming = true;
+            }else {
+                currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+                isAiming = false;
+            }
+
+
+            this.CalculateKnockback();
+            this.CalculateInvincibility();
+
+            if (Input.GetButtonDown("P1R1") && isAiming) {
                 Fire();
             }
 
+        }
+
+        if (Input.GetButtonDown("P1X")) {
+            interaction = true;
+        } else {
+            interaction = false;
         }
 
         if (Input.GetButtonDown("P1Opt")) {
@@ -71,13 +119,39 @@ public class Player1Controller : MonoBehaviour {
     //REQUIREMENT: F-8, F-48
     //Move the player object based off of a X and Y values
     public void CalculateMovement(float x, float y){
-        this.GetComponent<Rigidbody2D>().velocity = new Vector3(x, y, 0);
+        if(!isKnockedBack){
+            this.GetComponent<Rigidbody2D>().velocity = new Vector3(x, y, 0);
+        }
+    }
+
+    public void CalculateKnockback(){
+        if (isKnockedBack) {
+            this.GetComponent<Rigidbody2D>().velocity = knockbackDirection * 1.5f;
+            knockBackTime += Time.deltaTime;
+            if (knockBackTime >= 0.3f) {
+                isKnockedBack = false;
+            }
+        }
+    }
+
+    public void CalculateInvincibility(){
+        if (isInvincible) {
+            var spriteColor = this.GetComponent<SpriteRenderer>().color;
+            this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 0.5f);
+            invicibleTime += Time.deltaTime;
+            if (invicibleTime >= 2f) {
+                isInvincible = false;
+                this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 1f);
+            }
+        }
     }
 
     //Rotate the equipped weapon based off of X and Y values
     public void WeaponDirection(float x, float y){
         var vect = new Vector2(x, y);
         float angle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
+
+
 
         //Change the sprite order in order to create depth for when the gun is behind the player
         if(y > 0) {
@@ -197,6 +271,10 @@ public class Player1Controller : MonoBehaviour {
         return maxHealth;
     }
 
+    public void SetSpeed(float speed){
+        this.speed = speed;
+    }
+
 
     //REQUIREMENT: F-17, F-50, F-51
     //Upgrade the health, armour, or speed based on the type of upgrade
@@ -215,10 +293,17 @@ public class Player1Controller : MonoBehaviour {
     //REQUIREMENT: F-13, F-33
     //Damage player based on integer amount
     //When player's health reaches 0, make a copy destroy the current object
-    public GameObject Damage(int damageAmount){
+    public GameObject Damage(int damageAmount, Vector3 damageDirection){
         health -= damageAmount;
 
-        if(health <= 0){
+        isKnockedBack = true;
+        knockBackTime = 0;
+        knockbackDirection = damageDirection.normalized;
+
+        isInvincible = true;
+        invicibleTime = 0;
+
+        if (health <= 0){
             this.enabled = false;
             //Duplication needed for respawning
             var duplicate = Instantiate(this.gameObject);
@@ -308,6 +393,36 @@ public class Player1Controller : MonoBehaviour {
         //TODO
 
         //currentWeapon = w;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if(!isInvincible){
+            if (collision.gameObject.tag == "Enemy") {
+                this.Damage(10, transform.position - collision.transform.position);
+
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision) {
+        if (!isInvincible) {
+            if (collision.gameObject.tag == "Enemy") {
+                this.Damage(10, transform.position - collision.transform.position);
+
+            }
+        }
+    }
+
+    public bool GetInteraction(){
+        return this.interaction;
+    }
+
+    public bool GetInDialogue(){
+        return inDialogue;
+    }
+
+    public void SetInDialogue(bool d){
+        inDialogue = d;
     }
 
 }

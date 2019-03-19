@@ -29,7 +29,7 @@ public class PlayerTests {
     [UnityTest]
     public IEnumerator CheckPlayerIsDead() {
         
-        player.GetComponent<Player1Controller>().Damage(150);
+        player.GetComponent<Player1Controller>().Damage(150, new Vector3(1,1,0));
         Assert.True(player.GetComponent<Player1Controller>().GetHealth() <= 0);
         yield return null;
     }
@@ -40,7 +40,7 @@ public class PlayerTests {
         Assert.NotNull(GameObject.FindWithTag("Player"));
 
 
-        var newPlayer = player.GetComponent<Player1Controller>().Damage(150);
+        var newPlayer = player.GetComponent<Player1Controller>().Damage(150, new Vector3(1, 1, 0));
         if(newPlayer != null){
             player = newPlayer;
         }
@@ -151,7 +151,7 @@ public class PlayerTests {
 
         var currentHealth = player.GetComponent<Player1Controller>().GetHealth();
 
-        player.GetComponent<Player1Controller>().Damage(10);
+        player.GetComponent<Player1Controller>().Damage(10, new Vector3(1, 1, 0));
         yield return new WaitForSeconds(1);
 
         Assert.True(currentHealth >= player.GetComponent<Player1Controller>().GetHealth());
@@ -175,7 +175,7 @@ public class PlayerTests {
 
         var currentHealth = player.GetComponent<Player1Controller>().GetHealth();
 
-        player.GetComponent<Player1Controller>().Damage(10);
+        player.GetComponent<Player1Controller>().Damage(10, new Vector3(1, 1, 0));
         player.GetComponent<Player1Controller>().Heal(10);
         yield return new WaitForSeconds(1);
           

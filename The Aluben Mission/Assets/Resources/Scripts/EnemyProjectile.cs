@@ -64,25 +64,4 @@ public class EnemyProjectile : MonoBehaviour
         Destroy(gameObject, 1);
 
     }
-
-    /*Requirement: F-10, F-11
-     * Collision function between player and the projectile
-     */
-
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.name == "Player 1")
-        {
-            player1.GetComponent<Player1Controller>().Damage(10);
-            Destroy(gameObject);
-
-        }
-
-        if (other.gameObject.name == "Player 2") {
-            player2.GetComponent<Player2Controller>().Damage(10);
-            Destroy(gameObject);
-
-        }
-    }
 }
