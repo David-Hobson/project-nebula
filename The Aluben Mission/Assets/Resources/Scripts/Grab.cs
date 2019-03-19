@@ -45,15 +45,19 @@ public class Grab : MonoBehaviour {
 			//P1
 			if (isHolding1) {
 				this.transform.position = player1.transform.position;
-				P1.setSpeed (0.25f);
-				P1.willFire (false);
+				player1.GetComponent<Player1Controller> ().setSpeed (0.25f);
+				player1.GetComponent<Player1Controller> ().willFire (false);
+				//P1.setSpeed (0.25f);
+				//P1.willFire (false);
 			
 			} 
 			//P2
 			else if (isHolding2) {
 				this.transform.position = player2.transform.position;
-				P2.setSpeed (0.25f);
-				P2.willFire (false);
+				player2.GetComponent<Player2Controller> ().setSpeed (0.25f);
+				player2.GetComponent<Player2Controller> ().willFire (false);
+				//P2.setSpeed (0.25f);
+				//P2.willFire (false);
 			}
 		}
 
@@ -65,15 +69,19 @@ public class Grab : MonoBehaviour {
 
 			//If player1 presses X while colliding then pickup the object
 			if (Input.GetButtonDown ("P1X")) {
-				P1.setSpeed (1);
-				P1.willFire (true);
+				player1.GetComponent<Player1Controller> ().setSpeed (1);
+				player1.GetComponent<Player1Controller> ().willFire (true);
+				//P1.setSpeed (1);
+				//P1.willFire (true);
 				isHolding1 = !isHolding1;
 
 			} 
 			//If player2 presses X while colliding then pickup the object
 			else if (Input.GetButtonDown ("P2X")) {
-				P2.setSpeed (1);
-				P2.willFire (true);
+				player2.GetComponent<Player2Controller> ().setSpeed (1);
+				player2.GetComponent<Player2Controller> ().willFire (true);
+				//P2.setSpeed (1);
+				//P2.willFire (true);
 				isHolding2 = !isHolding2;
 			}
 
