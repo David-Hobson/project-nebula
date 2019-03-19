@@ -257,27 +257,6 @@ public class Mage : MonoBehaviour
             DropItem();
         }
 
-        if (other.gameObject.name == "Player 1")
-        {
-            player1.GetComponent<Player1Controller>().Damage(collisionDMG);
-        }
-
-        if (other.gameObject.name == "Player 2")
-        {
-            player2.GetComponent<Player2Controller>().Damage(collisionDMG);
-        }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision) //no dmg?
-    {
-        if (collision.gameObject.name == "Player 1")
-        {
-            player1.GetComponent<Player1Controller>().Damage(collisionDMG);
-        }
-
-        if (collision.gameObject.name == "Player 2")
-        {
-            player2.GetComponent<Player2Controller>().Damage(collisionDMG);
-        }
-    }
 }

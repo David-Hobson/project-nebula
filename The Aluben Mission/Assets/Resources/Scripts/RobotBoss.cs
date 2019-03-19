@@ -117,7 +117,7 @@ public class RobotBoss : Demon {
 
     public void DamagePlayer(int dmg)
     {
-        Target().transform.GetComponent<Player1Controller>().Damage(dmg);
+        //Target().transform.GetComponent<Player1Controller>().Damage(dmg);
     }
 
     public void TrackShooting(Vector3 vect)

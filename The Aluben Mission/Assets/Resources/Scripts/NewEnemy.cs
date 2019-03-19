@@ -128,19 +128,6 @@ public class NewEnemy : MonoBehaviour {
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.name == "Player 1")
-        {
-            player1.GetComponent<Player1Controller>().Damage(enemyDmg);
-        }
-
-        if (collision.gameObject.name == "Player 2")
-        {
-            player2.GetComponent<Player2Controller>().Damage(enemyDmg);
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Bullet")

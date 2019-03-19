@@ -61,20 +61,5 @@ public class Tentacle : MonoBehaviour {
         }
     }
     
-    
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.name == "Player 1")
-        {
-            player1.GetComponent<Player1Controller>().Damage(5);
-        }
-
-        if (other.gameObject.name == "Player 2")
-        {
-            player2.GetComponent<Player2Controller>().Damage(5);
-        }
-
-    }
-    
 
 }
