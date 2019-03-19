@@ -27,7 +27,7 @@ public class Player1Controller : MonoBehaviour {
     private Vector3 knockbackDirection;
     private float knockBackTime;
     private bool isKnockedBack;
-	private bool canFire;
+	private bool isHolding;
 
     private float damagedColor;
 
@@ -68,7 +68,7 @@ public class Player1Controller : MonoBehaviour {
 
         inDialogue = false;
 
-		canFire = true;
+		isHolding = false;
     }
 
     private void Update() {
@@ -100,7 +100,7 @@ public class Player1Controller : MonoBehaviour {
             this.CalculateInvincibility();
 
             if (Input.GetButtonDown("P1R1") && isAiming) {
-                if (Input.GetButtonDown("P1R1") && canFire) {
+                if (Input.GetButtonDown("P1R1") && !isHolding) {
                     Fire();
                 }
             }
@@ -124,7 +124,7 @@ public class Player1Controller : MonoBehaviour {
     //Move the player object based off of a X and Y values
     public void CalculateMovement(float x, float y){
         if(!isKnockedBack){
-            this.GetComponent<Rigidbody2D>().velocity = new Vector3(x, y, 0);
+            this.GetComponent<Rigidbody2D>().velocity = new Vector3(x, y, 0) * speed;
         }
     }
 
@@ -307,6 +307,9 @@ public class Player1Controller : MonoBehaviour {
         isInvincible = true;
         invicibleTime = 0;
 
+        isHolding = false;
+
+
         if (health <= 0){
             this.enabled = false;
             //Duplication needed for respawning
@@ -406,6 +409,11 @@ public class Player1Controller : MonoBehaviour {
 
             }
         }
+
+        if(collision.gameObject.tag == "HealthPack"){
+            this.Heal(20);
+            Destroy(collision.gameObject);
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
@@ -429,11 +437,15 @@ public class Player1Controller : MonoBehaviour {
         inDialogue = d;
     }
 
-	public void setSpeed(float increment){
-		speed = increment;
+	public void SetIsHolding(bool hold){
+		isHolding = hold;
 	}
 
-	public void willFire(bool able){
-		canFire = able;
-	}
+    public bool GetIsHolding(){
+        return isHolding;
+    }
+
+    public void ToggleIsHolding(){
+        isHolding = !isHolding;
+    }
 }

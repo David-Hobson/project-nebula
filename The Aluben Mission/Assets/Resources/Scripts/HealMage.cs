@@ -30,8 +30,14 @@ public class HealMage : MonoBehaviour {
     {
         if (timeBtwHeal <= 0)
         {
-            HealTarget.GetComponent<Mage>().health += 50;
+            if(HealTarget.GetComponent<Mage>().health <= 2000){
+                HealTarget.GetComponent<Mage>().health += 10;
+            }else{
+                HealTarget.GetComponent<Mage>().health = 2000;
+            }
+
             timeBtwHeal = startTimeBtwHeal;
+
         }
         else
         {

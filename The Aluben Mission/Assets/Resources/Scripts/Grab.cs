@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Grab : MonoBehaviour {
 
@@ -36,30 +37,25 @@ public class Grab : MonoBehaviour {
 
 		//freeze relic in place one it has reached it's final destination
 		if (complete) {
-			//textbox for victory when clicking object
-			Debug.Log("Congratulations");
-
+            SceneManager.LoadScene("LoadingScene2");
 		} 
 		//Check which player is holding the relic and prohibit their respective shooting and apply speed debuff
 		else {
 			//P1
-			if (isHolding1) {
+			if (player1.GetComponent<Player1Controller>().GetIsHolding()) {
 				this.transform.position = player1.transform.position;
-				player1.GetComponent<Player1Controller> ().setSpeed (0.25f);
-				player1.GetComponent<Player1Controller> ().willFire (false);
-				//P1.setSpeed (0.25f);
-				//P1.willFire (false);
-			
-			} 
-			//P2
-			else if (isHolding2) {
+				player1.GetComponent<Player1Controller> ().SetSpeed (0.5f);
+            } else{
+                player1.GetComponent<Player1Controller>().SetSpeed(1.0f);
+            } 
+
+		    if (player2.GetComponent<Player2Controller>().GetIsHolding()) {
 				this.transform.position = player2.transform.position;
-				player2.GetComponent<Player2Controller> ().setSpeed (0.25f);
-				player2.GetComponent<Player2Controller> ().willFire (false);
-				//P2.setSpeed (0.25f);
-				//P2.willFire (false);
-			}
-		}
+				player2.GetComponent<Player2Controller> ().SetSpeed (0.5f);
+            } else {
+                player2.GetComponent<Player2Controller>().SetSpeed(1.0f);
+            }
+        }
 
 	}
 
@@ -69,24 +65,17 @@ public class Grab : MonoBehaviour {
 
 			//If player1 presses X while colliding then pickup the object
 			if (Input.GetButtonDown ("P1X")) {
-				player1.GetComponent<Player1Controller> ().setSpeed (1);
-				player1.GetComponent<Player1Controller> ().willFire (true);
-				//P1.setSpeed (1);
-				//P1.willFire (true);
-				isHolding1 = !isHolding1;
+				player1.GetComponent<Player1Controller> ().SetSpeed(1);
+				player1.GetComponent<Player1Controller> ().ToggleIsHolding();
 
 			} 
 			//If player2 presses X while colliding then pickup the object
 			else if (Input.GetButtonDown ("P2X")) {
-				player2.GetComponent<Player2Controller> ().setSpeed (1);
-				player2.GetComponent<Player2Controller> ().willFire (true);
-				//P2.setSpeed (1);
-				//P2.willFire (true);
-				isHolding2 = !isHolding2;
+				player2.GetComponent<Player2Controller> ().SetSpeed(1);
+				player2.GetComponent<Player2Controller> ().SetIsHolding(false);
 			}
 
 		} else if (other.tag == "EnemyBullet" || other.tag == "Enemy") {
-			Debug.Log ("#Cucked");
 			this.transform.position = initalPos;
 		}
 	}
@@ -94,8 +83,8 @@ public class Grab : MonoBehaviour {
 	//Detect when the relic has been placed back into its correct location ugly right now, box collider was being finicky
 	private void completePuzzle(){
 		if(-0.25f <= this.transform.position.x && this.transform.position.x  <= -0.22f && -0.1f <= this.transform.position.y  && this.transform.position.y <= -0.08f && this.transform.position.z == 0){
-			Debug.Log ("finished");
 			complete = true;
+
 		}
 	}
 

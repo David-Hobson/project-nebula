@@ -32,7 +32,7 @@ public class Mage : MonoBehaviour
     bool isAttackFinished;
     private GameObject tentacle;
 
-    private int playerDamage = 25;
+    private int playerDamage = 15;
 
     public float GetHealth()
     {

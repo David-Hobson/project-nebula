@@ -53,7 +53,7 @@ public class NewEnemy : MonoBehaviour {
 
     public virtual void SetEnemyStatus()
     {
-        SetSpeed(7.0f);
+        SetSpeed(3.5f);
         SetHealth(200);
         SetAwareDistance(1.5f);
         SetEnemyDmg(10);
@@ -66,6 +66,7 @@ public class NewEnemy : MonoBehaviour {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
         nebulite = Resources.Load<GameObject>("Prefabs/Crystal");
+        Physics2D.IgnoreCollision(GameObject.Find("Main Camera").GetComponent<EdgeCollider2D>(), this.GetComponent<Collider2D>());
     }
 
     public GameObject Target()

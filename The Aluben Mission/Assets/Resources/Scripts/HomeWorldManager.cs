@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HomeWorldManager : MonoBehaviour {
 
@@ -25,6 +26,10 @@ public class HomeWorldManager : MonoBehaviour {
         if (vect < 1.16f && player1.GetComponent<Player1Controller>().GetInteraction()) {
             if(this.GetComponent<Dialogue>()){
                 this.RunDialogue();
+            }
+
+            if(this.GetComponent<LevelChange>()){
+                SceneManager.LoadScene(this.GetComponent<LevelChange>().GetScene());
             }
         }
 	}

@@ -16,7 +16,7 @@ public class CameraControl : MonoBehaviour {
 	
 	void Update () {
         if (player1 == null && player2 == null) {
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene("GameOver");
         }
 
         var baseCameraPosition = CalculateCameraPosition();

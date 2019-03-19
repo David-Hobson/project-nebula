@@ -13,7 +13,7 @@ public class HUDController : MonoBehaviour {
 	void Start () {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
-        boss = GameObject.Find("Boss");
+        boss = GameObject.Find("ShadowBoss");
 	}
 	
 	// Update is called once per frame
@@ -57,7 +57,7 @@ public class HUDController : MonoBehaviour {
     void DisplayBossHealth() {
         var bossStatus = this.transform.GetChild(2);
         if (boss != null) {
-            var currentHealth = boss.GetComponent<RobotBoss>().GetHealth();
+            var currentHealth = boss.GetComponent<Mage>().GetHealth();
             var maxHealth = 2000.0f;
             bossStatus.transform.GetChild(0).GetComponent<Slider>().value = currentHealth / maxHealth;
             bossStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
