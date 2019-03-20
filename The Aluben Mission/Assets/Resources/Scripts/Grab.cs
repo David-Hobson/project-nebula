@@ -72,7 +72,7 @@ public class Grab : MonoBehaviour {
 			//If player2 presses X while colliding then pickup the object
 			else if (Input.GetButtonDown ("P2X")) {
 				player2.GetComponent<Player2Controller> ().SetSpeed(1);
-				player2.GetComponent<Player2Controller> ().SetIsHolding(false);
+				player2.GetComponent<Player2Controller> ().ToggleIsHolding();
 			}
 
 		} else if (other.tag == "EnemyBullet" || other.tag == "Enemy") {
