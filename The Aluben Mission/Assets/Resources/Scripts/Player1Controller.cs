@@ -11,6 +11,9 @@ public class Player1Controller : MonoBehaviour {
     private GameObject currentWeapon;
     private GameObject muzzleFlash;
 
+    private GameObject energyLink;
+    private bool energized;
+
     private Animator animator;
     private AudioSource audSource;
     private AudioClip shot;
@@ -42,17 +45,21 @@ public class Player1Controller : MonoBehaviour {
 
     public void Start() {
         this.Construct();
+        Physics2D.IgnoreCollision(GameObject.Find("Beam").GetComponent<BoxCollider2D>(), this.GetComponent<BoxCollider2D>());
+
     }
 
     //Construct the Player 1 prefab with the corresponding stats
     public void Construct(){
         animator = this.GetComponent<Animator>();
         audSource = this.GetComponent<AudioSource>();
+
         shot = audSource.clip;
         bullet = Resources.Load<GameObject>("Prefabs/P1Projectile");
         gunPivot = GameObject.Find("P1GunPivot");
         currentWeapon = GameObject.Find("P1Weapon");
         muzzleFlash = Resources.Load<GameObject>("Prefabs/MuzzleFlash");
+
         health = 100;
         maxHealth = 100;
         armour = 100;
@@ -69,6 +76,9 @@ public class Player1Controller : MonoBehaviour {
         inDialogue = false;
 
 		isHolding = false;
+
+        energyLink = GameObject.Find("P1Energize");
+        energized = false;
     }
 
     private void Update() {
@@ -447,5 +457,10 @@ public class Player1Controller : MonoBehaviour {
 
     public void ToggleIsHolding(){
         isHolding = !isHolding;
+    }
+
+    public void ToggleEnergyLink(){
+        energized = !energized;
+        energyLink.GetComponent<SpriteRenderer>().enabled = energized;
     }
 }

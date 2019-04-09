@@ -42,6 +42,7 @@ public class Player2Controller : MonoBehaviour {
 
     public void Start() {
         this.Construct();
+        Physics2D.IgnoreCollision(GameObject.Find("Beam").GetComponent<BoxCollider2D>(), this.GetComponent<BoxCollider2D>());
     }
 
     //Construct the Player 1 prefab with the corresponding stats
