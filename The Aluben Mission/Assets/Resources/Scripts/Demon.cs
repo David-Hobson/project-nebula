@@ -4,28 +4,41 @@ using UnityEngine;
 
 public class Demon : NewEnemy {
 
-    protected float timeBtwShots;
+    protected float timeBtwShots;//interval between shots from enemy demon
     protected float startTimeBtwShots;
-    protected GameObject projectile;
+    protected GameObject projectile;// demon's projectile gameobject
 
-    public void SetStartTimeBtwShots()
+    /*
+     * call parent start method and initial shots interval
+     */ 
+    public override void Start()
     {
-        startTimeBtwShots = 2.0f;
+        base.Start();
+
+        SetEnemyStatus(5.0f, 100, 1.8f, 10, 2);
+        projectile = Resources.Load<GameObject>("Prefabs/EnemyFire");
+        SetStartTimeBtwShots(2.0f);
+
+    }
+
+    //call parent update method and shooting method
+    public override void FixedUpdate()
+    {
+        Vector3 vect = Target().transform.position - transform.position;
+        base.FixedUpdate();
+        EnemyShooting(vect);
+    }
+    //set shots interval
+    public void SetStartTimeBtwShots(float period)
+    {
+        startTimeBtwShots = period;
         timeBtwShots = startTimeBtwShots;
     }
 
-    public override void SetEnemyStatus()
-    {
-        projectile = Resources.Load<GameObject>("Prefabs/EnemyFire");
-        SetStartTimeBtwShots();
-
-        SetHealth(100);
-        SetSpeed(5.0f);
-        SetAwareDistance(1.8f);
-        SetEnemyDmg(10);
-        SetNebuliteQuantity(2);
-    }
-
+    /*
+     * set projectile direction method
+     * the direction of projectile changes if the positions of players changes
+     */ 
     public Vector3 SetDirection()
     {
         float xDistance = Mathf.Abs(transform.position.x - Target().transform.position.x);
@@ -60,6 +73,10 @@ public class Demon : NewEnemy {
         return vect1;
     }
 
+    /*
+     * enemy shooting method
+     * instantiate projectile gameobject
+     */ 
     public virtual void EnemyShooting(Vector3 vect)
     {
         if (vect.magnitude <= getAwareDistance())
@@ -76,16 +93,5 @@ public class Demon : NewEnemy {
         }
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
-    public override void FixedUpdate()
-    {
-        Vector3 vect = Target().transform.position - transform.position;
-        base.FixedUpdate();
-        EnemyShooting(vect);
-    }
 }
 

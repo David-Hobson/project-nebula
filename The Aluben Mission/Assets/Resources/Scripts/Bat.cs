@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class Bat : NewEnemy {
 
-    public override void SetEnemyStatus()
-    {
-        SetHealth(100);
-        SetSpeed(4.0f);
-        SetAwareDistance(1.5f);
-        SetEnemyDmg(20);
-        SetNebuliteQuantity(1);
-    }
-
+/*
+ * Bat class
+ * set enemy status by calling parent method
+ * call base start and update method
+ */
     public override void Start()
     {
         base.Start();
+        SetEnemyStatus(4.0f, 100, 1.5f, 20, 1);
     }
 
     public override void FixedUpdate()

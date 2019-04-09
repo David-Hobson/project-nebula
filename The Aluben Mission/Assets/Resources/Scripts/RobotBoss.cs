@@ -5,20 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class RobotBoss : Demon {
 
-    private GameObject trackProjectile;
-    private float stoppingDistance;
-    private float retreatDistance;
+    private GameObject trackProjectile;//Another type of projectile
+    private float stoppingDistance;//The robot boss would stop if it is closed to the target
+    private float retreatDistance;//the boss would retreat back if it is much closer to the target
     private float retreatRatio;
+
     private Animator anim;
 
-    private bool iron;
-    private int burst;
+    private bool iron;//when boss in iron state, it is immune from any type of damage
+    private int burst;// burst damage
     private bool burstDamage;
-    private float timeBtwTrackShots;
+    private float timeBtwTrackShots;//interval of another type of projectile
     private float startTimeBtwTrackshots;
 
-    private float ironTime;
+    private float ironTime;//duration of iron state
 
+    //audio souce
     private AudioSource audSource;
     public AudioClip shot;
     public AudioClip ironSound;
@@ -26,10 +28,17 @@ public class RobotBoss : Demon {
     public override void Start () {
         base.Start();
 
+        SetEnemyStatus(5.0f, 2000, 6.0f, 10, 10);
+        SetStartTimeBtwShots(2.0f);
+
         stoppingDistance = 1.0f;
         retreatDistance = 0.8f;
         retreatRatio = 1.5f;
+
+        projectile = Resources.Load<GameObject>("Prefabs/EnemyFire");
+        trackProjectile = Resources.Load<GameObject>("Prefabs/TrackFire");
         anim = GetComponent<Animator>();
+
         iron = false;
         burstDamage = true;
         startTimeBtwTrackshots = 8.0f;
@@ -37,7 +46,6 @@ public class RobotBoss : Demon {
         ironTime = 6.0f;
         audSource = this.GetComponent<AudioSource>();
         shot = audSource.clip;
-        trackProjectile = Resources.Load<GameObject>("Prefabs/TrackFire");
     }
 	
 
@@ -56,18 +64,9 @@ public class RobotBoss : Demon {
         }
 	}
 
-    public override void SetEnemyStatus()
-    {
-        projectile = Resources.Load<GameObject>("Prefabs/EnemyFire");
-        SetStartTimeBtwShots();
-
-        SetHealth(2000);
-        SetSpeed(5.0f);
-        SetAwareDistance(1.5f);
-        SetEnemyDmg(10);
-        SetNebuliteQuantity(10);
-    }
-
+    /*
+     * enemy shooting method
+     */ 
     public override void EnemyShooting(Vector3 vect)
     {
         if (iron == false)
@@ -90,6 +89,9 @@ public class RobotBoss : Demon {
         }   
     }
 
+    /*
+     * Check health to start iron state
+     */ 
     public void CheckHealth()
     {
         if (ironTime <= 0)
@@ -120,6 +122,10 @@ public class RobotBoss : Demon {
         Target().transform.GetComponent<Player1Controller>().Damage(dmg);
     }
 
+    /*
+     * another type of projectile
+     * this projectile tracks players
+     */ 
     public void TrackShooting(Vector3 vect)
     {
         if (iron == false)
@@ -150,6 +156,9 @@ public class RobotBoss : Demon {
         }
     }
 
+    /*
+     * change the direction of enemy sprite
+     */ 
     public void FaceDirection()
     {
         if (transform.position.x <= Target().transform.position.x)
@@ -162,6 +171,10 @@ public class RobotBoss : Demon {
         }
     }
 
+    /*
+     * override method of movement
+     * boss's movement is different from parent movement method
+     */ 
     public override void Movement(Vector3 vect)
     {
         if (iron == false)
@@ -190,6 +203,9 @@ public class RobotBoss : Demon {
         }
     }
 
+    /*
+     * collision check method
+     */ 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Bullet")
