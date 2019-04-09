@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class Mage : MonoBehaviour
 {
-
-    private Animator mageAnim;
+    private Animator mageAnim; //Boss Animator
     private GameObject player1;
     private GameObject player2;
     private GameObject nebulite;
-    //private GameObject bloodMage;
-    //private GameObject slowMage;
     private GameObject healMage;
     private int playerNumber;
     public Vector2 tentacleTarget;
@@ -42,14 +39,11 @@ public class Mage : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //playerDamage = GetComponent<HealMage>().playerDamage;
         mageAnim = GetComponent<Animator>();
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
         nebulite = Resources.Load<GameObject>("Prefabs/Crystal");
         tentacle = Resources.Load<GameObject>("Prefabs/Tentacle");
-        //slowMage = Resources.Load<GameObject>("Prefabs/SlowMage");
-        //bloodMage = Resources.Load<GameObject>("Prefabs/BloodMage");
         healMage = Resources.Load<GameObject>("Prefabs/HealMage");
 
         health = 2000;
@@ -84,6 +78,9 @@ public class Mage : MonoBehaviour
         }
     }
 
+    /*
+     * choose the player to spawn magic
+     */ 
     public void GetPlayerNumber()
     {
         playerNumber = Random.Range(1, 3);
@@ -97,6 +94,9 @@ public class Mage : MonoBehaviour
         }
     }
 
+    /*
+     * spawn heal mage
+     */ 
     public void SpawnEnemy(Vector3 vect)
     {
         if (vect.magnitude <= awareDistance)
@@ -115,6 +115,9 @@ public class Mage : MonoBehaviour
         }
     }
  
+    /*
+     * spawn tentacle to trap players
+     */ 
     public void EnemyShooting(Vector3 vect)
     {
         float r = 0.8f; // radius of tentacle circle
@@ -128,7 +131,7 @@ public class Mage : MonoBehaviour
                 {
                     var go = Instantiate(tentacle, tentacleTarget + new Vector2(r*Mathf.Cos(2.0f*3.14f*i/15.0f), r*Mathf.Sin(2.0f * 3.14f * i / 15.0f)), Quaternion.identity);
                     go.GetComponent<Tentacle>().target = tentacleTarget;
-                    //(R * cos(2 * PI * i / n), R * sin(2 * PI * i / n))
+
                 }
                 timeBtwMagics = startTimeBtwMagics;
             }
@@ -139,26 +142,27 @@ public class Mage : MonoBehaviour
         }
     }
     
-    public void DamagePlayer(int dmg)
-    {
-        //player.
-    }
-
+    /*
+     * two methods to control animation
+     */ 
     public void StartAttacking()
     {
         isAttacking = true;
     }
-
     public void FinishAttack()
     {
         isAttackFinished = true;
     }
+
     public void TakeDamagedAnimation()
     {
         this.GetComponent<SpriteRenderer>().color = new Color(255, damaged, damaged);
         damaged += 0.1f;
     }
 
+    /*
+     * the boss moves after it go into the ground
+     */ 
     public void Movement(Vector3 vect)
     {
         if (vect.magnitude <= awareDistance)
@@ -168,9 +172,8 @@ public class Mage : MonoBehaviour
                 mageAnim.SetBool("isMoving", true);
                 if (isAttacking)
                 {
-                    //transform.position = Target().transform.position;
                     transform.position = Vector2.MoveTowards(transform.position, Target().transform.position, speed * Time.deltaTime * 0.1f);
-                    mageAnim.SetBool("isAttacking", true);//delete or not
+                    mageAnim.SetBool("isAttacking", true);
                     if(isAttackFinished)
                     {
                         timeBtwMoves = startTimeBtwMoves;
@@ -188,6 +191,7 @@ public class Mage : MonoBehaviour
         }
     }
 
+    //selects target
     public GameObject Target()
     {
         if (player1 == null && player2 == null)
@@ -216,9 +220,7 @@ public class Mage : MonoBehaviour
             }
         }
     }
-//---------------------------------
  
-
     public Vector2 TargetCurrentPosition()
     {
         Vector2 position = new Vector2(Target().transform.position.x, Target().transform.position.y);

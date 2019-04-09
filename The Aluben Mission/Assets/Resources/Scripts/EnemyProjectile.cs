@@ -18,15 +18,16 @@ public class EnemyProjectile : MonoBehaviour
     {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
-        //player = GameObject.FindGameObjectWithTag("Player").transform;
+
         target1 = new Vector2(player1.transform.position.x, player1.transform.position.y);
         target2 = new Vector2(player2.transform.position.x, player2.transform.position.y);
     }
 
+    /*
+     * set projectile's target, either player1 or player2
+     */ 
     public Vector2 Target()
     {
-
-
         if (player1 == null && player2 == null)
         {
             return target1;
