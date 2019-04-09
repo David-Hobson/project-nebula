@@ -6,13 +6,11 @@ public class HealMage : MonoBehaviour {
     private GameObject HealTarget;
     protected int health = 100;
     protected float damaged;
-    //public int playerDamage;
     private float timeBtwHeal;
     private float startTimeBtwHeal;
 
     // Use this for initialization
     public virtual void Start () {
-        //playerDamage = 25;
         HealTarget = GameObject.Find("ShadowBoss");
         startTimeBtwHeal = 1.0f;
         timeBtwHeal = startTimeBtwHeal;
@@ -30,8 +28,17 @@ public class HealMage : MonoBehaviour {
     {
         if (timeBtwHeal <= 0)
         {
-            HealTarget.GetComponent<Mage>().health += 50;
+            if (HealTarget.GetComponent<Mage>().health <= 2000)
+            {
+                HealTarget.GetComponent<Mage>().health += 10;
+            }
+            else
+            {
+                HealTarget.GetComponent<Mage>().health = 2000;
+            }
+
             timeBtwHeal = startTimeBtwHeal;
+
         }
         else
         {
@@ -50,7 +57,6 @@ public class HealMage : MonoBehaviour {
 
         if (health <= 0)
         {
-            //FindTarget(other);
             Destroy(gameObject);
         }
     }

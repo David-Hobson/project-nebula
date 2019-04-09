@@ -2,72 +2,103 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Enemy's base class
 public class NewEnemy : MonoBehaviour {
 
+    //Enemy's status
     private float speed;
     protected int health;
-    private float awareDistance;
+    private float awareDistance;//All enemy start to attack the players within "awareDistance"
     private int enemyDmg;
-    protected float damaged;
-    private int nebuliteQuantity;
+    protected float damaged; //This float affects animation about taking damage by the players
+    private int nebuliteQuantity;//The number of nebulite dropped by the enemy
 
     private GameObject player1;
     private GameObject player2;
     private GameObject nebulite;
 
-    public void SetSpeed(float speed)
-    {
-        this.speed = speed;
-    }
-
-    public float GetSpeed()
-    {
-        return speed;
-    }
-
-    public void SetHealth(int health)
-    {
-        this.health = health;
-    }
-
-
-    public void SetAwareDistance(float awareDistance)
-    {
-        this.awareDistance = awareDistance;
-    }
-
-    public float getAwareDistance()
-    {
-        return awareDistance;
-    }
-
-    public void SetEnemyDmg(int enemyDmg)
-    {
-        this.enemyDmg = enemyDmg;
-    }
-
-    public void SetNebuliteQuantity(int nebuliteQuantity)
-    {
-        this.nebuliteQuantity = nebuliteQuantity;
-    }
-
-    public virtual void SetEnemyStatus()
-    {
-        SetSpeed(7.0f);
-        SetHealth(200);
-        SetAwareDistance(1.5f);
-        SetEnemyDmg(10);
-        SetNebuliteQuantity(1);
-    }
-
+    /*
+     * Start method
+     * Initial enemy status and find important gameobject
+     */
     public virtual void Start()
     {
-        SetEnemyStatus();
+        SetEnemyStatus(4.0f,200,1.5f,10,1);
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
         nebulite = Resources.Load<GameObject>("Prefabs/Crystal");
     }
+    /*
+     * Update method
+     * Calculate the vector from the enemy to the target and call movement function
+     */
+    public virtual void FixedUpdate()
+    {
+        if (Target() != null)
+        {
+            Vector3 vect = Target().transform.position - transform.position;
+            Movement(vect);
 
+            TakeDamagedAnimation();
+        }
+    }
+
+    //Set initial speed
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+    //Return initial speed
+    public float GetSpeed()
+    {
+        return speed;
+    }
+    //set initial health
+    public void SetHealth(int health)
+    {
+        this.health = health;
+    }
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    //Set awareDistance
+    public void SetAwareDistance(float awareDistance)
+    {
+        this.awareDistance = awareDistance;
+    }
+    //return awareDistance
+    public float getAwareDistance()
+    {
+        return awareDistance;
+    }
+    //set enemy damage
+    public void SetEnemyDmg(int enemyDmg)
+    {
+        this.enemyDmg = enemyDmg;
+    }
+    //set the number of nebulite
+    public void SetNebuliteQuantity(int nebuliteQuantity)
+    {
+        this.nebuliteQuantity = nebuliteQuantity;
+    }
+    /*core method to set enemt status
+     * this method will call above set function
+     */ 
+    public virtual void SetEnemyStatus(float speed, int health, float awareDistance, int enemyDmg, int nebuliteQuantity)
+    {
+        SetSpeed(speed);
+        SetHealth(health);
+        SetAwareDistance(awareDistance);
+        SetEnemyDmg(enemyDmg);
+        SetNebuliteQuantity(nebuliteQuantity);
+    }
+
+    /*
+     * find enemy's target, either player1 or player2
+     * if both players are alive, the enemy selects the closer player 
+     */
     public GameObject Target()
     {
 
@@ -98,6 +129,10 @@ public class NewEnemy : MonoBehaviour {
         }
     }
 
+    /*
+     * enemy movement function
+     * call moveTowards function to move the enemy
+     */ 
     public virtual void Movement(Vector3 distance)
     {
         if (distance.magnitude <= awareDistance)
@@ -107,18 +142,27 @@ public class NewEnemy : MonoBehaviour {
         }
     }
 
+    /*
+     * movement animation function
+     * set appropriate float number to enemy animator
+     */ 
     public void MovementAnimation(Vector3 vect)
     {
         this.GetComponent<Animator>().SetFloat("EnemySpeedX", vect.x);
         this.GetComponent<Animator>().SetFloat("EnemySpeedY", vect.y);
     }
 
+    //call this method while enemy got attacked
     public void TakeDamagedAnimation()
     {
         this.GetComponent<SpriteRenderer>().color = new Color(255, damaged, damaged);
         damaged += 0.1f;
     }
 
+    /*
+     *Drop item function
+     * enemy drop certain item after dead
+     */ 
     public void DropItem()
     {
         for (int i =0;i<nebuliteQuantity; i++)
@@ -127,7 +171,8 @@ public class NewEnemy : MonoBehaviour {
             go.GetComponent<DroppedItem>().Target = Target().transform;
         }
     }
-
+    
+    //collision function, damage players while enemy collides with players
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Player 1")
@@ -141,6 +186,7 @@ public class NewEnemy : MonoBehaviour {
         }
     }
 
+    //triger function, take damage while enemy collides with bullets
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Bullet")
@@ -158,15 +204,4 @@ public class NewEnemy : MonoBehaviour {
         }
     }
 
-    public virtual void FixedUpdate()
-    {
-        if (Target() != null)
-        {
-            Vector3 vect = Target().transform.position - transform.position;
-            Movement(vect);
-
-            //MovementAnimation(vect);
-            TakeDamagedAnimation();
-        }
-    }
 }

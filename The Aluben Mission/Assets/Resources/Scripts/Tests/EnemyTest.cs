@@ -11,7 +11,7 @@ public class EnemyTest {
     public void CheckEnemyAlive()
     {
         bool expected;
-        if (enemyObject.GetComponent<Enemy>().health > 0)
+        if (enemyObject.GetComponent<NewEnemy>().GetHealth() > 0)
         {
             expected = true;
         }
@@ -26,7 +26,7 @@ public class EnemyTest {
     public void CheckEnemyDies()
     {
         bool expected;
-        if (enemyObject.GetComponent<Enemy>().health < 0)
+        if (enemyObject.GetComponent<NewEnemy>().GetHealth() < 0)
         {
             expected = true;
         }
@@ -51,7 +51,7 @@ public class EnemyTest {
     public void CheckEnemyDamaged()
     {
         bool expected;
-        if (enemyObject.GetComponent<Enemy>().health < 100)
+        if (enemyObject.GetComponent<NewEnemy>().GetHealth() < 100)
         {
             expected = true;
         }
@@ -152,7 +152,7 @@ public class EnemyTest {
     [Test]
     public void CheckEnemyAnimation()
     {
-        var enemy = new GameObject().AddComponent<Enemy>();
+        var enemy = new GameObject().AddComponent<NewEnemy>();
         float damaged = 0;
         Color expected = new Color(255,damaged,damaged);
 
