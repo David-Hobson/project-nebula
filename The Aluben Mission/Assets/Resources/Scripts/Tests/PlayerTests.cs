@@ -11,7 +11,7 @@ public class PlayerTests {
     public void SetUp() {
         // Use the Assert class to test conditions.
         player = Object.Instantiate(Resources.Load<GameObject>("Prefabs/player"));
-        player.GetComponent<Player1Controller>().Construct();
+        player.GetComponent<PlayerController>().Construct();
     }
 
     [TearDown]
@@ -22,15 +22,15 @@ public class PlayerTests {
     [UnityTest]
     public IEnumerator CheckPlayerIsAlive() {
         
-        Assert.True(player.GetComponent<Player1Controller>().GetHealth() > 0);
+        Assert.True(player.GetComponent<PlayerController>().GetHealth() > 0);
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerIsDead() {
         
-        player.GetComponent<Player1Controller>().Damage(150, new Vector3(1,1,0));
-        Assert.True(player.GetComponent<Player1Controller>().GetHealth() <= 0);
+        player.GetComponent<PlayerController>().Damage(150, new Vector3(1,1,0));
+        Assert.True(player.GetComponent<PlayerController>().GetHealth() <= 0);
         yield return null;
     }
 
@@ -40,7 +40,7 @@ public class PlayerTests {
         Assert.NotNull(GameObject.FindWithTag("Player"));
 
 
-        var newPlayer = player.GetComponent<Player1Controller>().Damage(150, new Vector3(1, 1, 0));
+        var newPlayer = player.GetComponent<PlayerController>().Damage(150, new Vector3(1, 1, 0));
         if(newPlayer != null){
             player = newPlayer;
         }
@@ -48,7 +48,7 @@ public class PlayerTests {
         yield return new WaitForSeconds(5);
         Assert.Null(GameObject.FindWithTag("Player"));
 
-        player.GetComponent<Player1Controller>().Respawn();
+        player.GetComponent<PlayerController>().Respawn();
         Assert.NotNull(GameObject.FindWithTag("Player"));
 
     }
@@ -59,7 +59,7 @@ public class PlayerTests {
 
         var currentPosition = player.GetComponent<Transform>().position;
         for (var i = 0; i < 100; i ++){
-            player.GetComponent<Player1Controller>().CalculateMovement(-1, 1);
+            player.GetComponent<PlayerController>().CalculateMovement(-1, 1);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -73,7 +73,7 @@ public class PlayerTests {
         var currentSprite = player.GetComponent<SpriteRenderer>().sprite;
 
         for (var i = 0; i < 100; i++) {
-            //player.GetComponent<Player1Controller>().MovementAnimation(-1, 1);
+            //player.GetComponent<PlayerController>().MovementAnimation(-1, 1);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -87,7 +87,7 @@ public class PlayerTests {
         wall.GetComponent<Transform>().position = new Vector3(player.GetComponent<Transform>().position.x + 0.5f, player.GetComponent<Transform>().position.y, 0);
 
         for (int i = 0; i < 100; i++){
-            player.GetComponent<Player1Controller>().CalculateMovement(1, 0);
+            player.GetComponent<PlayerController>().CalculateMovement(1, 0);
         }
 
         Assert.False(player.GetComponent<Transform>().position.x >= wall.GetComponent<Transform>().position.x);
@@ -101,7 +101,7 @@ public class PlayerTests {
         enemy.GetComponent<Transform>().position = new Vector3(player.GetComponent<Transform>().position.x + 0.5f, player.GetComponent<Transform>().position.y, 0);
 
         for (int i = 0; i < 50; i++) {
-            player.GetComponent<Player1Controller>().CalculateMovement(1, 0);
+            player.GetComponent<PlayerController>().CalculateMovement(1, 0);
         }
 
         Assert.False(player.GetComponent<Transform>().position.x >= enemy.GetComponent<Transform>().position.x);
@@ -111,87 +111,87 @@ public class PlayerTests {
     [UnityTest]
     public IEnumerator CheckPlayerUpgradeHealth() {
 
-        player.GetComponent<Player1Controller>().Upgrade(1);
+        player.GetComponent<PlayerController>().Upgrade(1);
 
-        Assert.True(player.GetComponent<Player1Controller>().GetMaxHealth() == 200);
+        Assert.True(player.GetComponent<PlayerController>().GetMaxHealth() == 200);
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerUpgradeArmour() {
 
-        player.GetComponent<Player1Controller>().Upgrade(2);
+        player.GetComponent<PlayerController>().Upgrade(2);
 
-        Assert.True(player.GetComponent<Player1Controller>().GetMaxArmour() == 150);
+        Assert.True(player.GetComponent<PlayerController>().GetMaxArmour() == 150);
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerUpgradeSpeed() {
-        player.GetComponent<Player1Controller>().Upgrade(3);
+        player.GetComponent<PlayerController>().Upgrade(3);
 
-        Assert.True(player.GetComponent<Player1Controller>().GetSpeed() == 1.5f);
+        Assert.True(player.GetComponent<PlayerController>().GetSpeed() == 1.5f);
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerSpeed() {
-        Assert.True(player.GetComponent<Player1Controller>().GetSpeed() == 1f);
+        Assert.True(player.GetComponent<PlayerController>().GetSpeed() == 1f);
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerDodge() {
-        Assert.True(player.GetComponent<Player1Controller>().Dodge() == "Dodging");
+        Assert.True(player.GetComponent<PlayerController>().Dodge() == "Dodging");
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerDamaged() {
 
-        var currentHealth = player.GetComponent<Player1Controller>().GetHealth();
+        var currentHealth = player.GetComponent<PlayerController>().GetHealth();
 
-        player.GetComponent<Player1Controller>().Damage(10, new Vector3(1, 1, 0));
+        player.GetComponent<PlayerController>().Damage(10, new Vector3(1, 1, 0));
         yield return new WaitForSeconds(1);
 
-        Assert.True(currentHealth >= player.GetComponent<Player1Controller>().GetHealth());
+        Assert.True(currentHealth >= player.GetComponent<PlayerController>().GetHealth());
 
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerArmourDamage() {
 
-        var currentArmour = player.GetComponent<Player1Controller>().GetArmour();
+        var currentArmour = player.GetComponent<PlayerController>().GetArmour();
 
-        player.GetComponent<Player1Controller>().DamageArmour(10);
+        player.GetComponent<PlayerController>().DamageArmour(10);
         yield return new WaitForSeconds(1);
 
-        Assert.True(currentArmour >= player.GetComponent<Player1Controller>().GetArmour());
+        Assert.True(currentArmour >= player.GetComponent<PlayerController>().GetArmour());
 
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerHeal() {
 
-        var currentHealth = player.GetComponent<Player1Controller>().GetHealth();
+        var currentHealth = player.GetComponent<PlayerController>().GetHealth();
 
-        player.GetComponent<Player1Controller>().Damage(10, new Vector3(1, 1, 0));
-        player.GetComponent<Player1Controller>().Heal(10);
+        player.GetComponent<PlayerController>().Damage(10, new Vector3(1, 1, 0));
+        player.GetComponent<PlayerController>().Heal(10);
         yield return new WaitForSeconds(1);
           
-        Assert.True(currentHealth <= player.GetComponent<Player1Controller>().GetHealth());
+        Assert.True(currentHealth <= player.GetComponent<PlayerController>().GetHealth());
     }
 
     [UnityTest]
     public IEnumerator CheckPlayerHealArmour() {
 
-        var currentHealth = player.GetComponent<Player1Controller>().GetHealth();
+        var currentHealth = player.GetComponent<PlayerController>().GetHealth();
 
-        player.GetComponent<Player1Controller>().DamageArmour(10);
-        player.GetComponent<Player1Controller>().HealArmour(10);
+        player.GetComponent<PlayerController>().DamageArmour(10);
+        player.GetComponent<PlayerController>().HealArmour(10);
         yield return new WaitForSeconds(1);
 
-        Assert.True(currentHealth <= player.GetComponent<Player1Controller>().GetHealth());
+        Assert.True(currentHealth <= player.GetComponent<PlayerController>().GetHealth());
     }
 }
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player1Controller : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 
     private bool paused = false;
 
-    private GameObject bullet;
+    public GameObject bullet;
     private GameObject gunPivot;
     private GameObject currentWeapon;
     private GameObject muzzleFlash;
@@ -17,8 +17,6 @@ public class Player1Controller : MonoBehaviour {
     private Animator animator;
     private AudioSource audSource;
     private AudioClip shot;
-
-    public Canvas pauseCanvas;
 
     private float health;
     private float maxHealth;
@@ -31,11 +29,14 @@ public class Player1Controller : MonoBehaviour {
     private float knockBackTime;
     private bool isKnockedBack;
 	private bool isHolding;
+    private float maxKnockBackTime;
+    private float knockBackPower;
 
     private float damagedColor;
 
     private bool isInvincible;
     private float invicibleTime;
+    private float maxInvicibilityTime;
 
     private bool isAiming;
 
@@ -43,21 +44,29 @@ public class Player1Controller : MonoBehaviour {
 
     private bool inDialogue;
 
+    //Buttons used for controller input
+    public string RSX;
+    public string RSY;
+    public string LSX;
+    public string LSY;
+    public string btnX;
+    public string btnR1;
+    public string btnL1;
+
+
     public void Start() {
         this.Construct();
-        Physics2D.IgnoreCollision(GameObject.Find("Beam").GetComponent<BoxCollider2D>(), this.GetComponent<BoxCollider2D>());
 
     }
 
-    //Construct the Player 1 prefab with the corresponding stats
+    //Construct the Player prefab with the corresponding stats
     public void Construct(){
         animator = this.GetComponent<Animator>();
         audSource = this.GetComponent<AudioSource>();
 
         shot = audSource.clip;
-        bullet = Resources.Load<GameObject>("Prefabs/P1Projectile");
-        gunPivot = GameObject.Find("P1GunPivot");
-        currentWeapon = GameObject.Find("P1Weapon");
+        gunPivot = this.transform.GetChild(0).gameObject;
+        currentWeapon = gunPivot.transform.GetChild(0).gameObject;
         muzzleFlash = Resources.Load<GameObject>("Prefabs/MuzzleFlash");
 
         health = 100;
@@ -69,62 +78,53 @@ public class Player1Controller : MonoBehaviour {
         knockbackDirection = new Vector3(0,0,0);
         knockBackTime = 0;
         isKnockedBack = false;
+        maxKnockBackTime = 0.3f;
+        knockBackPower = 1.5f;
 
         isInvincible = false;
         invicibleTime = 0;
+        maxInvicibilityTime = 2f;
 
         inDialogue = false;
 
 		isHolding = false;
 
-        energyLink = GameObject.Find("P1Energize");
+        energyLink = this.transform.GetChild(1).gameObject;
         energized = false;
     }
 
     private void Update() {
 
-        //Check if the game is pasused
+        //Check if player is in dialogue
         if (!inDialogue) {
 
-            //Send controller information to various methods for movement and animation
-            this.CalculateMovement(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"));
-            this.DirectionAnimation(Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
-            this.MovementAnimation(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"), Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
-
-
-            if(Mathf.Abs(Input.GetAxis("P1RSX")) > 0.5 || Mathf.Abs(Input.GetAxis("P1RSY")) > 0.5){
-                this.WeaponDirection(Input.GetAxis("P1RSX"), Input.GetAxis("P1RSY"));
-                currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 1f);
-                isAiming = true;
-            }else if(Mathf.Abs(Input.GetAxis("P1LSX")) > 0.5 || Mathf.Abs(Input.GetAxis("P1LSY")) > 0.5){
-                this.WeaponDirection(Input.GetAxis("P1LSX"), Input.GetAxis("P1LSY"));
-                currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 1f);
-                isAiming = true;
-            }else {
-                currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
-                isAiming = false;
-            }
-
+            //Send controller information to various methods for movement, animation, and aiming weapon
+            this.CalculateMovement(Input.GetAxis(LSX), Input.GetAxis(LSY));
+            this.DirectionAnimation(Input.GetAxis(RSX), Input.GetAxis(RSY));
+            this.MovementAnimation(Input.GetAxis(LSX), Input.GetAxis(LSY), Input.GetAxis(RSX), Input.GetAxis(RSY));
+            this.AimWeapon(Input.GetAxis(LSX), Input.GetAxis(LSY), Input.GetAxis(RSX), Input.GetAxis(RSY));
 
             this.CalculateKnockback();
             this.CalculateInvincibility();
 
-            if (Input.GetButtonDown("P1R1") && isAiming) {
-                if (Input.GetButtonDown("P1R1") && !isHolding) {
-                    Fire();
-                }
+            if (Input.GetButtonDown(btnR1) && isAiming && !isHolding) {
+                Fire();
             }
 
         }
 
-        if (Input.GetButtonDown("P1X")) {
+        if (Input.GetButtonDown(btnX)) {
             interaction = true;
         } else {
             interaction = false;
         }
 
-        if (Input.GetButtonDown("P1Opt")) {
-            //Pause();
+        if (Input.GetButtonDown(btnL1)){
+            this.ToggleEnergyLink();
+        }
+
+        if (Input.GetButtonUp(btnL1)){
+            this.ToggleEnergyLink();
         }
 
 
@@ -138,22 +138,42 @@ public class Player1Controller : MonoBehaviour {
         }
     }
 
+    //Aim the weapon which prioritizes the left stick when not aiming with the right stick
+    private void AimWeapon(float lx, float ly, float rx, float ry){
+        if (Mathf.Abs(rx) > 0.5 || Mathf.Abs(ry) > 0.5) {
+            this.WeaponDirection(rx, ry);
+            currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 1f);
+            isAiming = true;
+        } else if (Mathf.Abs(lx) > 0.5 || Mathf.Abs(ly) > 0.5) {
+            this.WeaponDirection(lx, ly);
+            currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 1f);
+            isAiming = true;
+        } else {
+            currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+            isAiming = false;
+        }
+    }
+
+    //Displaces the character away from enemies after being hit
+    //Helps prevent players from being continiously hit and allows them to recover
     public void CalculateKnockback(){
         if (isKnockedBack) {
             this.GetComponent<Rigidbody2D>().velocity = knockbackDirection * 1.5f;
             knockBackTime += Time.deltaTime;
-            if (knockBackTime >= 0.3f) {
+            if (knockBackTime >= maxKnockBackTime) {
                 isKnockedBack = false;
             }
         }
     }
 
+    //Makes the player invincible for a short period of time
+    //Helps prevent players from being continiously hit and allows them to recover
     public void CalculateInvincibility(){
         if (isInvincible) {
             var spriteColor = this.GetComponent<SpriteRenderer>().color;
             this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 0.5f);
             invicibleTime += Time.deltaTime;
-            if (invicibleTime >= 2f) {
+            if (invicibleTime >= maxInvicibilityTime) {
                 isInvincible = false;
                 this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 1f);
             }
@@ -162,10 +182,8 @@ public class Player1Controller : MonoBehaviour {
 
     //Rotate the equipped weapon based off of X and Y values
     public void WeaponDirection(float x, float y){
-        var vect = new Vector2(x, y);
+
         float angle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
-
-
 
         //Change the sprite order in order to create depth for when the gun is behind the player
         if(y > 0) {
@@ -259,6 +277,7 @@ public class Player1Controller : MonoBehaviour {
         GameObject tempMuzzleFlash = Instantiate(muzzleFlash, barrelVect.position, currentWeapon.GetComponent<Transform>().rotation);
         tempMuzzleFlash.transform.parent = barrelVect;
         Instantiate(bullet, barrelVect.position, Quaternion.identity);
+
     }
 
     //REQUIREMENT: F-50
@@ -285,6 +304,7 @@ public class Player1Controller : MonoBehaviour {
         return maxHealth;
     }
 
+    //Set the movement speed of the player
     public void SetSpeed(float speed){
         this.speed = speed;
     }
@@ -310,16 +330,19 @@ public class Player1Controller : MonoBehaviour {
     public GameObject Damage(int damageAmount, Vector3 damageDirection){
         health -= damageAmount;
 
+        //Set knockback parameters
         isKnockedBack = true;
         knockBackTime = 0;
         knockbackDirection = damageDirection.normalized;
 
+        //Set invicibility parameters
         isInvincible = true;
         invicibleTime = 0;
 
         isHolding = false;
 
-
+        //Check to see if the player's health has reached 0
+        //Duplicate the object for spawning purposes and remove the current one
         if (health <= 0){
             this.enabled = false;
             //Duplication needed for respawning
@@ -381,19 +404,6 @@ public class Player1Controller : MonoBehaviour {
         return "Dodging";
     }
 
-    //REQUIREMENT: F-26, F-27, F-43, F-44
-    //Pause the game when invokved, toggles between paused and unpaused
-    private void Pause() {
-        if (!paused) {
-            Time.timeScale = 0;
-            pauseCanvas.enabled = true;
-            paused = true;
-        } else {
-            Time.timeScale = 1;
-            pauseCanvas.enabled = false;
-            paused = false;
-        }
-    }
 
     //Return the current bullet object
     public GameObject GetBullet(){
@@ -435,32 +445,44 @@ public class Player1Controller : MonoBehaviour {
         }
     }
 
+    //Return if the player is interacting with an interactable object
     public bool GetInteraction(){
         return this.interaction;
     }
 
+    //Check if the player is in a dialogue sequence
     public bool GetInDialogue(){
         return inDialogue;
     }
 
+    //Set the player to be in a dialogue sequence
     public void SetInDialogue(bool d){
         inDialogue = d;
     }
 
+    //Set the player to be holding an object
 	public void SetIsHolding(bool hold){
 		isHolding = hold;
 	}
 
+    //Return if the player is holding something
     public bool GetIsHolding(){
         return isHolding;
     }
 
+    //Toggles whether the player is holding something
     public void ToggleIsHolding(){
         isHolding = !isHolding;
     }
 
+    //Toggle the energy link between the two players
     public void ToggleEnergyLink(){
         energized = !energized;
         energyLink.GetComponent<SpriteRenderer>().enabled = energized;
+    }
+
+    //Returns if the player is energized for the energy link
+    public bool IsEnergized(){
+        return this.energized;
     }
 }

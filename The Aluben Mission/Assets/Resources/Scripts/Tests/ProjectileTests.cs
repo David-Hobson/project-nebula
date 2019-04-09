@@ -72,8 +72,8 @@ public class ProjectileTests {
         
         Object.Destroy(projectile.gameObject);
 
-        player.GetComponent<Player1Controller>().Construct();
-        player.GetComponent<Player1Controller>().Fire();
+        player.GetComponent<PlayerController>().Construct();
+        player.GetComponent<PlayerController>().Fire();
 
         yield return new WaitForSeconds(1);
 

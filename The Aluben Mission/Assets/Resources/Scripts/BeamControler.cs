@@ -31,7 +31,12 @@ public class BeamControler : MonoBehaviour {
         this.transform.rotation = Quaternion.FromToRotation(Vector3.up, player1.transform.position - player2.transform.position);
 
 
-        beamSprite.transform.localScale = new Vector3(1, playerDistance, 1);
+        float spriteSize = beamSprite.GetComponent<SpriteRenderer>().sprite.rect.height / beamSprite.GetComponent<SpriteRenderer>().sprite.pixelsPerUnit;
+
+        Vector3 scale = transform.localScale;
+        scale.y = playerDistance / spriteSize;
+
+        beamSprite.transform.localScale = scale;
 
     }
 

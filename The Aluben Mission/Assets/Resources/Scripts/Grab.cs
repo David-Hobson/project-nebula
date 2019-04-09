@@ -14,8 +14,8 @@ public class Grab : MonoBehaviour {
 	private GameObject player2;
 
 	//P1 and P2 controller objects to manipulate speed and firing need to added in inspector
-	public Player1Controller P1;
-	public Player2Controller P2;
+	public PlayerController P1;
+	public PlayerController P2;
 
 	//Initial relic position for resets and completion boolean
 	private Vector3 initalPos;
@@ -42,18 +42,18 @@ public class Grab : MonoBehaviour {
 		//Check which player is holding the relic and prohibit their respective shooting and apply speed debuff
 		else {
 			//P1
-			if (player1.GetComponent<Player1Controller>().GetIsHolding()) {
+			if (player1.GetComponent<PlayerController>().GetIsHolding()) {
 				this.transform.position = player1.transform.position;
-				player1.GetComponent<Player1Controller> ().SetSpeed (0.5f);
+				player1.GetComponent<PlayerController> ().SetSpeed (0.5f);
             } else{
-                player1.GetComponent<Player1Controller>().SetSpeed(1.0f);
+                player1.GetComponent<PlayerController>().SetSpeed(1.0f);
             } 
 
-		    if (player2.GetComponent<Player2Controller>().GetIsHolding()) {
+		    if (player2.GetComponent<PlayerController>().GetIsHolding()) {
 				this.transform.position = player2.transform.position;
-				player2.GetComponent<Player2Controller> ().SetSpeed (0.5f);
+				player2.GetComponent<PlayerController> ().SetSpeed (0.5f);
             } else {
-                player2.GetComponent<Player2Controller>().SetSpeed(1.0f);
+                player2.GetComponent<PlayerController>().SetSpeed(1.0f);
             }
         }
 
@@ -65,14 +65,14 @@ public class Grab : MonoBehaviour {
 
 			//If player1 presses X while colliding then pickup the object
 			if (Input.GetButtonDown ("P1X")) {
-				player1.GetComponent<Player1Controller> ().SetSpeed(1);
-				player1.GetComponent<Player1Controller> ().ToggleIsHolding();
+				player1.GetComponent<PlayerController> ().SetSpeed(1);
+				player1.GetComponent<PlayerController> ().ToggleIsHolding();
 
 			} 
 			//If player2 presses X while colliding then pickup the object
 			else if (Input.GetButtonDown ("P2X")) {
-				player2.GetComponent<Player2Controller> ().SetSpeed(1);
-				player2.GetComponent<Player2Controller> ().ToggleIsHolding();
+				player2.GetComponent<PlayerController> ().SetSpeed(1);
+				player2.GetComponent<PlayerController> ().ToggleIsHolding();
 			}
 
 		} else if (other.tag == "EnemyBullet" || other.tag == "Enemy") {

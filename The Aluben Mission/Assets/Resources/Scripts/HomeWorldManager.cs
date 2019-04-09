@@ -23,7 +23,7 @@ public class HomeWorldManager : MonoBehaviour {
         float vect = Vector3.Distance(this.transform.position, player1.transform.position);
 
 
-        if (vect < 1.16f && player1.GetComponent<Player1Controller>().GetInteraction()) {
+        if (vect < 1.16f && player1.GetComponent<PlayerController>().GetInteraction()) {
             if(this.GetComponent<Dialogue>()){
                 this.RunDialogue();
             }
@@ -35,15 +35,15 @@ public class HomeWorldManager : MonoBehaviour {
 	}
 
     void RunDialogue(){
-        if(!player1.GetComponent<Player1Controller>().GetInDialogue()){
-            player1.GetComponent<Player1Controller>().SetInDialogue(true);
+        if(!player1.GetComponent<PlayerController>().GetInDialogue()){
+            player1.GetComponent<PlayerController>().SetInDialogue(true);
             dialogueManager.GetComponent<DialogueManager>().StartDialogue(this.GetComponent<Dialogue>());
         }else{
             dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
         }
 
         if(dialogueManager.GetComponent<DialogueManager>().IsFinished()){
-            player1.GetComponent<Player1Controller>().SetInDialogue(false);
+            player1.GetComponent<PlayerController>().SetInDialogue(false);
         }
     }
 

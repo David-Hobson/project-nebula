@@ -30,6 +30,10 @@ public class P1BulletShot : MonoBehaviour {
         Destroy(gameObject, 1);
     }
 
+    public void SetShotDirection(float xr, float yr, float xl, float yl){
+
+    }
+
     public string GetBulletType(){
         //TODO
 

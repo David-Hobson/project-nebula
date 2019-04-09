@@ -6,25 +6,26 @@ public class DesertPuzzle : MonoBehaviour {
 
     private GameObject player1;
     private GameObject player2;
+    private GameObject beam;
 
     // Use this for initialization
     void Start() {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
+        beam = GameObject.Find("Beam");
 
     }
 
     // Update is called once per frame
     void Update() {
-        if(Input.GetButtonDown("P1X")){
-            player1.GetComponent<Player1Controller>().ToggleEnergyLink();
-        }
-
-        if(Input.GetButtonUp("P1X")){
-            player1.GetComponent<Player1Controller>().ToggleEnergyLink();
-        }
+        CheckPlayersEnergized();
     }
 
-
-
+    private void CheckPlayersEnergized(){
+        if(player1.GetComponent<PlayerController>().IsEnergized() && player2.GetComponent<PlayerController>().IsEnergized()){
+            beam.SetActive(true);
+        }else{
+            beam.SetActive(false);
+        }
+    }
 }
