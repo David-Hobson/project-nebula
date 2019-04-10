@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    //REQUIREMENT: F-8, F-48
+    //REQUIREMENT: F-8, F-48, F-50
     //Move the player object based off of a X and Y values
     public void CalculateMovement(float x, float y){
         if(!isKnockedBack){
@@ -180,6 +180,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    //Requirement: F-45
     //Rotate the equipped weapon based off of X and Y values
     public void WeaponDirection(float x, float y){
 
@@ -197,7 +198,7 @@ public class PlayerController : MonoBehaviour {
         gunPivot.GetComponent<Transform>().rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
     }
 
-    //REQUIREMENT: F-49
+    //REQUIREMENT: F-46
     //Rotate and animate the player based on X and Y values
     //This function is the default direction based on the left stick
     public void DirectionAnimation(float x, float y){
@@ -231,7 +232,7 @@ public class PlayerController : MonoBehaviour {
         animator.SetFloat("SpeedY", y);
     }
 
-    //REQUIREMENT: F-48, F-49
+    //REQUIREMENT: F-46, F-48
     //Rotate and animate the player based on X and Y values but prioritizes the right stick movement
     public void MovementAnimation(float x, float y, float xr, float xy){
         if (x < 0.01 && y < 0.01) {
@@ -280,7 +281,7 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    //REQUIREMENT: F-50
+    //REQUIREMENT: F-47
     //Return the current armour amount
     public float GetArmour(){
         return armour;
@@ -292,7 +293,7 @@ public class PlayerController : MonoBehaviour {
         return speed;
     }
 
-    //REQUIREMENT: F-50
+    //REQUIREMENT: F-47
     //Return the maximum armour count
     public float GetMaxArmour(){
         return maxArmour;
@@ -310,7 +311,7 @@ public class PlayerController : MonoBehaviour {
     }
 
 
-    //REQUIREMENT: F-17, F-50, F-51
+    //REQUIREMENT: F-17, F-47, F-51
     //Upgrade the health, armour, or speed based on the type of upgrade
     public void Upgrade(int type){
         if(type == 1){
@@ -355,7 +356,7 @@ public class PlayerController : MonoBehaviour {
         return null;
     }
 
-    //REQUIREMENT: F-50
+    //REQUIREMENT: F-47
     //Damage the player's armour based on integer amount
     public void DamageArmour(int damageAmount){
         this.armour -= damageAmount;
@@ -371,7 +372,7 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    //REQUIREMENT: F-50
+    //REQUIREMENT: F-47
     //Heal player armour based on integer amount
     public void HealArmour(int healAmount){
         this.armour += healAmount;
@@ -414,7 +415,7 @@ public class PlayerController : MonoBehaviour {
     }
 
 
-    //REQUIREMENT: F-52
+    //REQUIREMENT: F-49
     //Set current weapon to new Weapon object parameter
     public void EquipWeapon(Weapon w){
         //TODO
