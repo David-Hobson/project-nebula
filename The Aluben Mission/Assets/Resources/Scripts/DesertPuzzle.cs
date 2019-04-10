@@ -21,6 +21,7 @@ public class DesertPuzzle : MonoBehaviour {
         CheckPlayersEnergized();
     }
 
+    //Checks if players are energized and creates the beam between players
     private void CheckPlayersEnergized(){
         if(player1.GetComponent<PlayerController>().IsEnergized() && player2.GetComponent<PlayerController>().IsEnergized()){
             beam.SetActive(true);

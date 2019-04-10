@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class ChangeColor : MonoBehaviour, IPointerClickHandler
 {
+    /*
+    Changes colour of the GUI when selecting items on the main menu.
+    */
+
 	void OnEnable ()
 	{
 	}

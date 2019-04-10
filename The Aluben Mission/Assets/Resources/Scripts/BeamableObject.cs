@@ -21,6 +21,7 @@ public class BeamableObject : MonoBehaviour {
 
 	}
 
+    //Calculates the charge amount for the object
     private void CalculateCharge(){
         if (beamed) {
             charge += Time.deltaTime;

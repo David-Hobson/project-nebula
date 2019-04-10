@@ -20,11 +20,12 @@ public class BeamControler : MonoBehaviour {
         CalculateBeamPosition();
 	}
 
+    //Calculates the beam position between two players
+    //Collision box and sprite are scalled according to players positions
     private void CalculateBeamPosition() {
         var centerPoint = player1.transform.position + (player2.transform.position - player1.transform.position) / 2;
         var playerDistance = Vector2.Distance(player1.transform.position, player2.transform.position);
 
-        //this.GetComponent<LineRenderer>().SetPositions(new[] { player1.transform.position, player2.transform.position });
         this.transform.position = centerPoint;
         this.GetComponent<BoxCollider2D>().size = new Vector2(0.06f, playerDistance);
         this.transform.position = centerPoint;

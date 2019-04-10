@@ -34,6 +34,7 @@ public class HomeWorldManager : MonoBehaviour {
         }
 	}
 
+    //Manages the dialogue events throughout the homeworld.
     void RunDialogue(){
         if(!player1.GetComponent<PlayerController>().GetInDialogue()){
             player1.GetComponent<PlayerController>().SetInDialogue(true);

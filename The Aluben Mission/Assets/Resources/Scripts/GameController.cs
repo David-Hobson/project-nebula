@@ -9,6 +9,11 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
+    /*
+     * Controls the main scenes for the game.
+    */
+
+
 	public bool click = false;
 
 	// Use this for initialization

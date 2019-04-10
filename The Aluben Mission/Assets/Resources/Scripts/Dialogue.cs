@@ -6,6 +6,9 @@ using UnityEngine;
 //information about a single dialogue
 [System.Serializable]
 public class Dialogue : MonoBehaviour {
+    /*
+     * Stores dialog information for dialogue boxes throughout the game.
+    */
 
     public string name;
 

@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour {
 
+    /*
+     * Manges how all dialogue is controller throughout the game
+    */
+
     public Text nameText;
     public Text dialogueText;
 
