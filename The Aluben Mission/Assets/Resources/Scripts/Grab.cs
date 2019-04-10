@@ -33,7 +33,7 @@ public class Grab : MonoBehaviour {
 
 	//Update tracking of relic and who is holding it 
 	void Update() {
-		completePuzzle ();
+		CompletePuzzle ();
 
 		//freeze relic in place one it has reached it's final destination
 		if (complete) {
@@ -80,8 +80,9 @@ public class Grab : MonoBehaviour {
 		}
 	}
 
+	//Requirement: F-31,51,52,53
 	//Detect when the relic has been placed back into its correct location ugly right now, box collider was being finicky
-	private void completePuzzle(){
+	private void CompletePuzzle(){
 		if(-0.25f <= this.transform.position.x && this.transform.position.x  <= -0.22f && -0.1f <= this.transform.position.y  && this.transform.position.y <= -0.08f && this.transform.position.z == 0){
 			complete = true;
 
