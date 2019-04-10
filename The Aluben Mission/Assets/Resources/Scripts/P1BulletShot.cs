@@ -10,13 +10,15 @@ public class P1BulletShot : MonoBehaviour {
         var xr = Input.GetAxis("P1RSX");
         var yr = Input.GetAxis("P1RSY");
 
+        var xl = Input.GetAxis("P1LSX");
+        var yl = Input.GetAxis("P1LSY");
 
-        if(Mathf.Abs(xr) < 0.1 && Mathf.Abs(yr) < 0.1){
-            CalculateBulletMovement(new Vector3(1, 0, 0));
-        } else{
+
+        if (Mathf.Abs(xr) > 0.1 || Mathf.Abs(yr) > 0.1) {
             CalculateBulletMovement(new Vector3(xr, yr, 0));
+        } else if (Mathf.Abs(xl) > 0.1 || Mathf.Abs(yl) > 0.1) {
+            CalculateBulletMovement(new Vector3(xl, yl, 0));
         }
-
 
     }
 
@@ -26,6 +28,10 @@ public class P1BulletShot : MonoBehaviour {
         vec.Normalize();
         this.GetComponent<Rigidbody2D>().velocity = vec * 3;
         Destroy(gameObject, 1);
+    }
+
+    public void SetShotDirection(float xr, float yr, float xl, float yl){
+
     }
 
     public string GetBulletType(){

@@ -13,13 +13,13 @@ public class HUDController : MonoBehaviour {
 	void Start () {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
-        boss = GameObject.Find("Boss");
+        boss = GameObject.Find("ShadowBoss");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        DisplayPlayer1Health();
-        DisplayPlayer2Health();
+        DisplayPlayerHealth(player1, 0);
+        DisplayPlayerHealth(player2, 1);
 
         if(boss != null){
             DisplayBossHealth();
@@ -27,37 +27,28 @@ public class HUDController : MonoBehaviour {
 
     }
 
-    void DisplayPlayer1Health(){
-        var player1Status = this.transform.GetChild(0);
-        if (player1 != null){
-            var currentHealth = player1.GetComponent<Player1Controller>().GetHealth();
-            var maxHealth = player1.GetComponent<Player1Controller>().GetMaxHealth();
-            player1Status.transform.GetChild(0).GetComponent<Slider>().value = currentHealth/maxHealth;
-            player1Status.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
+    //Updates the players current health on the HUD based on player health parameters
+    //Displayed to the user for feedback of the player status
+    void DisplayPlayerHealth(GameObject player, int num){
+        var playerStatus = this.transform.GetChild(num);
+        if (player != null){
+            var currentHealth = player1.GetComponent<PlayerController>().GetHealth();
+            var maxHealth = player1.GetComponent<PlayerController>().GetMaxHealth();
+            playerStatus.transform.GetChild(0).GetComponent<Slider>().value = currentHealth/maxHealth;
+            playerStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
         }else{
-            player1Status.transform.GetChild(0).GetComponent<Slider>().value = 0;
-            player1Status.transform.GetChild(1).GetComponent<Text>().text = "0/100";
+            playerStatus.transform.GetChild(0).GetComponent<Slider>().value = 0;
+            playerStatus.transform.GetChild(1).GetComponent<Text>().text = "0/100";
         }
 
     }
 
-    void DisplayPlayer2Health() {
-        var player2Status = this.transform.GetChild(1);
-        if (player2 != null) {
-            var currentHealth = player2.GetComponent<Player2Controller>().GetHealth();
-            var maxHealth = player2.GetComponent<Player2Controller>().GetMaxHealth();
-            player2Status.transform.GetChild(0).GetComponent<Slider>().value = currentHealth / maxHealth;
-            player2Status.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
-        } else {
-            player2Status.transform.GetChild(0).GetComponent<Slider>().value = 0;
-            player2Status.transform.GetChild(1).GetComponent<Text>().text = "0/100";
-        }
-    }
-
+    //Updates the boss' current health on the HUD based on boss health parameters
+    //Displayed to the user for feedback of the boss' health status
     void DisplayBossHealth() {
         var bossStatus = this.transform.GetChild(2);
         if (boss != null) {
-            var currentHealth = boss.GetComponent<Boss>().GetHealth();
+            var currentHealth = boss.GetComponent<Mage>().GetHealth();
             var maxHealth = 2000.0f;
             bossStatus.transform.GetChild(0).GetComponent<Slider>().value = currentHealth / maxHealth;
             bossStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
