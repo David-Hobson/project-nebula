@@ -7,10 +7,13 @@ public class BeamableObject : MonoBehaviour {
     private float charge;
     private bool beamed;
 
+    //private GameObject energize;
+
 	// Use this for initialization
 	void Start () {
         charge = 0;
         beamed = false;
+        //energize = this.transform.GetChild(0).gameObject;
 	}
 	
 	// Update is called once per frame
@@ -25,8 +28,10 @@ public class BeamableObject : MonoBehaviour {
     private void CalculateCharge(){
         if (beamed) {
             charge += Time.deltaTime;
+            //this.EnergizeOrb(beamed);
         } else {
             charge = 0;
+            //this.EnergizeOrb(beamed);
         }
     }
 
@@ -42,5 +47,9 @@ public class BeamableObject : MonoBehaviour {
             beamed = false;
         }
     }
+
+    //private void EnergizeOrb(bool energized){
+    //    energize.GetComponent<SpriteRenderer>().enabled = energized;
+    //}
 
 }
