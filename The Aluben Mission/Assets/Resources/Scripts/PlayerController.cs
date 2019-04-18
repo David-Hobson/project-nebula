@@ -120,11 +120,11 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (Input.GetButtonDown(btnL1)){
-            this.ToggleEnergyLink();
+            this.SetEnergyLink(true);
         }
 
         if (Input.GetButtonUp(btnL1)){
-            this.ToggleEnergyLink();
+            this.SetEnergyLink(false);
         }
 
 
@@ -173,6 +173,9 @@ public class PlayerController : MonoBehaviour {
             var spriteColor = this.GetComponent<SpriteRenderer>().color;
             this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 0.5f);
             invicibleTime += Time.deltaTime;
+
+            energized = false;
+            energyLink.GetComponent<SpriteRenderer>().enabled = energized;
             if (invicibleTime >= maxInvicibilityTime) {
                 isInvincible = false;
                 this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 1f);
@@ -477,9 +480,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     //Toggle the energy link between the two players
-    public void ToggleEnergyLink(){
-        energized = !energized;
-        energyLink.GetComponent<SpriteRenderer>().enabled = energized;
+    public void SetEnergyLink(bool set){
+        energized = set;
+        energyLink.GetComponent<SpriteRenderer>().enabled = set;
     }
 
     //Returns if the player is energized for the energy link

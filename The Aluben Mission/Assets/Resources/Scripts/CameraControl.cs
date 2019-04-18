@@ -8,6 +8,8 @@ public class CameraControl : MonoBehaviour {
     private GameObject player1;
     private GameObject player2;
 
+    private bool inScene;
+
 	//Initialize by finding both players on the screen
 	void Start () {
         player1 = GameObject.Find("Player 1");
@@ -19,13 +21,11 @@ public class CameraControl : MonoBehaviour {
             SceneManager.LoadScene("GameOver");
         }
 
-        var baseCameraPosition = CalculateCameraPosition();
-        //var offsetCameraPosition = CalculateCameraOffset();
+        if(!inScene){
+            var baseCameraPosition = CalculateCameraPosition();
+            transform.position = new Vector3(baseCameraPosition.x, baseCameraPosition.y, -1);
+        }
 
-        //Debug.Log(offsetCameraPosition.x + " | " + offsetCameraPosition.y);
-
-        //transform.position = new Vector3(baseCameraPosition.x + offsetCameraPosition.x * 0.5f, baseCameraPosition.y + offsetCameraPosition.y * 0.5f, -1);
-        transform.position = new Vector3(baseCameraPosition.x, baseCameraPosition.y, -1);
 	}
 
     //REQUIREMENT: F-53
@@ -53,5 +53,9 @@ public class CameraControl : MonoBehaviour {
 
     public Vector3 CalculateCameraOffset(){
         return (player1.transform.GetChild(0).transform.rotation * Vector3.down).normalized;
+    }
+
+    public void SetInScene(bool set){
+        inScene = set;
     }
 }
