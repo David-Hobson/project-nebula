@@ -15,15 +15,15 @@ public class LoadingScene : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(this.name == "Travelling"){
-            if (timeToLoad <= 50.0f) {
+        if(this.name == "Thaelia"){
+            if (timeToLoad >= 5.0f) {
                 SceneManager.LoadScene("SpiritForestWorld");
             } else {
                 timeToLoad += Time.deltaTime;
             }
-        }else{
-            if (timeToLoad <= 50.0f) {
-                SceneManager.LoadScene("ShadowBoss");
+        }else if(this.name == "Casurn"){
+            if (timeToLoad >= 5.0f) {
+                SceneManager.LoadScene("DesertWorld");
             } else {
                 timeToLoad += Time.deltaTime;
             }

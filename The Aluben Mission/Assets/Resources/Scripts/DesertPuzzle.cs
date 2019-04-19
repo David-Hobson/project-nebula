@@ -13,6 +13,12 @@ public class DesertPuzzle : MonoBehaviour {
     private bool finished;
     private float camMovement;
 
+    private float teleportTime;
+    private bool teleport;
+
+    public AudioClip teleportAura;
+    public AudioClip teleportBeam;
+
     // Use this for initialization
     void Start() {
         player1 = GameObject.Find("Player 1");
@@ -22,18 +28,26 @@ public class DesertPuzzle : MonoBehaviour {
 
         finished = false;
         camMovement = 0;
+
+        teleport = true;
+
+        player1.GetComponent<PlayerController>().SetInDialogue(true);
+        player2.GetComponent<PlayerController>().SetInDialogue(true);
+        player1.GetComponent<PlayerController>().SetDissapear(true);
+        player2.GetComponent<PlayerController>().SetDissapear(true);
     }
 
     // Update is called once per frame
     void Update() {
         CheckPlayersEnergized();
+        CheckTeleport();
 
         if(finished){
             camMovement += 0.001f;
             var direction = Vector3.MoveTowards(mainCamera.transform.position, barrier.transform.position, camMovement);
             mainCamera.transform.position = new Vector3(direction.x, direction.y, -1);
 
-            if(camMovement >= 0.2f){
+            if(camMovement >= 0.15f){
                 this.barrier.GetComponent<SpriteRenderer>().enabled = false;
                 if(!this.barrier.GetComponent<AudioSource>().isPlaying){
                     this.barrier.GetComponent<AudioSource>().Play();
@@ -41,13 +55,37 @@ public class DesertPuzzle : MonoBehaviour {
 
             }
 
-            if (camMovement >= 0.25) {
+            if (camMovement >= 0.2f) {
                 finished = false;
                 player1.GetComponent<PlayerController>().SetInDialogue(false);
                 player2.GetComponent<PlayerController>().SetInDialogue(false);
                 mainCamera.GetComponent<CameraControl>().SetInScene(false);
                 Destroy(this.barrier);
+                camMovement = 0;
             }
+        }
+    }
+
+    private void CheckTeleport(){
+        if(teleport){
+            teleportTime += Time.deltaTime;
+        }
+
+        if(teleportTime >= 1.5f){
+            player1.GetComponent<PlayerController>().SetTeleport(teleport);
+            player2.GetComponent<PlayerController>().SetTeleport(teleport);
+            if (!this.GetComponent<AudioSource>().isPlaying) {
+                this.GetComponent<AudioSource>().PlayOneShot(teleportBeam);
+            }
+        }
+
+        if(teleportTime >= 2.5f){
+            teleport = false;
+            this.GetComponent<AudioSource>().Stop();
+            this.GetComponent<AudioSource>().PlayOneShot(teleportAura);
+            player1.GetComponent<PlayerController>().SetTeleport(teleport);
+            player2.GetComponent<PlayerController>().SetTeleport(teleport);
+            teleportTime = 0;
         }
     }
 

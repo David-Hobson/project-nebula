@@ -31,7 +31,7 @@ public class DialogueManager : MonoBehaviour {
 
         animator.SetBool("IsOpen", true);
 
-        this.GetComponent<AudioSource>().PlayOneShot(enableDialogueSound, 0.5f);
+        this.GetComponent<AudioSource>().PlayOneShot(enableDialogueSound, 0.8f);
 
         nameText.text = dialogue.name;
 
@@ -64,7 +64,7 @@ public class DialogueManager : MonoBehaviour {
     {
         this.GetComponent<AudioSource>().PlayOneShot(dialogueReadoutSound, 0.5f);
         dialogueText.text = "";
-        foreach (char letter in sentence.ToCharArray ())
+        foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
             yield return null; 

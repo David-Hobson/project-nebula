@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour {
     private GameObject energyLink;
     private bool energized;
 
+    private GameObject teleport;
+    private bool teleporting;
+
     private Animator animator;
     private AudioSource audSource;
     private AudioClip shot;
@@ -91,6 +94,9 @@ public class PlayerController : MonoBehaviour {
 
         energyLink = this.transform.GetChild(1).gameObject;
         energized = false;
+
+        teleport = this.transform.GetChild(2).gameObject;
+        teleporting = false;
     }
 
     private void Update() {
@@ -490,5 +496,18 @@ public class PlayerController : MonoBehaviour {
     //Returns if the player is energized for the energy link
     public bool IsEnergized(){
         return this.energized;
+    }
+
+    public void SetTeleport(bool set){
+        this.teleporting = set;
+        this.SetInDialogue(set);
+        this.SetDissapear(set);
+        teleport.GetComponent<SpriteRenderer>().enabled = set;
+        teleport.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = set;
+    }
+
+    public void SetDissapear(bool set){
+        this.GetComponent<SpriteRenderer>().enabled = !set;
+        currentWeapon.GetComponent<SpriteRenderer>().enabled = !set;
     }
 }
