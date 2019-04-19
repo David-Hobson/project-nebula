@@ -20,7 +20,6 @@ public class BeamableObject : MonoBehaviour {
     public Sprite chargedOrb;
     public Sprite unchargedOrb;
 
-
 	// Use this for initialization
 	void Start () {
 

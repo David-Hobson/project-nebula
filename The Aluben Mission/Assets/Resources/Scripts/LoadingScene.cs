@@ -16,7 +16,7 @@ public class LoadingScene : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if(this.name == "Travelling"){
-            if (timeToLoad <= 20.0f) {
+            if (timeToLoad <= 50.0f) {
                 SceneManager.LoadScene("SpiritForestWorld");
             } else {
                 timeToLoad += Time.deltaTime;

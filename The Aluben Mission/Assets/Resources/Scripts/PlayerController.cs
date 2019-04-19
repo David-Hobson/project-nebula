@@ -111,6 +111,15 @@ public class PlayerController : MonoBehaviour {
                 Fire();
             }
 
+            if (Input.GetButtonDown(btnL1)) {
+                this.SetEnergyLink(true);
+            }
+
+            if (Input.GetButtonUp(btnL1)) {
+                this.SetEnergyLink(false);
+            }
+
+
         }
 
         if (Input.GetButtonDown(btnX)) {
@@ -118,15 +127,6 @@ public class PlayerController : MonoBehaviour {
         } else {
             interaction = false;
         }
-
-        if (Input.GetButtonDown(btnL1)){
-            this.SetEnergyLink(true);
-        }
-
-        if (Input.GetButtonUp(btnL1)){
-            this.SetEnergyLink(false);
-        }
-
 
     }
 
@@ -462,6 +462,8 @@ public class PlayerController : MonoBehaviour {
     //Set the player to be in a dialogue sequence
     public void SetInDialogue(bool d){
         inDialogue = d;
+        Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), GameObject.Find("Main Camera").GetComponent<EdgeCollider2D>(), d);
+        animator.SetBool("Moving", false);
     }
 
     //Set the player to be holding an object

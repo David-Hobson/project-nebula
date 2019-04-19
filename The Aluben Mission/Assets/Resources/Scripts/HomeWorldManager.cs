@@ -20,10 +20,11 @@ public class HomeWorldManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        float vect = Vector3.Distance(this.transform.position, player1.transform.position);
+        float vect1 = Vector3.Distance(this.transform.position, player1.transform.position);
+        float vect2 = Vector3.Distance(this.transform.position, player2.transform.position);
 
 
-        if (vect < 1.16f && player1.GetComponent<PlayerController>().GetInteraction()) {
+        if (Mathf.Min(vect1, vect2) < 1.16f && (player1.GetComponent<PlayerController>().GetInteraction() || player2.GetComponent<PlayerController>().GetInteraction())) {
             if(this.GetComponent<Dialogue>()){
                 this.RunDialogue();
             }
@@ -36,8 +37,10 @@ public class HomeWorldManager : MonoBehaviour {
 
     //Manages the dialogue events throughout the homeworld.
     void RunDialogue(){
-        if(!player1.GetComponent<PlayerController>().GetInDialogue()){
+        if(!player1.GetComponent<PlayerController>().GetInDialogue() && !player2.GetComponent<PlayerController>().GetInDialogue()) {
             player1.GetComponent<PlayerController>().SetInDialogue(true);
+            player2.GetComponent<PlayerController>().SetInDialogue(true);
+
             dialogueManager.GetComponent<DialogueManager>().StartDialogue(this.GetComponent<Dialogue>());
         }else{
             dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
@@ -45,6 +48,7 @@ public class HomeWorldManager : MonoBehaviour {
 
         if(dialogueManager.GetComponent<DialogueManager>().IsFinished()){
             player1.GetComponent<PlayerController>().SetInDialogue(false);
+            player2.GetComponent<PlayerController>().SetInDialogue(false);
         }
     }
 

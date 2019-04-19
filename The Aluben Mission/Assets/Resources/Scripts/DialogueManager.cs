@@ -12,6 +12,9 @@ public class DialogueManager : MonoBehaviour {
     public Text nameText;
     public Text dialogueText;
 
+    public AudioClip enableDialogueSound;
+    public AudioClip dialogueReadoutSound;
+
     public bool finishedDialogue;
 
     public Animator animator;
@@ -27,6 +30,8 @@ public class DialogueManager : MonoBehaviour {
     {
 
         animator.SetBool("IsOpen", true);
+
+        this.GetComponent<AudioSource>().PlayOneShot(enableDialogueSound, 0.5f);
 
         nameText.text = dialogue.name;
 
@@ -57,12 +62,14 @@ public class DialogueManager : MonoBehaviour {
 
     IEnumerator TypeSentence (string sentence)
     {
+        this.GetComponent<AudioSource>().PlayOneShot(dialogueReadoutSound, 0.5f);
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray ())
         {
             dialogueText.text += letter;
             yield return null; 
         }
+        this.GetComponent<AudioSource>().Stop();
     }
 
     void EndDialogue()

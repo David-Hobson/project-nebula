@@ -40,7 +40,7 @@ public class DesertChallenge : MonoBehaviour {
                     orbs[i].GetComponent<BeamableObject>().SetComplete();
                 }
                 puzzle.GetComponent<DesertPuzzle>().FinishChallenge(barrier);
-                //Destroy(barrier);
+                this.GetComponent<AudioSource>().Play();
             }
         }else{
             completeTime = 0;
