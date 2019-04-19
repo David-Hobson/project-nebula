@@ -32,8 +32,8 @@ public class HUDController : MonoBehaviour {
     void DisplayPlayerHealth(GameObject player, int num){
         var playerStatus = this.transform.GetChild(num);
         if (player != null){
-            var currentHealth = player1.GetComponent<PlayerController>().GetHealth();
-            var maxHealth = player1.GetComponent<PlayerController>().GetMaxHealth();
+            var currentHealth = player.GetComponent<PlayerController>().GetHealth();
+            var maxHealth = player.GetComponent<PlayerController>().GetMaxHealth();
             playerStatus.transform.GetChild(0).GetComponent<Slider>().value = currentHealth/maxHealth;
             playerStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
         }else{
