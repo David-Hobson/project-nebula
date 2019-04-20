@@ -27,6 +27,7 @@ public class NewEnemy : MonoBehaviour {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
         nebulite = Resources.Load<GameObject>("Prefabs/Crystal");
+		Physics2D.IgnoreCollision (this.GetComponent<BoxCollider2D> (), GameObject.Find ("MainCamera").GetComponent<EdgeCollider2D>());
     }
     /*
      * Update method
@@ -186,6 +187,10 @@ public class NewEnemy : MonoBehaviour {
             Destroy(gameObject);
             DropItem();
         }
+
+		if (other.gameObject.tag == "MainCamera") {
+			other.GetComponent<EdgeCollider2D> ();
+		}
     }
 
 }
