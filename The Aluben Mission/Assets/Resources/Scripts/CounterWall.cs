@@ -53,7 +53,7 @@ public class CounterWall : MonoBehaviour {
 		}
 	}
 
-	public void breakWall(){
+	private void breakWall(){
 		Destroy (wall);
 	}
 

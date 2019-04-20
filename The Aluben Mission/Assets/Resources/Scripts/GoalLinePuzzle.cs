@@ -40,11 +40,11 @@ public class GoalLinePuzzle : MonoBehaviour {
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.gameObject.name == "P1Projectile(Clone)" && player1.transform.position.x > this.GetComponent<BoxCollider2D>().offset.x) {
+		if (other.gameObject.name == "P1Projectile(Clone)" && player1.transform.position.x > this.transform.position.x) {
 			this.GetComponent<Rigidbody2D> ().velocity = new Vector3 (-1, 0, 0) * 0.5f;
 		} 
 
-		else if (other.gameObject.name == "P1Projectile(Clone)" && player1.transform.position.x < this.GetComponent<BoxCollider2D>().offset.x) {
+		else if (other.gameObject.name == "P1Projectile(Clone)" && player1.transform.position.x < this.transform.position.x) {
 			this.GetComponent<Rigidbody2D> ().velocity = new Vector3 (1, 0, 0) * 0.5f;
 		}
 
