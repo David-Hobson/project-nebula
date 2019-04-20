@@ -13,9 +13,15 @@ public class FossilFuel : MonoBehaviour {
 
     private GameObject player1;
     private GameObject player2;
+
+    private bool touched1;
+    private bool touched2;
     // Use this for initialization
     void Start () {
         finishTrans = false;
+        touched1 = false;
+        touched1 = false;
+
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
 
@@ -25,27 +31,21 @@ public class FossilFuel : MonoBehaviour {
         timeBtwTrans = startTimeBtwTrans;
 
         GetComponent<SpriteRenderer>().color = new Color(243f, 255f, 0f, transparentLevel);
+
+        InvokeRepeating("DoDamage", 1f, 1f);
+        InvokeRepeating("NewTransparent", 0.1f, 0.1f);
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Transparent();
 	}
 
-    public void Transparent()
+    public void NewTransparent()
     {
         if (transparentLevel < 1.0f)
         {
-            if (timeBtwTrans <= 0)
-            {
-                transparentLevel = transparentLevel + 0.4f;
-                GetComponent<SpriteRenderer>().color = new Color(243f, 255f, 0f, transparentLevel);
-                timeBtwTrans = startTimeBtwTrans;
-            }
-            else
-            {
-                timeBtwTrans -= Time.deltaTime;
-            }
+            transparentLevel += 0.1f;
+            GetComponent<SpriteRenderer>().color = new Color(243f, 255f, 0f, transparentLevel);
         }
         else
         {
@@ -53,23 +53,46 @@ public class FossilFuel : MonoBehaviour {
             FossAnim.SetBool("TransparentDone", true);
         }
     }
-
+   
+    public void DoDamage()
+    {
+        if(touched1 == true)
+        {
+            player1.GetComponent<Player1Controller>().Damage(5);
+        }
+        if(touched2 == true)
+        {
+            player2.GetComponent<Player2Controller>().Damage(5);
+        }
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(finishTrans == true)
         {
-            if (other.gameObject.name == "Fire")
-            {
-                Destroy(gameObject);
-            }
             if (other.gameObject.name == "Player 1")
             {
-                player1.GetComponent<Player1Controller>().Damage(5);
+                touched1 = true;
             }
             if (other.gameObject.name == "Player 2")
             {
-                player2.GetComponent<Player2Controller>().Damage(5);
+                touched2 = true;
             }
         }
     }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.name == "Player 1")
+        {
+            touched1 = false;
+        }
+        if (other.gameObject.name == "Player 2")
+        {
+            touched2 = false;
+        }
+    }
+    
+
+
 }

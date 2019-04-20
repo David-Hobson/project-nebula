@@ -189,7 +189,7 @@ public class NewEnemy : MonoBehaviour {
     //triger function, take damage while enemy collides with bullets
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "P1Bullet" || other.gameObject.tag == "P2Bullet")
         {
             health -= 25;
             Destroy(other.gameObject);

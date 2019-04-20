@@ -10,6 +10,9 @@ public class DesertBoss : MonoBehaviour {
     private GameObject player2;
     private GameObject nebulite;
     private GameObject fuel;
+    private GameObject fireMonster;
+    private GameObject fire;
+    private GameObject water;
     //--
     private int playerNumber;
     public Vector2 FuelTarget;
@@ -20,43 +23,80 @@ public class DesertBoss : MonoBehaviour {
     //-----
     private int playerDmg;
 
+    private bool waterExisted = false;
 
-    // ---
-    private float timeBtwSpawn;
-    private float startTimeBtwSpawn;
-
-    private bool hitLeftDone;
-    private bool hitRightDone;
     void Start () {
         bossAnim = GetComponent<Animator>();
         fuel = Resources.Load<GameObject>("Prefabs/Fuel");
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
         nebulite = Resources.Load<GameObject>("Prefabs/Crystal");
+        fireMonster = Resources.Load<GameObject>("Prefabs/FireMonster");
+        fire = Resources.Load<GameObject>("Prefabs/Fire");
+        water = Resources.Load<GameObject>("Prefabs/splash");
 
-        health = 20;
+        health = 2000;
         collisionDMG = 10;
 
         GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.05f);
 
-        hitLeftDone = false;
-        hitRightDone = false;
-
-        startTimeBtwSpawn = 3.0f;
-        timeBtwSpawn = startTimeBtwSpawn;
+        InvokeRepeating("SpawnFuel", 3f, 2f);
     }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate () {
         if (Target() != null)
         {
             Vector3 vect = Target().transform.position - transform.position;
             TakeDamagedAnimation();
-            SpawnFossilFuel(vect);
 
+            RestartFuel();
         }
 
     }
+    public void StopFuel()
+    {
+            GameObject[] fuels;
+            fuels = GameObject.FindGameObjectsWithTag("Fuel");
+            if (fuels.Length >= 10)
+            {
+                CancelInvoke("SpawnFuel");
+                NewFireWater();
+                Debug.Log("cancel");
+            }
+    }
+
+    public void RestartFuel()
+    {
+        if (waterExisted == true)
+        {
+            if (!GameObject.FindWithTag("splash"))
+            {
+                InvokeRepeating("SpawnFuel", 3f, 1f);
+                waterExisted = false;
+            }
+        }
+    }
+
+    public void NewFireWater()
+    {
+        bossAnim.SetBool("HitRight", true);
+        Instantiate(fireMonster, transform.position + new Vector3(0f, -2.0f), Quaternion.identity);
+
+        var go = Instantiate(fire, transform.position + new Vector3(-1.0f, -1.0f), Quaternion.identity);
+        //go.GetComponent<Fire>().target = Target();
+        go.GetComponent<Fire>().target = player2;
+
+        Instantiate(water, transform.position + new Vector3(1.0f, -1.0f), Quaternion.identity);
+
+        waterExisted = true;
+    }
+    
 
     public void GetPlayerNumber()
     {
@@ -71,30 +111,25 @@ public class DesertBoss : MonoBehaviour {
         }
     }
 
-    public void SpawnFossilFuel(Vector3 vect)
+    public void SpawnFuel()
     {
-            if (timeBtwSpawn <= 0)
-            {
-                GetPlayerNumber();
-                Debug.Log("spawn");
-                Instantiate(fuel, FuelTarget, Quaternion.identity);
-                
+        bossAnim.SetBool("HitLeft", true);
 
-                timeBtwSpawn = startTimeBtwSpawn;
-            }
-            else
-            {
-                timeBtwSpawn -= Time.deltaTime;
-            }
+        GetPlayerNumber();
+        Debug.Log("spawn" + playerNumber);
+        Instantiate(fuel, FuelTarget, Quaternion.identity);
+
+        StopFuel();
     }
+    
 
     public void HitLeftDone()
     {
-        hitLeftDone = true;
+        bossAnim.SetBool("HitLeft", false);
     }
     public void HitRightDone()
     {
-        hitRightDone = true;
+        bossAnim.SetBool("HitRight", false);
     }
 
     public GameObject Target()
@@ -103,19 +138,18 @@ public class DesertBoss : MonoBehaviour {
         {
             return null;
         }
-        else if (player1 == null)
+        if (player1 == null)
         {
             return player2;
         }
-        else if (player2 == null)
+        if (player2 == null)
         {
             return player1;
         }
         else
         {
-            float rangePlayer1 = Vector3.Distance(transform.position, player1.transform.position);
-            float rangePlayer2 = Vector3.Distance(transform.position, player2.transform.position);
-            if (rangePlayer1 < rangePlayer2)
+            playerNumber = Random.Range(1, 3);
+            if (playerNumber == 1)
             {
                 return player1;
             }
@@ -126,17 +160,6 @@ public class DesertBoss : MonoBehaviour {
         }
     }
 
-    public Vector2 TargetCurrentPosition()
-    {
-        Vector2 position = new Vector2(Target().transform.position.x, Target().transform.position.y);
-        return position;
-    }
-
-    public Vector2 TargetCurrentPosition(GameObject player)
-    {
-        Vector2 position = new Vector2(player.transform.position.x, player.transform.position.y);
-        return position;
-    }
 
     public void DropItem()
     {
@@ -147,14 +170,43 @@ public class DesertBoss : MonoBehaviour {
         }
     }
 
+    public float DistanceDamage(GameObject player)
+    {
+        Vector3 diff = transform.position - player.transform.position;
+        float distance = diff.sqrMagnitude;
+
+        if (distance >=0 && distance <=0.4)
+        {
+            return 1.0f;
+        }
+        if(distance > 0.4 && distance <= 0.8)
+        {
+            return 0.8f;
+        }
+        if (distance > 0.8 && distance <= 1.2)
+        {
+            return 0.4f;
+        }
+        else
+        {
+            return 0.1f;
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "P1Bullet")
         {
-            health -= 25;
+            health -= 20 * DistanceDamage(player1);
             Destroy(other.gameObject);
             damaged = 0;
         }
+        if (other.gameObject.tag == "P2Bullet")
+        {
+            health -= 20 * DistanceDamage(player2);
+            Destroy(other.gameObject);
+            damaged = 0;
+        }
+
         if (health <= 0)
         {
             Destroy(gameObject);
