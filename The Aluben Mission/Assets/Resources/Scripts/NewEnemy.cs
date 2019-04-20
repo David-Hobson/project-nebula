@@ -187,10 +187,7 @@ public class NewEnemy : MonoBehaviour {
             Destroy(gameObject);
             DropItem();
         }
-
-		if (other.gameObject.tag == "MainCamera") {
-			other.GetComponent<EdgeCollider2D> ();
-		}
+			
     }
 
 }

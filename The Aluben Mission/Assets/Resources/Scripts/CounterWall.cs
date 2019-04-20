@@ -8,6 +8,9 @@ public class CounterWall : MonoBehaviour {
 	private int stageOneEnemyCounter;
 
 	private int enemyCounter;
+	private AudioClip breaking;
+
+	private bool played;
 	/*
 	// Use this for initialization
 	void Start () {
@@ -31,18 +34,27 @@ public class CounterWall : MonoBehaviour {
 	*/
 
 	void Start(){
-		
+		breaking = wall.GetComponent<AudioSource> ().clip;
+		played = false;
 	}
 
 	void Update(){
 		enemyCounter = wall.transform.childCount;
-		BreakWall ();
+		EnemiesDefeated ();
 	}
 
-	public void BreakWall(){
+	public void EnemiesDefeated(){
 		if (enemyCounter == 0) {
-			Destroy (wall);
+			if (played == false) {
+				wall.GetComponent<AudioSource> ().PlayOneShot (breaking, 1);
+				played = true;
+			}
+			Invoke ("breakWall", 2);
 		}
+	}
+
+	public void breakWall(){
+		Destroy (wall);
 	}
 
 }
