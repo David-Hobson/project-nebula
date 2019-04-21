@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class SelectOnInput : MonoBehaviour
@@ -8,13 +9,26 @@ public class SelectOnInput : MonoBehaviour
 
     public EventSystem eventSystem;
     public GameObject selectedObject;
+    public GameObject startObject;
 
     private bool buttonSelected;
 
     // Use this for initialization
     void Start()
     {
+        startObject = selectedObject;
+        OnEnable();
+    }
 
+    private void OnEnable()
+    {
+        eventSystem.SetSelectedGameObject(null);
+        if (startObject != null) { 
+            eventSystem.SetSelectedGameObject(startObject);
+            startObject.GetComponent<Button>().Select();
+            startObject.GetComponent<Button>().OnSelect(null);
+            buttonSelected = true;
+        }
     }
 
     //update when there is a keyboard or controller pressed.

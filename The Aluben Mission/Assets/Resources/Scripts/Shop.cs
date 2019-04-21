@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class Shop : MonoBehaviour {
 
@@ -59,10 +60,10 @@ public class Shop : MonoBehaviour {
             else
                 unlock[i] = false;
         }
-        p1shop.SetActive(false);
-        p2shop.SetActive(false);
-        p1equip.SetActive(false);
-        p2equip.SetActive(false);
+        toggleMenu(p1shop, false);
+        toggleMenu(p2shop, false);
+        toggleMenu(p1equip, false);
+        toggleMenu(p2equip, false);
         this.isOpen = false;
     }
 
@@ -92,9 +93,18 @@ public class Shop : MonoBehaviour {
     {
         button = button + "Equip";
         if (unlocked)
+        {
             GameObject.Find(button).transform.GetChild(2).GetComponent<Text>().text = "Tier: " + tier;
+            GameObject.Find(button).transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            GameObject.Find(button).GetComponent<Button>().interactable = true;
+        }
         else
+        {
             GameObject.Find(button).transform.GetChild(2).GetComponent<Text>().text = "Locked";
+            GameObject.Find(button).transform.GetChild(0).GetComponent<Image>().color = Color.gray;
+            GameObject.Find(button).GetComponent<Button>().interactable = false;
+        }
+            
 
     }
 
@@ -122,6 +132,30 @@ public class Shop : MonoBehaviour {
         GameObject.Find(button).transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Icons/P" + player + type + tier);
     }
     
+    public void toggleMenu(GameObject obj, bool flip)
+    {
+        obj.GetComponent<Canvas>().enabled = flip;
+        obj.GetComponent<SelectOnInput>().enabled = flip;
+        for (int i = 0; i < obj.transform.childCount; i++)
+        {
+            if (obj.transform.GetChild(i).GetComponent<Button>() != null)
+            {
+                obj.transform.GetChild(i).GetComponent<Button>().enabled = flip;
+            }
+            else if(obj.transform.GetChild(i).GetComponent<HorizontalLayoutGroup>() != null)
+            {
+                for (int j = 0; j < obj.transform.GetChild(i).childCount; j++)
+                {
+                    obj.transform.GetChild(i).GetChild(j).GetComponent<Button>().enabled = flip;
+                }
+            }
+            //if (flip && i == 0) {
+                //obj.transform.GetChild(0).GetComponent<Button>().OnSelect(null);
+                //obj.transform.GetChild(0).GetComponent<Button>().IsHighlighted();
+            //}
+        }
+
+    }
 
     public void PurchaseGun(int index)
     {
@@ -129,7 +163,6 @@ public class Shop : MonoBehaviour {
         int cost = 0;
         if (tier == 0 && price[index] != 0) { 
             cost = price[index];
-            price[index] = 0;
         }
         else
         {
@@ -139,6 +172,7 @@ public class Shop : MonoBehaviour {
             
         if (cost <= cash && tier < 4)
         {
+            price[index] = 0;
             if (!unlock[index])
                 unlock[index] = true;
             nebulite.RemoveNebulite(cost);
@@ -196,41 +230,45 @@ public class Shop : MonoBehaviour {
 
     public void openShop(int player)
     {
+        EventSystem.current.SetSelectedGameObject(null);
         currentPlayer = player;
         this.isOpen = true;
         if (player == 1)
         {
             OpenMenu[0] = true;
             OpenMenu[2] = false;
-            p1equip.SetActive(false);
-            p1shop.SetActive(true);
+            toggleMenu(p1equip, false);
+            toggleMenu(p1shop, true);
         }
         else {
             OpenMenu[1] = true;
             OpenMenu[3] = false;
-            p2equip.SetActive(false);
-            p2shop.SetActive(true);
+            toggleMenu(p2equip, false);
+            toggleMenu(p2shop, true);
         }
+        success.Play();
     }
 
     public void openEquip()
     {
+        EventSystem.current.SetSelectedGameObject(null);
         if (currentPlayer == 1) {
             OpenMenu[2] = true;
             OpenMenu[0] = false;
-            p1equip.SetActive(true);
-            p1shop.SetActive(false);
+            toggleMenu(p1equip, true);
+            toggleMenu(p1shop, false);
             for (int i = 0; i < 4; i++)
                 updateButton("P1" + guns[i], playerGuns[i], unlock[i]);
         }
         else {
             OpenMenu[3] = true;
             OpenMenu[1] = false;
-            p2equip.SetActive(true);
-            p2shop.SetActive(false);
+            toggleMenu(p2equip, true);
+            toggleMenu(p2shop, false);
             for (int i = 0; i < 4; i++)
                 updateButton("P2" + guns[i], playerGuns[i], unlock[i]);
         }
+        success.Play();
     }
 
     public bool isClosed()
@@ -242,10 +280,10 @@ public class Shop : MonoBehaviour {
     {
         currentPlayer = 0;
         this.isOpen = false;
-        p1shop.SetActive(false);
-        p2shop.SetActive(false);
-        p1equip.SetActive(false);
-        p2equip.SetActive(false);
+        toggleMenu(p1shop, false);
+        toggleMenu(p2shop, false);
+        toggleMenu(p1equip, false);
+        toggleMenu(p2equip, false);
     }
 
     public int[] getPrice() { return price; }

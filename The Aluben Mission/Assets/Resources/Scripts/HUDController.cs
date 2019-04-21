@@ -38,7 +38,7 @@ public class HUDController : MonoBehaviour {
             playerStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
         }else{
             playerStatus.transform.GetChild(0).GetComponent<Slider>().value = 0;
-            playerStatus.transform.GetChild(1).GetComponent<Text>().text = "0/100";
+            playerStatus.transform.GetChild(1).GetComponent<Text>().text = "Dead";
         }
 
     }

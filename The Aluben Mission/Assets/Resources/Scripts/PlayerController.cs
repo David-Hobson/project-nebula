@@ -516,6 +516,7 @@ public class PlayerController : MonoBehaviour {
             }
 
         }
+        currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
