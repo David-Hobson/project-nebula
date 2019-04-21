@@ -19,6 +19,8 @@ public class DesertPuzzle : MonoBehaviour {
     public AudioClip teleportAura;
     public AudioClip teleportBeam;
 
+    private float camSpeed = 0.001f;
+
     // Use this for initialization
     void Start() {
         player1 = GameObject.Find("Player 1");
@@ -26,7 +28,9 @@ public class DesertPuzzle : MonoBehaviour {
         mainCamera = GameObject.Find("Main Camera");
         beam = GameObject.Find("Beam");
 
-        finished = false;
+        finished = true;
+        barrier = this.gameObject;
+
         camMovement = 0;
 
         teleport = true;
@@ -35,6 +39,9 @@ public class DesertPuzzle : MonoBehaviour {
         player2.GetComponent<PlayerController>().SetInDialogue(true);
         player1.GetComponent<PlayerController>().SetDissapear(true);
         player2.GetComponent<PlayerController>().SetDissapear(true);
+
+        mainCamera.GetComponent<CameraControl>().SetInScene(true);
+
     }
 
     // Update is called once per frame
@@ -43,7 +50,7 @@ public class DesertPuzzle : MonoBehaviour {
         CheckTeleport();
 
         if(finished){
-            camMovement += 0.001f;
+            camMovement += camSpeed;
             var direction = Vector3.MoveTowards(mainCamera.transform.position, barrier.transform.position, camMovement);
             mainCamera.transform.position = new Vector3(direction.x, direction.y, -1);
 
@@ -60,7 +67,9 @@ public class DesertPuzzle : MonoBehaviour {
                 player1.GetComponent<PlayerController>().SetInDialogue(false);
                 player2.GetComponent<PlayerController>().SetInDialogue(false);
                 mainCamera.GetComponent<CameraControl>().SetInScene(false);
-                Destroy(this.barrier);
+                if(this.barrier.name != "DesertPuzzle"){
+                    Destroy(this.barrier);
+                }
                 camMovement = 0;
             }
         }
