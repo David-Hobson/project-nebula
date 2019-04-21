@@ -8,9 +8,11 @@ public class P1BulletShot : MonoBehaviour {
     private float[] speed = { 3f, 2.5f, 4f, 12f };
     private int damage;
     public int type;
+    public Vector3 spawnPos;
 
     //Initialize bullet based on right stick position of player 1
     void Start() {
+        spawnPos = transform.position;
         var xr = Input.GetAxis("P1RSX");
         var yr = Input.GetAxis("P1RSY");
 

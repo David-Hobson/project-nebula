@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mage : MonoBehaviour
+public class Mage : NewEnemy
 {
     private Animator mageAnim; //Boss Animator
     private GameObject player1;
@@ -12,7 +12,7 @@ public class Mage : MonoBehaviour
     private int playerNumber;
     public Vector2 tentacleTarget;
 
-    public float health;
+    public int health;
     private int collisionDMG;
     private int magicDMG;
     private float damaged;
@@ -31,13 +31,14 @@ public class Mage : MonoBehaviour
 
     private int playerDamage = 15;
 
-    public float GetHealth()
+    /*
+    public override float GetHealth()
     {
         return health;
     }
-
+    */
     // Use this for initialization
-    void Start()
+    public override void Start()
     {
         mageAnim = GetComponent<Animator>();
         player1 = GameObject.Find("Player 1");
@@ -60,10 +61,12 @@ public class Mage : MonoBehaviour
 
         isAttacking = false;
         isAttackFinished = false;
+        SetEnemyStatus(speed, 2000, 10.0f, 10, 20);
+        //SetEnemyStatus(speed, health, awareDistance, collisionDMG, 20);
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    public override void FixedUpdate()
     {
         if (Target() != null)
         {
@@ -154,16 +157,17 @@ public class Mage : MonoBehaviour
         isAttackFinished = true;
     }
 
+    /*
     public void TakeDamagedAnimation()
     {
         this.GetComponent<SpriteRenderer>().color = new Color(255, damaged, damaged);
         damaged += 0.1f;
     }
-
+    */
     /*
      * the boss moves after it go into the ground
      */ 
-    public void Movement(Vector3 vect)
+    public override void Movement(Vector3 vect)
     {
         if (vect.magnitude <= awareDistance)
         {
@@ -191,8 +195,9 @@ public class Mage : MonoBehaviour
         }
     }
 
-    //selects target
-    public GameObject Target()
+
+    
+    public override GameObject Target()
     {
         if (player1 == null && player2 == null)
         {
@@ -233,7 +238,7 @@ public class Mage : MonoBehaviour
         return position;
     }
 
-
+    /*
     public void DropItem()
     {
         for (int i = 0; i < 20; i++)
@@ -242,7 +247,7 @@ public class Mage : MonoBehaviour
             go.GetComponent<DroppedItem>().Target = Target().transform;
         }
     }
-
+    */
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "P1Bullet" || other.gameObject.tag == "P2Bullet")
@@ -258,6 +263,7 @@ public class Mage : MonoBehaviour
             Destroy(gameObject);
             DropItem();
         }
+
 
     }
 

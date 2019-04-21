@@ -23,9 +23,12 @@ public class DesertBoss : MonoBehaviour {
     //-----
     private int playerDmg;
 
+    private Vector3 spawnPos;
+
     private bool waterExisted = false;
 
     void Start () {
+
         bossAnim = GetComponent<Animator>();
         fuel = Resources.Load<GameObject>("Prefabs/Fuel");
         player1 = GameObject.Find("Player 1");

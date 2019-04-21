@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tentacle : MonoBehaviour {
+public class Tentacle : NewEnemy {
 
     private float speed;
     private GameObject player1;
     private GameObject player2;
     private int health;
-    private float damaged;
     private bool rootGrowFinished;
     private Animator tentacleAnim;
     public Vector2 target;
 
-    void Start () {
-        player1 = GameObject.Find("Player 1");
-        player2 = GameObject.Find("Player 2");
+    public override void Start () {
 
         speed = 0.15f;
         health = 150;
+
+        SetEnemyStatus(speed, health, 10, 15, 1);
+
+        player1 = GameObject.Find("Player 1");
+        player2 = GameObject.Find("Player 2");
+
         rootGrowFinished = false;
         tentacleAnim = GetComponent<Animator>();
     }
 
 	
-	void FixedUpdate () {
+	public override void FixedUpdate () {
         if (rootGrowFinished == true)
         {
             tentacleAnim.SetBool("GrowFinished", true);
@@ -39,11 +42,7 @@ public class Tentacle : MonoBehaviour {
         rootGrowFinished = true;
     }
 
-    public void TakeDamagedAnimation()
-    {
-        this.GetComponent<SpriteRenderer>().color = new Color(255, damaged, damaged);
-        damaged += 0.1f;
-    }
+
     
     private void OnTriggerEnter2D(Collider2D other)
     {

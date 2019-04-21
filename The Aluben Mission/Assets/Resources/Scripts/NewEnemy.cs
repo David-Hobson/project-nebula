@@ -101,7 +101,7 @@ public class NewEnemy : MonoBehaviour {
      * find enemy's target, either player1 or player2
      * if both players are alive, the enemy selects the closer player 
      */
-    public GameObject Target()
+    public virtual GameObject Target()
     {
 
         if (player1 == null && player2 == null)
@@ -186,7 +186,7 @@ public class NewEnemy : MonoBehaviour {
             Destroy(other.gameObject);
             damaged = 0;
         }
-
+        if(other.gameObject)
 
         if (health <= 0)
         {
