@@ -20,7 +20,7 @@ public class Nebulite : MonoBehaviour
             PlayerPrefs.DeleteAll();
             PlayerPrefs.SetInt("P1Weapon", 0);
             PlayerPrefs.SetInt("P2Weapon", 0);
-            total = 500; //to be later changed to allow save/load
+            total = 600; //to be later changed to allow save/load
             level = 0; //nebulite aquired starts at zero
         }
         else if (instance != this)

@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
             case 0:
                 name = "Pistol";
                 fireRate = 4;
-                damage = new int[] { 25, 38, 50, 75 };
+                damage = new int[] { 25, 25, 38, 50, 75 };
                 break;
             case 1:
                 name = "Cannon";
