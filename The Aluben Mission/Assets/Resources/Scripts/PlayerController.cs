@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
     private AudioSource audSource;
     private AudioClip shot;
 
-    private float health;
+    public float health;
     private float maxHealth;
 
     private float armour;

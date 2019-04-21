@@ -15,8 +15,15 @@ public class FireMonster : MonoBehaviour {
 
     private Color myColor;
 
-    private GameObject p1Bullet;
-    private GameObject p2Bullet;
+    private GameObject p1Bullet0;
+    private GameObject p1Bullet1;
+    private GameObject p1Bullet2;
+    private GameObject p1Bullet3;
+
+    private GameObject p2Bullet0;
+    private GameObject p2Bullet1;
+    private GameObject p2Bullet2;
+    private GameObject p2Bullet3;
 
     private float health=100;
 
@@ -34,8 +41,16 @@ public class FireMonster : MonoBehaviour {
         timeBtwExplosion = startTimeBtwExplosion;
 
         myColor = new Color(0.3443f, 0.9035f, 1f, 1f);
-        p1Bullet = Resources.Load<GameObject>("Prefabs/P1Projectile");
-        p2Bullet = Resources.Load<GameObject>("Prefabs/P2Projectile");
+
+        p1Bullet0 = Resources.Load<GameObject>("Prefabs/P1Projectile0");
+        p1Bullet1 = Resources.Load<GameObject>("Prefabs/P1Projectile1");
+        p1Bullet2 = Resources.Load<GameObject>("Prefabs/P1Projectile2");
+        p1Bullet3 = Resources.Load<GameObject>("Prefabs/P1Projectile3");
+
+        p2Bullet0 = Resources.Load<GameObject>("Prefabs/P2Projectile0");
+        p2Bullet1 = Resources.Load<GameObject>("Prefabs/P2Projectile1");
+        p2Bullet2 = Resources.Load<GameObject>("Prefabs/P2Projectile2");
+        p2Bullet3 = Resources.Load<GameObject>("Prefabs/P2Projectile3");
     }
 	
 	// Update is called once per frame
@@ -110,7 +125,7 @@ public class FireMonster : MonoBehaviour {
 
             Destroy(other.gameObject);
         }
-        if (other.gameObject.tag == "P1Bullet" && p1Bullet.GetComponent<SpriteRenderer>().color == myColor || other.gameObject.tag == "P2Bullet" && p2Bullet.GetComponent<SpriteRenderer>().color == myColor)
+        if (other.gameObject.tag == "P1Bullet" && p1Bullet0.GetComponent<SpriteRenderer>().color == myColor || p1Bullet1.GetComponent<SpriteRenderer>().color == myColor || p1Bullet2.GetComponent<SpriteRenderer>().color == myColor || p1Bullet3.GetComponent<SpriteRenderer>().color == myColor)
         {
             health -= 20;
             Destroy(other.gameObject);
