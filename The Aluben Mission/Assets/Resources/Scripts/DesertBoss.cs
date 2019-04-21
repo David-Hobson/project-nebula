@@ -214,11 +214,11 @@ public class DesertBoss : MonoBehaviour {
         }
         if (other.gameObject.name == "Player 1")
         {
-            player1.GetComponent<Player1Controller>().Damage(collisionDMG);
+            player1.GetComponent<PlayerController>().Damage(collisionDMG, player1.transform.position - transform.position);
         }
         if (other.gameObject.name == "Player 2")
         {
-            player2.GetComponent<Player2Controller>().Damage(collisionDMG);
+            player2.GetComponent<PlayerController>().Damage(collisionDMG, player2.transform.position - transform.position);
         }
     }
 
@@ -227,11 +227,11 @@ public class DesertBoss : MonoBehaviour {
     {
         if (other.gameObject.name == "Player 1")
         {
-            player1.GetComponent<Player1Controller>().Damage(collisionDMG);
+            player1.GetComponent<PlayerController>().Damage(collisionDMG, player1.transform.position - transform.position);
         }
         if (other.gameObject.name == "Player 2")
         {
-            player2.GetComponent<Player2Controller>().Damage(collisionDMG);
+            player2.GetComponent<PlayerController>().Damage(collisionDMG, player2.transform.position - transform.position);
         }
 
     }

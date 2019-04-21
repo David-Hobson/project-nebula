@@ -105,8 +105,8 @@ public class FireMonster : MonoBehaviour {
         {
             fireAnim.SetBool("isExplosion", true);
 
-            player1.GetComponent<Player1Controller>().Damage(10);
-            player2.GetComponent<Player2Controller>().Damage(10);
+            player1.GetComponent<PlayerController>().Damage(10, player1.transform.position - transform.position);
+            player2.GetComponent<PlayerController>().Damage(10, player2.transform.position - transform.position);
 
             Destroy(other.gameObject);
         }

@@ -32,11 +32,11 @@ public class Fire : MonoBehaviour {
     {
         if (touched1 == true)
         {
-            player1.GetComponent<Player1Controller>().Damage(2);
+            player1.GetComponent<PlayerController>().Damage(2, player1.transform.position - transform.position);
         }
         if (touched2 == true)
         {
-            player2.GetComponent<Player2Controller>().Damage(2);
+            player2.GetComponent<PlayerController>().Damage(2, player2.transform.position - transform.position);
         }
     }
 
