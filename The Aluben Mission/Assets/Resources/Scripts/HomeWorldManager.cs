@@ -38,13 +38,6 @@ public class HomeWorldManager : MonoBehaviour
             HUDController.SetActive(true);
             player1.GetComponent<PlayerController>().SetInDialogue(false);
         }
-        else if (vect < 1.16f && player1.GetComponent<PlayerController>().GetInteraction())
-        {
-            player = 1;
-            if (this.GetComponent<Dialogue>())
-            {
-                this.RunDialogue();
-            }
 
         if (Mathf.Min(vect1, vect2) < 1.16f && (player1.GetComponent<PlayerController>().GetInteraction() || player2.GetComponent<PlayerController>().GetInteraction())) {
             if(this.GetComponent<Dialogue>()){
@@ -69,16 +62,6 @@ public class HomeWorldManager : MonoBehaviour
         }else{
             dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
         }
-        else { 
-            if (!player2.GetComponent<PlayerController>().GetInDialogue())
-            {
-                player2.GetComponent<PlayerController>().SetInDialogue(true);
-                dialogueManager.GetComponent<DialogueManager>().StartDialogue(this.GetComponent<Dialogue>());
-            }
-            else
-            {
-                dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
-            }
 
         if(dialogueManager.GetComponent<DialogueManager>().IsFinished()){
             player1.GetComponent<PlayerController>().SetInDialogue(false);
