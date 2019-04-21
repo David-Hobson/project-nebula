@@ -37,16 +37,10 @@ public class HomeWorldManager : MonoBehaviour
             menutoggle = false;
             HUDController.SetActive(true);
             player1.GetComponent<PlayerController>().SetInDialogue(false);
+            player2.GetComponent<PlayerController>().SetInDialogue(false);
         }
-        else if (vect < 1.16f && player1.GetComponent<PlayerController>().GetInteraction())
-        {
-            player = 1;
-            if (this.GetComponent<Dialogue>())
-            {
-                this.RunDialogue();
-            }
 
-        if (Mathf.Min(vect1, vect2) < 1.16f && (player1.GetComponent<PlayerController>().GetInteraction() || player2.GetComponent<PlayerController>().GetInteraction())) {
+        else if (Mathf.Min(vect1, vect2) < 1.16f && (player1.GetComponent<PlayerController>().GetInteraction() || player2.GetComponent<PlayerController>().GetInteraction())) {
             if(this.GetComponent<Dialogue>()){
                 this.RunDialogue();
             }
@@ -69,20 +63,25 @@ public class HomeWorldManager : MonoBehaviour
         }else{
             dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
         }
-        else { 
-            if (!player2.GetComponent<PlayerController>().GetInDialogue())
+        if(dialogueManager.GetComponent<DialogueManager>().IsFinished()){
+            if (dialogueManager.GetComponent<DialogueManager>().getName() == "Tobs")
             {
+                float vect1 = Vector3.Distance(this.transform.position, player1.transform.position);
+                float vect2 = Vector3.Distance(this.transform.position, player2.transform.position);
+                if (vect1 < 1.16f)
+                    player = 1;
+                else 
+                    player = 2;
+                HUDController.SetActive(false);
+                OpenShop(player);
+                player1.GetComponent<PlayerController>().SetInDialogue(true);
                 player2.GetComponent<PlayerController>().SetInDialogue(true);
-                dialogueManager.GetComponent<DialogueManager>().StartDialogue(this.GetComponent<Dialogue>());
             }
             else
             {
-                dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
+                player1.GetComponent<PlayerController>().SetInDialogue(false);
+                player2.GetComponent<PlayerController>().SetInDialogue(false);
             }
-
-        if(dialogueManager.GetComponent<DialogueManager>().IsFinished()){
-            player1.GetComponent<PlayerController>().SetInDialogue(false);
-            player2.GetComponent<PlayerController>().SetInDialogue(false);
         }
     }
 
