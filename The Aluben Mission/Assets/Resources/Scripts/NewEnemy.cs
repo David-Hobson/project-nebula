@@ -79,6 +79,7 @@ public class NewEnemy : MonoBehaviour {
     {
         this.enemyDmg = enemyDmg;
     }
+    public int getEnemyDmg() { return enemyDmg; }
     //set the number of nebulite
     public void SetNebuliteQuantity(int nebuliteQuantity)
     {
@@ -176,7 +177,12 @@ public class NewEnemy : MonoBehaviour {
     {
         if (other.gameObject.tag == "P1Bullet" || other.gameObject.tag == "P2Bullet")
         {
-            health -= 25;
+            int damage = 0;
+            if(other.gameObject.name.Substring(1,1) == "1")
+                damage = PlayerPrefs.GetInt("P1Damage");
+            else
+                damage = PlayerPrefs.GetInt("P2Damage");
+            health -= damage;
             Destroy(other.gameObject);
             damaged = 0;
         }

@@ -78,6 +78,11 @@ public class DialogueManager : MonoBehaviour {
         this.finishedDialogue = true;
     }
 
+    public string getName()
+    {
+        return this.nameText.text;
+    }
+
     public bool IsFinished(){
         return this.finishedDialogue;
     }

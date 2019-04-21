@@ -4,38 +4,63 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public Weapon()
-    {
-        aquired = false;
-        tier = 0;
-    }
-    public bool aquired;
-    public int cost;
+    public int index;
+    private string[] guns = new string[] { "Pistol", "Cannon", "MachineGun", "Laser" };
+    public string name;
+    public int fireRate;
+    public float projectileSpeed;
+    public int[] damage;
     public int tier;
-    public int[] displayLocation;
-    public bool inShop;
-
-    public Weapon(int c, int t, int[] d, bool show)
-    {
-        cost = c;
-        tier = t;
-        displayLocation = d;
-        inShop = show;
-    }
-
-    public void AquireWeapon() { aquired = true; }
-
-    public void UpgradeWeapon() {
-        cost += 100;
-        tier++; }
+    public GameObject bullet;
+    public GameObject barrel;
 
     // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        Construct(index);
+    }
+
+    public void Construct(int i)
+    {
+        tier = PlayerPrefs.GetInt(guns[i]);
+        switch (i)
+        {
+            case 0:
+                name = "Pistol";
+                fireRate = 4;
+                damage = new int[] { 25, 38, 50, 75 };
+                break;
+            case 1:
+                name = "Cannon";
+                fireRate = 2;
+                damage = new int[] { 50, 50, 75, 100, 150};
+                break;
+            case 2:
+                name = "Machine Gun";
+                fireRate = 10;
+                damage = new int[] { 10, 10, 20, 30, 40 };
+                break;
+            case 3:
+                name = "Laser";
+                fireRate = 8;
+                damage = new int[] { 20, 20, 30, 40, 50 };
+                break;
+        }
+
+    }
+
+    public void Upgrade()
+    {
+        tier++;
+    }
+
+    public int getDamage() {
+        return damage[tier];
+    }
+
+    public int getFireRate() { return fireRate; }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }
