@@ -48,9 +48,12 @@ public class Shop : MonoBehaviour {
         ButtonText("P2Speed", P2Upgrades[1]);
         for(int i = 0; i < 4; i++)
         {
-            if(playerGuns[i] != 0) { 
-                ButtonText("P1" + upgradeNames[i+4] + "Buy", playerGuns[i]);
-                ButtonText("P2" + upgradeNames[i + 4] + "Buy", playerGuns[i]);
+
+            if(playerGuns[i] != 0) {
+                price[i] = 0;
+                ButtonText("P1" + upgradeNames[i+4] + "Buy", playerGuns[i]-1);
+                ButtonText("P2" + upgradeNames[i + 4] + "Buy", playerGuns[i]-1);
+                
             }
         }
         for (int i = 0; i < 4; i++)
@@ -94,7 +97,9 @@ public class Shop : MonoBehaviour {
         button = button + "Equip";
         if (unlocked)
         {
-            GameObject.Find(button).transform.GetChild(2).GetComponent<Text>().text = "Tier: " + tier;
+            if (button.Equals("P1PistolEquip") || button.Equals("P2PistolEquip"))
+                tier += 1;
+            GameObject.Find(button).transform.GetChild(2).GetComponent<Text>().text = "Tier: " + (tier -1);
             GameObject.Find(button).transform.GetChild(0).GetComponent<Image>().color = Color.white;
             GameObject.Find(button).GetComponent<Button>().interactable = true;
         }
@@ -176,8 +181,8 @@ public class Shop : MonoBehaviour {
             if (!unlock[index])
                 unlock[index] = true;
             nebulite.RemoveNebulite(cost);
-            playerGuns[index] = tier;
-            PlayerPrefs.SetInt(upgradeNames[index + 4], tier);
+            playerGuns[index] = tier+1;
+            PlayerPrefs.SetInt(upgradeNames[index + 4], tier+1);
             player1.GetComponent<PlayerController>().UpgradeWeapon(index);
             player2.GetComponent<PlayerController>().UpgradeWeapon(index);
             if (currentPlayer == 1)
