@@ -32,7 +32,7 @@ public class HomeWorldManager : MonoBehaviour
         float vect1 = Vector3.Distance(this.transform.position, player1.transform.position);
         float vect2 = Vector3.Distance(this.transform.position, player2.transform.position);
 
-        if (shop.GetComponent<Shop>().isClosed() && menutoggle)
+        if (shop != null && shop.GetComponent<Shop>().isClosed() && menutoggle)
         {
             menutoggle = false;
             HUDController.SetActive(true);
@@ -64,8 +64,14 @@ public class HomeWorldManager : MonoBehaviour
         }
 
         if(dialogueManager.GetComponent<DialogueManager>().IsFinished()){
-            player1.GetComponent<PlayerController>().SetInDialogue(false);
-            player2.GetComponent<PlayerController>().SetInDialogue(false);
+
+            if(this.name == "Tobs"){
+                this.OpenShop(1);
+            }else{
+                player1.GetComponent<PlayerController>().SetInDialogue(false);
+                player2.GetComponent<PlayerController>().SetInDialogue(false);
+            }
+
         }
     }
 
