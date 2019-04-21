@@ -42,6 +42,8 @@ public class Shop : MonoBehaviour {
         P1Upgrades = new int[] { PlayerPrefs.GetInt("P1HP"), PlayerPrefs.GetInt("P1Speed") };
         P2Upgrades = new int[] { PlayerPrefs.GetInt("P2HP"), PlayerPrefs.GetInt("P2Speed") };
         playerGuns = new int[] { PlayerPrefs.GetInt("Pistol"), PlayerPrefs.GetInt("Cannon"), PlayerPrefs.GetInt("MG"), PlayerPrefs.GetInt("Laser") };
+        if (playerGuns[0] == 0)
+            playerGuns[0] = 1;
         ButtonText("P1HP", P1Upgrades[0]);
         ButtonText("P1Speed", P1Upgrades[1]);
         ButtonText("P2HP", P2Upgrades[0]);
@@ -51,8 +53,8 @@ public class Shop : MonoBehaviour {
 
             if(playerGuns[i] != 0) {
                 price[i] = 0;
-                ButtonText("P1" + upgradeNames[i+4] + "Buy", playerGuns[i]-1);
-                ButtonText("P2" + upgradeNames[i + 4] + "Buy", playerGuns[i]-1);
+                ButtonText("P1" + upgradeNames[i+4] + "Buy", playerGuns[i]);
+                ButtonText("P2" + upgradeNames[i + 4] + "Buy", playerGuns[i]);
                 
             }
         }
@@ -120,7 +122,7 @@ public class Shop : MonoBehaviour {
 
     public void ButtonText(string button, int tier)
     {
-        if (tier < 3)
+        if (tier < 4)
         {
             GameObject.Find(button).transform.GetChild(3).GetComponent<Text>().text = "$" + Cost(tier + 1);
             GameObject.Find(button).transform.GetChild(2).GetComponent<Text>().text = "Tier: " + tier;
@@ -164,25 +166,25 @@ public class Shop : MonoBehaviour {
 
     public void PurchaseGun(int index)
     {
-        int tier = playerGuns[index];
+        int tier = playerGuns[index] +1;
         int cost = 0;
-        if (tier == 0 && price[index] != 0) { 
+        if (price[index] != 0) { 
             cost = price[index];
         }
         else
         {
-            tier += 1;
             cost = Cost(tier);
         }
             
-        if (cost <= cash && tier < 4)
+        if (cost <= cash && tier < 5)
         {
             price[index] = 0;
             if (!unlock[index])
                 unlock[index] = true;
+
             nebulite.RemoveNebulite(cost);
-            playerGuns[index] = tier+1;
-            PlayerPrefs.SetInt(upgradeNames[index + 4], tier+1);
+            playerGuns[index] = tier;
+            PlayerPrefs.SetInt(upgradeNames[index + 4], tier);
             player1.GetComponent<PlayerController>().UpgradeWeapon(index);
             player2.GetComponent<PlayerController>().UpgradeWeapon(index);
             if (currentPlayer == 1)
@@ -190,6 +192,8 @@ public class Shop : MonoBehaviour {
             else
                 ButtonText("P2" + upgradeNames[index + 4] + "Buy", tier);
             success.Play();
+            player1.GetComponent<PlayerController>().EquipWeapon(index);
+            player2.GetComponent<PlayerController>().EquipWeapon(index);
         }
         else
             NotEnoughNebulite();
@@ -198,7 +202,7 @@ public class Shop : MonoBehaviour {
     {
         int tier = P1Upgrades[index] + 1;
         int cost = Cost(tier);
-        if (cost <= cash && tier <4)
+        if (cost <= cash && tier <5)
         {
             nebulite.RemoveNebulite(cost);
             P1Upgrades[index] += 1;
@@ -215,7 +219,7 @@ public class Shop : MonoBehaviour {
     {
         int tier = P2Upgrades[index] + 1;
         int cost = Cost(tier);
-        if (cost <= cash && tier <4)
+        if (cost <= cash && tier <5)
         {
             nebulite.RemoveNebulite(cost);
             P2Upgrades[index] += 1;
