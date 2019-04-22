@@ -24,7 +24,7 @@ public class Fire : MonoBehaviour {
         InvokeRepeating("FireDamage", 1f, 1f);
     }
 	
-	void FixedUpdate () {
+	void Update () {
         transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
     }
 

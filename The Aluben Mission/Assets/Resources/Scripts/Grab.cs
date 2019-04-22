@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Grab : MonoBehaviour {
 
@@ -18,6 +19,8 @@ public class Grab : MonoBehaviour {
 	private bool complete;
 
     private float timing;
+
+    public GameObject fadeIn;
 
 	//Initialize required objects and variables
 	void Start() {
@@ -37,8 +40,11 @@ public class Grab : MonoBehaviour {
 
 		//freeze relic in place one it has reached it's final destination
 		if (complete) {
-            timing += Time.deltaTime;
-            if(timing >= 2.0f){
+            timing += 0.01f;
+
+            fadeIn.GetComponent<Image>().color = new Color(0, 0, 0, timing);
+
+            if(timing >= 1.5f){
                 SceneManager.LoadScene("LoadingScene2");
             }
 		} 

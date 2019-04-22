@@ -11,6 +11,8 @@ public class HUDController : MonoBehaviour {
 
     public string bossName;
 
+    private bool bossDone;
+
 	// Use this for initialization
 	void Start () {
         player1 = GameObject.Find("Player 1");
@@ -63,7 +65,7 @@ public class HUDController : MonoBehaviour {
         } else {
             bossStatus.transform.GetChild(0).GetComponent<Slider>().value = 0;
             bossStatus.transform.GetChild(1).GetComponent<Text>().text = "0/2000";
-            Destroy(bossStatus);
+
         }
     }
 }

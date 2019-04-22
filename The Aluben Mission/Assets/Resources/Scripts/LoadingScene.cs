@@ -40,6 +40,12 @@ public class LoadingScene : MonoBehaviour {
             } else {
                 timeToLoad += Time.deltaTime;
             }
+        }else if(this.name == "Home"){
+            if (timeToLoad >= 5.0f) {
+                SceneManager.LoadScene("HomeWorldShopWorking");
+            } else {
+                timeToLoad += Time.deltaTime;
+            }
         }
 
 	}

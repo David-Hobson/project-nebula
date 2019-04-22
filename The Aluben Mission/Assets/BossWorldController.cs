@@ -10,11 +10,19 @@ public class BossWorldController : MonoBehaviour {
     private GameObject player1;
     private GameObject player2;
 
+    public GameObject bossStatus;
+
+    private GameObject music;
+
     public string bossName;
+
+    public GameObject artifact;
 
     private float timing;
 
     private bool loaded;
+
+    private bool ran;
 
 	// Use this for initialization
 	void Start () {
@@ -26,8 +34,12 @@ public class BossWorldController : MonoBehaviour {
         player1.GetComponent<PlayerController>().UpdatePlayer();
         player2.GetComponent<PlayerController>().UpdatePlayer();
 
-        loaded = false;
+        music = GameObject.Find("Audio Source");
 
+        bossStatus = GameObject.Find("BossStatus");
+
+        loaded = false;
+        ran = false;
     }
 	
 	// Update is called once per frame
@@ -36,18 +48,18 @@ public class BossWorldController : MonoBehaviour {
             timing += Time.deltaTime;
         }
 
-        if(timing >= 3.0f && loaded){
+        if(timing >= 3.0f && !loaded){
             player1.GetComponent<PlayerController>().UpdatePlayer();
             player2.GetComponent<PlayerController>().UpdatePlayer();
             timing = 0f;
             loaded = true;
         }
 
-        if(boss == null){
-            timing += Time.deltaTime;
-            if(timing >= 5.0f){
-                SceneManager.LoadScene("HomeWorldShopWorking");
-            }
+        if (boss == null && !ran){
+            music.GetComponent<AudioSource>().Stop();
+            Instantiate(artifact, this.transform);
+            Destroy(bossStatus);
+            ran = true;
         }
 	}
 }
