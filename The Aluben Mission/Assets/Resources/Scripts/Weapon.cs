@@ -54,6 +54,7 @@ public class Weapon : MonoBehaviour
     }
 
     public int getDamage() {
+        Debug.Log(tier);
         return damage[tier];
     }
 

@@ -23,6 +23,9 @@ public class HomeWorldManager : MonoBehaviour
         dialogueManager = GameObject.Find("DialogueManager");
         shop = GameObject.Find("Shop");
         HUDController = GameObject.Find("HUD");
+
+        player1.GetComponent<PlayerController>().UpdatePlayer();
+        player2.GetComponent<PlayerController>().UpdatePlayer();
     }
 
     // Update is called once per frame
@@ -32,7 +35,7 @@ public class HomeWorldManager : MonoBehaviour
         float vect1 = Vector3.Distance(this.transform.position, player1.transform.position);
         float vect2 = Vector3.Distance(this.transform.position, player2.transform.position);
 
-        if (shop != null && shop.GetComponent<Shop>().isClosed() && menutoggle)
+        if (shop.tag != "NoShop" && shop.GetComponent<Shop>().isClosed() && menutoggle)
         {
             menutoggle = false;
             HUDController.SetActive(true);

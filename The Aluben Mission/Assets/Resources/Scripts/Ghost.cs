@@ -14,6 +14,8 @@ public class Ghost : NewEnemy {
     {
         base.Start();
         SetEnemyStatus(4.0f, 100, 1.5f, 20, 1);
+
+        Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), GameObject.Find("Main Camera").GetComponent<EdgeCollider2D>());
     }
 
     public override void FixedUpdate()

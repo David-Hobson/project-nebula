@@ -14,9 +14,12 @@ public class CameraControl : MonoBehaviour {
 	void Start () {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
-	}
-	
-	void Update () {
+
+
+
+    }
+
+    void Update () {
         if (player1 == null && player2 == null) {
             SceneManager.LoadScene("GameOver");
         }

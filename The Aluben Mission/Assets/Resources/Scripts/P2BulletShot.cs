@@ -14,8 +14,8 @@ public class P2BulletShot : MonoBehaviour {
         var xr = Input.GetAxis("P2RSX");
         var yr = Input.GetAxis("P2RSY");
 
-        var xl = Input.GetAxis("P1LSX");
-        var yl = Input.GetAxis("P1LSY");
+        var xl = Input.GetAxis("P2LSX");
+        var yl = Input.GetAxis("P2LSY");
 
         damage = PlayerPrefs.GetInt("P2Damage");
 

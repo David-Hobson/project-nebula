@@ -82,7 +82,7 @@ public class HomeWorldIntro : MonoBehaviour {
             dialogueManager.GetComponent<DialogueManager>().StartDialogue(dialogue);
         } else {
             dialogueElapsed += 0.01f;
-            if (dialogueElapsed >= 2.0f) {
+            if (dialogueElapsed >= 3.0f) {
                 dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
                 dialogueElapsed = 0.0f;
 

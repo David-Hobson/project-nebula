@@ -19,6 +19,8 @@ public class Demon : NewEnemy {
         projectile = Resources.Load<GameObject>("Prefabs/EnemyFire");
         SetStartTimeBtwShots(2.0f);
 
+        Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), GameObject.Find("Main Camera").GetComponent<EdgeCollider2D>());
+
     }
 
     //call parent update method and shooting method

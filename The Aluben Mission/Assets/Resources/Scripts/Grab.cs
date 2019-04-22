@@ -17,6 +17,8 @@ public class Grab : MonoBehaviour {
 	private Vector3 initalPos;
 	private bool complete;
 
+    private float timing;
+
 	//Initialize required objects and variables
 	void Start() {
 		player1 = GameObject.Find ("Player 1");
@@ -25,6 +27,7 @@ public class Grab : MonoBehaviour {
 		blueRelic = true;
 		initalPos = this.transform.position;
 		complete = false;
+        timing = 0;
 	}
 
 	//Update tracking of relic and who is holding it 
@@ -34,7 +37,10 @@ public class Grab : MonoBehaviour {
 
 		//freeze relic in place one it has reached it's final destination
 		if (complete) {
-            SceneManager.LoadScene("LoadingScene2");
+            timing += Time.deltaTime;
+            if(timing >= 2.0f){
+                SceneManager.LoadScene("LoadingScene2");
+            }
 		} 
 		//Check which player is holding the relic and prohibit their respective shooting and apply speed debuff
 		else {

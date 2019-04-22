@@ -95,6 +95,8 @@ public class DesertPuzzle : MonoBehaviour {
             player1.GetComponent<PlayerController>().SetTeleport(teleport);
             player2.GetComponent<PlayerController>().SetTeleport(teleport);
             teleportTime = 0;
+            player1.GetComponent<PlayerController>().UpdatePlayer();
+            player2.GetComponent<PlayerController>().UpdatePlayer();
         }
     }
 

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LastOtb : MonoBehaviour {
 
@@ -17,6 +19,8 @@ public class LastOtb : MonoBehaviour {
 
     public Sprite chargedOrb;
     public Sprite unchargedOrb;
+
+    public GameObject transition;
 
     // Use this for initialization
     void Start() {
@@ -38,6 +42,8 @@ public class LastOtb : MonoBehaviour {
             this.Charging();
         } else if (state == 2) {
             this.Charged();
+        } else if(state == 3){
+            this.TransitionToBoss();
         }
 
     }
@@ -50,11 +56,29 @@ public class LastOtb : MonoBehaviour {
 
     private void Charging() {
         energize.GetComponent<SpriteRenderer>().enabled = true;
+
+        chargingTime += Time.deltaTime;
+
+        if (chargingTime >= 2.0f) {
+            state++;
+        }
     }
 
     private void Charged() {
         this.GetComponent<SpriteRenderer>().sprite = chargedOrb;
         energize.GetComponent<SpriteRenderer>().enabled = false;
+        this.GetComponent<AudioSource>().Play();
+        chargingTime = 0;
+        state++;
+    }
+
+    private void TransitionToBoss(){
+        chargingTime += 0.01f;
+
+        transition.GetComponent<Image>().color = new Color(255, 242, 153, chargingTime);
+        if(chargingTime >= 1.5f){
+            SceneManager.LoadScene("LoadDesertBoss");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D col) {

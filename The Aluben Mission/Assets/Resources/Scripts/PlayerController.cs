@@ -63,6 +63,11 @@ public class PlayerController : MonoBehaviour {
     public string btnR1;
     public string btnL1;
 
+    private GameObject p1Bullet0;
+    private GameObject p1Bullet1;
+    private GameObject p1Bullet2;
+    private GameObject p1Bullet3;
+
 
     public void Start() {
         this.Construct();
@@ -79,57 +84,18 @@ public class PlayerController : MonoBehaviour {
 
         muzzleFlash = Resources.Load<GameObject>("Prefabs/MuzzleFlash");
 
-        if (playerNumber == 1)
-        {
-            
-            playerGuns = new int[] { PlayerPrefs.GetInt("Pistol"), PlayerPrefs.GetInt("Cannon"), PlayerPrefs.GetInt("MG"), PlayerPrefs.GetInt("Laser") };
-            PUpgrades = new int[] { PlayerPrefs.GetInt("P1HP"), PlayerPrefs.GetInt("P1Armor"), PlayerPrefs.GetInt("P1Speed") };
-            for(int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Weapon>().Upgrade();
-            for (int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(1).GetComponent<Weapon>().Upgrade();
-            for (int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(2).GetComponent<Weapon>().Upgrade();
-            for (int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(3).GetComponent<Weapon>().Upgrade();
-            EquipWeapon(PlayerPrefs.GetInt("P1Weapon"));
-            maxHealth = 100;
-            for(int i = 0; i < PUpgrades[0]; i++)
-                Upgrade(1);
-            health = maxHealth;
-            maxArmour = 100;
-            for (int i = 0; i < PUpgrades[1]; i++)
-                Upgrade(2);
-            armour = maxArmour;
-            speed = 1;
-            for (int i = 0; i < PUpgrades[2]; i++)
-                Upgrade(3);
-        }
-        else
-        {
-            playerGuns = new int[] { PlayerPrefs.GetInt("Pistol"), PlayerPrefs.GetInt("Cannon"), PlayerPrefs.GetInt("MG"), PlayerPrefs.GetInt("Laser") };
-            PUpgrades = new int[] { PlayerPrefs.GetInt("P2HP"), PlayerPrefs.GetInt("P2Armor"), PlayerPrefs.GetInt("P2Speed") };
-            for (int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Weapon>().Upgrade();
-            for (int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(1).GetComponent<Weapon>().Upgrade();
-            for (int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(2).GetComponent<Weapon>().Upgrade();
-            for (int i = 0; i < playerGuns[i]; i++)
-                this.transform.GetChild(0).gameObject.transform.GetChild(3).GetComponent<Weapon>().Upgrade();
-            EquipWeapon(PlayerPrefs.GetInt("P2Weapon"));
-            maxHealth = 100;
-            for (int i = 0; i < PUpgrades[0]; i++)
-                Upgrade(1);
-            health = maxHealth;
-            maxArmour = 100;
-            for (int i = 0; i < PUpgrades[1]; i++)
-                Upgrade(2);
-            armour = maxArmour;
-            speed = 1;
-            for (int i = 0; i < PUpgrades[2]; i++)
-                Upgrade(3);
-        }
+        gunPivot = this.transform.GetChild(0).gameObject;
+
+        p1Bullet0 = Resources.Load<GameObject>("Prefabs/P1Projectile0");
+        p1Bullet1 = Resources.Load<GameObject>("Prefabs/P1Projectile1");
+        p1Bullet2 = Resources.Load<GameObject>("Prefabs/P1Projectile2");
+        p1Bullet3 = Resources.Load<GameObject>("Prefabs/P1Projectile3");
+
+        p1Bullet0.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        p1Bullet1.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        p1Bullet2.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        p1Bullet3.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+
         knockbackDirection = new Vector3(0,0,0);
         knockBackTime = 0;
         isKnockedBack = false;
@@ -536,6 +502,10 @@ public class PlayerController : MonoBehaviour {
                 this.Damage(collision.gameObject.GetComponent<NewEnemy>().getEnemyDmg(), transform.position - collision.transform.position);
 
             }
+
+            if(collision.gameObject.tag == "Spikes"){
+                this.Damage(5, transform.position - collision.transform.position);
+            }
         }
 
         if(collision.gameObject.tag == "HealthPack"){
@@ -606,6 +576,60 @@ public class PlayerController : MonoBehaviour {
 
     public void SetDissapear(bool set){
         this.GetComponent<SpriteRenderer>().enabled = !set;
-        currentWeapon.GetComponent<SpriteRenderer>().enabled = !set;
+
+        for (int i = 0; i < 4; i ++){
+            gunPivot.transform.GetChild(i).GetComponent<SpriteRenderer>().enabled = !set;
+        }
+    }
+
+    public void UpdatePlayer(){
+        if (playerNumber == 1) {
+
+            playerGuns = new int[] { PlayerPrefs.GetInt("Pistol"), PlayerPrefs.GetInt("Cannon"), PlayerPrefs.GetInt("MG"), PlayerPrefs.GetInt("Laser") };
+            PUpgrades = new int[] { PlayerPrefs.GetInt("P1HP"), PlayerPrefs.GetInt("P1Armor"), PlayerPrefs.GetInt("P1Speed") };
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(1).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(2).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(3).GetComponent<Weapon>().Upgrade();
+            EquipWeapon(PlayerPrefs.GetInt("P1Weapon"));
+            maxHealth = 100;
+            for (int i = 0; i < PUpgrades[0]; i++)
+                Upgrade(1);
+            health = maxHealth;
+            maxArmour = 100;
+            for (int i = 0; i < PUpgrades[1]; i++)
+                Upgrade(2);
+            armour = maxArmour;
+            speed = 1;
+            for (int i = 0; i < PUpgrades[2]; i++)
+                Upgrade(3);
+        } else {
+            playerGuns = new int[] { PlayerPrefs.GetInt("Pistol"), PlayerPrefs.GetInt("Cannon"), PlayerPrefs.GetInt("MG"), PlayerPrefs.GetInt("Laser") };
+            PUpgrades = new int[] { PlayerPrefs.GetInt("P2HP"), PlayerPrefs.GetInt("P2Armor"), PlayerPrefs.GetInt("P2Speed") };
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(1).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(2).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(3).GetComponent<Weapon>().Upgrade();
+            EquipWeapon(PlayerPrefs.GetInt("P2Weapon"));
+            maxHealth = 100;
+            for (int i = 0; i < PUpgrades[0]; i++)
+                Upgrade(1);
+            health = maxHealth;
+            maxArmour = 100;
+            for (int i = 0; i < PUpgrades[1]; i++)
+                Upgrade(2);
+            armour = maxArmour;
+            speed = 1;
+            for (int i = 0; i < PUpgrades[2]; i++)
+                Upgrade(3);
+        }
     }
 }
