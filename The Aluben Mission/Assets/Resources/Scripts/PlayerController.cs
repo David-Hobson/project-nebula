@@ -6,13 +6,23 @@ public class PlayerController : MonoBehaviour {
 
     private bool paused = false;
 
+    public int playerNumber;
+    public int playerWeapon;
     public GameObject bullet;
     private GameObject gunPivot;
     private GameObject currentWeapon;
     private GameObject muzzleFlash;
+    private float WaitTilNextShot = 1;
+    private int fireRate;
+
+    private int[] playerGuns;
+    private int[] PUpgrades = new int[3];
 
     private GameObject energyLink;
     private bool energized;
+
+    private GameObject teleport;
+    private bool teleporting;
 
     private Animator animator;
     private AudioSource audSource;
@@ -53,6 +63,13 @@ public class PlayerController : MonoBehaviour {
     public string btnR1;
     public string btnL1;
 
+    private GameObject p1Bullet0;
+    private GameObject p1Bullet1;
+    private GameObject p1Bullet2;
+    private GameObject p1Bullet3;
+
+    private Quaternion gunrotation;
+
 
     public void Start() {
         this.Construct();
@@ -60,20 +77,26 @@ public class PlayerController : MonoBehaviour {
     }
 
     //Construct the Player prefab with the corresponding stats
-    public void Construct(){
+    public void Construct() {
+
         animator = this.GetComponent<Animator>();
         audSource = this.GetComponent<AudioSource>();
 
         shot = audSource.clip;
-        gunPivot = this.transform.GetChild(0).gameObject;
-        currentWeapon = gunPivot.transform.GetChild(0).gameObject;
+
         muzzleFlash = Resources.Load<GameObject>("Prefabs/MuzzleFlash");
 
-        health = 100;
-        maxHealth = 100;
-        armour = 100;
-        maxArmour = 100;
-        speed = 1;
+        gunPivot = this.transform.GetChild(0).gameObject;
+
+        p1Bullet0 = Resources.Load<GameObject>("Prefabs/P1Projectile0");
+        p1Bullet1 = Resources.Load<GameObject>("Prefabs/P1Projectile1");
+        p1Bullet2 = Resources.Load<GameObject>("Prefabs/P1Projectile2");
+        p1Bullet3 = Resources.Load<GameObject>("Prefabs/P1Projectile3");
+
+        p1Bullet0.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        p1Bullet1.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        p1Bullet2.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        p1Bullet3.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
 
         knockbackDirection = new Vector3(0,0,0);
         knockBackTime = 0;
@@ -91,6 +114,9 @@ public class PlayerController : MonoBehaviour {
 
         energyLink = this.transform.GetChild(1).gameObject;
         energized = false;
+
+        teleport = this.transform.GetChild(2).gameObject;
+        teleporting = false;
     }
 
     private void Update() {
@@ -110,6 +136,17 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetButtonDown(btnR1) && isAiming && !isHolding) {
                 Fire();
             }
+            if (Input.GetButton(btnR1) && isAiming && !isHolding && playerWeapon == 2)
+                Fire();
+
+            if (Input.GetButtonDown(btnL1)) {
+                this.SetEnergyLink(true);
+            }
+
+            if (Input.GetButtonUp(btnL1)) {
+                this.SetEnergyLink(false);
+            }
+
 
         }
 
@@ -118,15 +155,8 @@ public class PlayerController : MonoBehaviour {
         } else {
             interaction = false;
         }
-
-        if (Input.GetButtonDown(btnL1)){
-            this.ToggleEnergyLink();
-        }
-
-        if (Input.GetButtonUp(btnL1)){
-            this.ToggleEnergyLink();
-        }
-
+        
+        WaitTilNextShot -= Time.deltaTime * fireRate;
 
     }
 
@@ -173,6 +203,9 @@ public class PlayerController : MonoBehaviour {
             var spriteColor = this.GetComponent<SpriteRenderer>().color;
             this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 0.5f);
             invicibleTime += Time.deltaTime;
+
+            energized = false;
+            energyLink.GetComponent<SpriteRenderer>().enabled = energized;
             if (invicibleTime >= maxInvicibilityTime) {
                 isInvincible = false;
                 this.GetComponent<SpriteRenderer>().color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, 1f);
@@ -194,6 +227,8 @@ public class PlayerController : MonoBehaviour {
             currentWeapon.GetComponent<SpriteRenderer>().sortingOrder = 10;
             muzzleFlash.GetComponent<SpriteRenderer>().sortingOrder = 10;
         }
+
+        gunrotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         gunPivot.GetComponent<Transform>().rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
     }
@@ -273,11 +308,14 @@ public class PlayerController : MonoBehaviour {
     //REQUIREMENT: F-9, F-11
     //Fire a projectile from the barrel position on the player
     public void Fire() {
-        var barrelVect = currentWeapon.transform.Find("Barrel");
-        audSource.PlayOneShot(shot, 1f);
-        GameObject tempMuzzleFlash = Instantiate(muzzleFlash, barrelVect.position, currentWeapon.GetComponent<Transform>().rotation);
-        tempMuzzleFlash.transform.parent = barrelVect;
-        Instantiate(bullet, barrelVect.position, Quaternion.identity);
+        if(WaitTilNextShot <= 0) { 
+            var barrelVect = currentWeapon.transform.Find("Barrel");
+            audSource.PlayOneShot(shot, 1f);
+            GameObject tempMuzzleFlash = Instantiate(muzzleFlash, barrelVect.position, currentWeapon.GetComponent<Transform>().rotation);
+            tempMuzzleFlash.transform.parent = barrelVect;
+            Instantiate(bullet, barrelVect.position, gunrotation);
+            WaitTilNextShot = 1;
+        }
 
     }
 
@@ -315,14 +353,22 @@ public class PlayerController : MonoBehaviour {
     //Upgrade the health, armour, or speed based on the type of upgrade
     public void Upgrade(int type){
         if(type == 1){
-            maxHealth += 100;
+            this.maxHealth += 50;
+            health = maxHealth;
         }else if(type == 2){
-            maxArmour += 50;
+            this.maxArmour += 50;
+            armour = maxArmour;
         }else if(type == 3){
-            speed += 0.5f;
+            this.speed += 0.2f;
         }else{
             return;
         }
+    }
+
+    public void UpgradeWeapon(int type)
+    {
+        this.transform.GetChild(0).gameObject.transform.GetChild(type).GetComponent<Weapon>().Upgrade();
+        EquipWeapon(playerWeapon);
     }
 
     //REQUIREMENT: F-13, F-33
@@ -417,17 +463,52 @@ public class PlayerController : MonoBehaviour {
 
     //REQUIREMENT: F-49
     //Set current weapon to new Weapon object parameter
-    public void EquipWeapon(Weapon w){
-        //TODO
+    public void EquipWeapon(int index){
+        playerWeapon = index;
+        PlayerPrefs.SetInt("P" + playerNumber + "Weapon", index);
+        gunPivot = this.transform.GetChild(0).gameObject;
+        currentWeapon = gunPivot.transform.GetChild(playerWeapon).gameObject;
+        bullet = Resources.Load<GameObject>("Prefabs/P" + playerNumber + "Projectile" + playerWeapon);
+        fireRate = currentWeapon.GetComponent<Weapon>().getFireRate();
+        PlayerPrefs.SetInt("P" + playerNumber + "Damage", currentWeapon.GetComponent<Weapon>().getDamage());
+        gunPivot.transform.GetChild(playerWeapon).gameObject.SetActive(true);
+        switch (index)
+        {
+            case 0:
+                shot = Resources.Load<AudioClip>("Sound Effects/pistol");
+                break;
+            case 1:
+                shot = Resources.Load<AudioClip>("Sound Effects/Cannon_sound");
+                break;
+            case 2:
+                shot = Resources.Load<AudioClip>("Sound Effects/machine_gun_cut");
+                break;
+            case 3:
+                shot = Resources.Load<AudioClip>("Sound Effects/laser_gun_cut");
+                break;
 
-        //currentWeapon = w;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            if (i != playerWeapon)
+            {
+                GameObject pivot = this.transform.GetChild(0).gameObject;
+                pivot.transform.GetChild(i).gameObject.SetActive(false);
+            }
+
+        }
+        currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if(!isInvincible){
             if (collision.gameObject.tag == "Enemy") {
-                this.Damage(10, transform.position - collision.transform.position);
+                this.Damage(collision.gameObject.GetComponent<NewEnemy>().getEnemyDmg(), transform.position - collision.transform.position);
 
+            }
+
+            if(collision.gameObject.tag == "Spikes"){
+                this.Damage(5, transform.position - collision.transform.position);
             }
         }
 
@@ -440,7 +521,7 @@ public class PlayerController : MonoBehaviour {
     private void OnCollisionStay2D(Collision2D collision) {
         if (!isInvincible) {
             if (collision.gameObject.tag == "Enemy") {
-                this.Damage(10, transform.position - collision.transform.position);
+                this.Damage(collision.gameObject.GetComponent<NewEnemy>().getEnemyDmg(), transform.position - collision.transform.position);
 
             }
         }
@@ -459,6 +540,8 @@ public class PlayerController : MonoBehaviour {
     //Set the player to be in a dialogue sequence
     public void SetInDialogue(bool d){
         inDialogue = d;
+        Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), GameObject.Find("Main Camera").GetComponent<EdgeCollider2D>(), d);
+        animator.SetBool("Moving", false);
     }
 
     //Set the player to be holding an object
@@ -477,13 +560,80 @@ public class PlayerController : MonoBehaviour {
     }
 
     //Toggle the energy link between the two players
-    public void ToggleEnergyLink(){
-        energized = !energized;
-        energyLink.GetComponent<SpriteRenderer>().enabled = energized;
+    public void SetEnergyLink(bool set){
+        energized = set;
+        energyLink.GetComponent<SpriteRenderer>().enabled = set;
     }
 
     //Returns if the player is energized for the energy link
     public bool IsEnergized(){
         return this.energized;
+    }
+
+    public void SetTeleport(bool set){
+        this.teleporting = set;
+        this.SetInDialogue(set);
+        this.SetDissapear(set);
+        teleport.GetComponent<SpriteRenderer>().enabled = set;
+        teleport.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = set;
+    }
+
+    public void SetDissapear(bool set){
+        this.GetComponent<SpriteRenderer>().enabled = !set;
+
+        for (int i = 0; i < 4; i ++){
+            gunPivot.transform.GetChild(i).GetComponent<SpriteRenderer>().enabled = !set;
+        }
+    }
+
+    public void UpdatePlayer(){
+        if (playerNumber == 1) {
+
+            playerGuns = new int[] { PlayerPrefs.GetInt("Pistol"), PlayerPrefs.GetInt("Cannon"), PlayerPrefs.GetInt("MG"), PlayerPrefs.GetInt("Laser") };
+            PUpgrades = new int[] { PlayerPrefs.GetInt("P1HP"), PlayerPrefs.GetInt("P1Armor"), PlayerPrefs.GetInt("P1Speed") };
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(1).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(2).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(3).GetComponent<Weapon>().Upgrade();
+            EquipWeapon(PlayerPrefs.GetInt("P1Weapon"));
+            maxHealth = 100;
+            for (int i = 0; i < PUpgrades[0]; i++)
+                Upgrade(1);
+            health = maxHealth;
+            maxArmour = 100;
+            for (int i = 0; i < PUpgrades[1]; i++)
+                Upgrade(2);
+            armour = maxArmour;
+            speed = 1;
+            for (int i = 0; i < PUpgrades[2]; i++)
+                Upgrade(3);
+        } else {
+            playerGuns = new int[] { PlayerPrefs.GetInt("Pistol"), PlayerPrefs.GetInt("Cannon"), PlayerPrefs.GetInt("MG"), PlayerPrefs.GetInt("Laser") };
+            PUpgrades = new int[] { PlayerPrefs.GetInt("P2HP"), PlayerPrefs.GetInt("P2Armor"), PlayerPrefs.GetInt("P2Speed") };
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(1).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(2).GetComponent<Weapon>().Upgrade();
+            for (int i = 0; i < playerGuns[i]; i++)
+                this.transform.GetChild(0).gameObject.transform.GetChild(3).GetComponent<Weapon>().Upgrade();
+            EquipWeapon(PlayerPrefs.GetInt("P2Weapon"));
+            maxHealth = 100;
+            for (int i = 0; i < PUpgrades[0]; i++)
+                Upgrade(1);
+            health = maxHealth;
+            maxArmour = 100;
+            for (int i = 0; i < PUpgrades[1]; i++)
+                Upgrade(2);
+            armour = maxArmour;
+            speed = 1;
+            for (int i = 0; i < PUpgrades[2]; i++)
+                Upgrade(3);
+        }
     }
 }

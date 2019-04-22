@@ -9,11 +9,15 @@ public class HUDController : MonoBehaviour {
     private GameObject player2;
     private GameObject boss;
 
+    public string bossName;
+
+    private bool bossDone;
+
 	// Use this for initialization
 	void Start () {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
-        boss = GameObject.Find("ShadowBoss");
+        boss = GameObject.Find(bossName);
 	}
 	
 	// Update is called once per frame
@@ -32,13 +36,13 @@ public class HUDController : MonoBehaviour {
     void DisplayPlayerHealth(GameObject player, int num){
         var playerStatus = this.transform.GetChild(num);
         if (player != null){
-            var currentHealth = player1.GetComponent<PlayerController>().GetHealth();
-            var maxHealth = player1.GetComponent<PlayerController>().GetMaxHealth();
+            var currentHealth = player.GetComponent<PlayerController>().GetHealth();
+            var maxHealth = player.GetComponent<PlayerController>().GetMaxHealth();
             playerStatus.transform.GetChild(0).GetComponent<Slider>().value = currentHealth/maxHealth;
             playerStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
         }else{
             playerStatus.transform.GetChild(0).GetComponent<Slider>().value = 0;
-            playerStatus.transform.GetChild(1).GetComponent<Text>().text = "0/100";
+            playerStatus.transform.GetChild(1).GetComponent<Text>().text = "Dead";
         }
 
     }
@@ -48,13 +52,20 @@ public class HUDController : MonoBehaviour {
     void DisplayBossHealth() {
         var bossStatus = this.transform.GetChild(2);
         if (boss != null) {
-            var currentHealth = boss.GetComponent<Mage>().GetHealth();
+            float currentHealth = 0;
+            if(bossName == "ShadowBoss"){
+                currentHealth = boss.GetComponent<Mage>().GetHealth();
+            }else if(bossName == "DesertBoss"){
+                currentHealth = boss.GetComponent<DesertBoss>().GetHealth();
+            }
+
             var maxHealth = 2000.0f;
             bossStatus.transform.GetChild(0).GetComponent<Slider>().value = currentHealth / maxHealth;
             bossStatus.transform.GetChild(1).GetComponent<Text>().text = currentHealth + "/" + maxHealth;
         } else {
             bossStatus.transform.GetChild(0).GetComponent<Slider>().value = 0;
             bossStatus.transform.GetChild(1).GetComponent<Text>().text = "0/2000";
+
         }
     }
 }

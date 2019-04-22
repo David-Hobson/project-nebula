@@ -11,19 +11,38 @@ public class LoadingScene : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         timeToLoad = 0f;
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if(this.name == "Travelling"){
-            if (timeToLoad <= 20.0f) {
-                SceneManager.LoadScene("SpiritForestWorld");
+        if(this.name == "Thaelia"){
+            if (timeToLoad >= 5.0f) {
+                SceneManager.LoadScene("SpiritWorld2");
             } else {
                 timeToLoad += Time.deltaTime;
             }
-        }else{
-            if (timeToLoad <= 50.0f) {
+        }else if(this.name == "Casurn"){
+            if (timeToLoad >= 5.0f) {
+                SceneManager.LoadScene("DesertWorld");
+            } else {
+                timeToLoad += Time.deltaTime;
+            }
+        }else if(this.name == "ShadowBoss"){
+            if (timeToLoad >= 5.0f) {
                 SceneManager.LoadScene("ShadowBoss");
+            } else {
+                timeToLoad += Time.deltaTime;
+            }
+        }else if(this.name == "DesertBoss"){
+            if (timeToLoad >= 5.0f) {
+                SceneManager.LoadScene("DesertBoss");
+            } else {
+                timeToLoad += Time.deltaTime;
+            }
+        }else if(this.name == "Home"){
+            if (timeToLoad >= 5.0f) {
+                SceneManager.LoadScene("HomeWorldShopWorking");
             } else {
                 timeToLoad += Time.deltaTime;
             }
