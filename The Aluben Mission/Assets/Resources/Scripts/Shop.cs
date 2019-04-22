@@ -239,6 +239,7 @@ public class Shop : MonoBehaviour {
 
     public void openShop(int player)
     {
+        nebulite.UpdateNebulite();
         EventSystem.current.SetSelectedGameObject(null);
         currentPlayer = player;
         this.isOpen = true;
