@@ -117,7 +117,7 @@ public class Mage : NewEnemy {
         if (vect.magnitude <= awareDistance) {
             if (timeBtwMagics <= 0) {
                 GetPlayerNumber();
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 18; i++) {
                     var go = Instantiate(tentacle, tentacleTarget + new Vector2(r * Mathf.Cos(2.0f * 3.14f * i / 15.0f), r * Mathf.Sin(2.0f * 3.14f * i / 15.0f)), Quaternion.identity);
                     go.GetComponent<Tentacle>().target = tentacleTarget;
 

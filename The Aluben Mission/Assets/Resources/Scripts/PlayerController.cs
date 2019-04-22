@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviour {
     private GameObject p1Bullet2;
     private GameObject p1Bullet3;
 
+    private Quaternion gunrotation;
+
 
     public void Start() {
         this.Construct();
@@ -226,6 +228,8 @@ public class PlayerController : MonoBehaviour {
             muzzleFlash.GetComponent<SpriteRenderer>().sortingOrder = 10;
         }
 
+        gunrotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
         gunPivot.GetComponent<Transform>().rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
     }
 
@@ -309,7 +313,7 @@ public class PlayerController : MonoBehaviour {
             audSource.PlayOneShot(shot, 1f);
             GameObject tempMuzzleFlash = Instantiate(muzzleFlash, barrelVect.position, currentWeapon.GetComponent<Transform>().rotation);
             tempMuzzleFlash.transform.parent = barrelVect;
-            Instantiate(bullet, barrelVect.position, Quaternion.identity);
+            Instantiate(bullet, barrelVect.position, gunrotation);
             WaitTilNextShot = 1;
         }
 

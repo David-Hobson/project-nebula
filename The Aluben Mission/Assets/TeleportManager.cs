@@ -19,6 +19,8 @@ public class TeleportManager : MonoBehaviour {
     public AudioClip teleportAura;
     public AudioClip teleportBeam;
 
+    public GameObject HUD;
+
     private float camSpeed = 0.001f;
 
     // Use this for initialization
@@ -72,6 +74,7 @@ public class TeleportManager : MonoBehaviour {
             player1.GetComponent<PlayerController>().UpdatePlayer();
             player2.GetComponent<PlayerController>().UpdatePlayer();
             mainCamera.GetComponent<CameraControl>().SetInScene(false);
+            //HUD.GetComponent<Canvas>().enabled = true;
         }
     }
 

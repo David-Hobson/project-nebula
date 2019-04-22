@@ -112,7 +112,7 @@ public class FireMonster : MonoBehaviour {
 
             Destroy(other.gameObject);
         }
-        if (other.gameObject.tag == "P1Bullet" && p1Bullet0.GetComponent<SpriteRenderer>().color == myColor || p1Bullet1.GetComponent<SpriteRenderer>().color == myColor || p1Bullet2.GetComponent<SpriteRenderer>().color == myColor || p1Bullet3.GetComponent<SpriteRenderer>().color == myColor) {
+        if (other.gameObject.tag == "P1Bullet" && (p1Bullet0.GetComponent<SpriteRenderer>().color == myColor || p1Bullet1.GetComponent<SpriteRenderer>().color == myColor || p1Bullet2.GetComponent<SpriteRenderer>().color == myColor || p1Bullet3.GetComponent<SpriteRenderer>().color == myColor)){
             health -= 20;
             Destroy(other.gameObject);
             damaged = 0;

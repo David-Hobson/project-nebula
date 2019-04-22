@@ -190,6 +190,9 @@ public class Shop : MonoBehaviour {
             else
                 ButtonText("P2" + upgradeNames[index + 4] + "Buy", tier);
             success.Play();
+
+            player1.GetComponent<PlayerController>().EquipWeapon(index);
+            player2.GetComponent<PlayerController>().EquipWeapon(index);
         }
         else
             NotEnoughNebulite();

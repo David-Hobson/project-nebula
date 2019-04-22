@@ -24,6 +24,12 @@ public class HomeWorldManager : MonoBehaviour
         shop = GameObject.Find("Shop");
         HUDController = GameObject.Find("HUD");
 
+        player1.GetComponent<PlayerController>().SetInDialogue(true);
+        player2.GetComponent<PlayerController>().SetInDialogue(true);
+        player1.GetComponent<PlayerController>().SetDissapear(true);
+        player2.GetComponent<PlayerController>().SetDissapear(true);
+
+
         player1.GetComponent<PlayerController>().UpdatePlayer();
         player2.GetComponent<PlayerController>().UpdatePlayer();
     }

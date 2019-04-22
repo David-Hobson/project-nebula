@@ -31,12 +31,12 @@ public class BossWorldController : MonoBehaviour {
         player1 = GameObject.Find("Player 1");
         player2 = GameObject.Find("Player 2");
 
-        player1.GetComponent<PlayerController>().UpdatePlayer();
-        player2.GetComponent<PlayerController>().UpdatePlayer();
-
         music = GameObject.Find("Audio Source");
 
         bossStatus = GameObject.Find("BossStatus");
+
+        player1.GetComponent<PlayerController>().UpdatePlayer();
+        player2.GetComponent<PlayerController>().UpdatePlayer();
 
         loaded = false;
         ran = false;
@@ -44,16 +44,16 @@ public class BossWorldController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(!loaded){
-            timing += Time.deltaTime;
-        }
+        //if(!loaded){
+        //    timing += Time.deltaTime;
+        //}
 
-        if(timing >= 3.0f && !loaded){
-            player1.GetComponent<PlayerController>().UpdatePlayer();
-            player2.GetComponent<PlayerController>().UpdatePlayer();
-            timing = 0f;
-            loaded = true;
-        }
+        //if(timing >= 3.0f && !loaded){
+        //    player1.GetComponent<PlayerController>().UpdatePlayer();
+        //    player2.GetComponent<PlayerController>().UpdatePlayer();
+        //    timing = 0f;
+        //    loaded = true;
+        //}
 
         if (boss == null && !ran){
             music.GetComponent<AudioSource>().Stop();
